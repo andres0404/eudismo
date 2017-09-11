@@ -53,11 +53,11 @@ class MTablas {
             $where = "AND b.id_valor = $this->_idDato ";
         }
         $query = "SELECT  a.nom_tabla,b.* FROM 
-tm_tablas a,
-tm_contenidos b
-WHERE a.id_mgeneral = {$this->_idTabla}
+mt_tablas a,
+mt_contenidos b
+WHERE a.id_tablas = {$this->_idTabla}
 AND a.estado = 1 $where
-AND a.id_mgeneral  = b.id_mgeneral 
+AND a.id_tablas  = b.id_tabla
 AND b.estado = 1";
         
         if(is_array($this->_orden) && count($this->_orden) == 2){

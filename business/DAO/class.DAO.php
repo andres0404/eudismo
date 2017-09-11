@@ -91,7 +91,7 @@ class DAOGeneral {
         //for ($i = 0; $i < count($this->_mapa); $i++) {
         foreach($this->_mapa as $nom_campo => $arrAtributos){    
             if ($this->{'_' . $nom_campo} !== null AND $nom_campo != $this->_primario && !isset($arrAtributos['sql'])) {
-                $set[] = $nom_campo . " = '" . $this->{'_' . $nom_campo} . "'";
+                $set[] = $nom_campo . " = '" . addslashes($this->{'_' . $nom_campo}) . "'";
             }
         }
         $where = "";
@@ -101,7 +101,7 @@ class DAOGeneral {
         }else{
             $query = "insert into ".$this->_tabla." set ".  implode(",", $set) ;
         }
-        //$query;
+        //echo "$query\n";
         if($id = $con->consultar($query)) {
             if(empty($this->{'_'.$this->_primario})){
                 $this->{'_'.$this->_primario} = $con->getUltimoIdInsertado();

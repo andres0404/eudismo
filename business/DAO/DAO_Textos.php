@@ -10,8 +10,9 @@ class DAO_Textos extends DAOGeneral {
     protected $_lang_lengua;
     protected $_lang_texto;
     protected $_lang_seccion;
-    
-    
+    protected $_langLengua;
+
+
     protected $_tabla = 'lang_textos';
     protected $_primario = 'lang_id';
     protected $_ordenar = array();
@@ -23,9 +24,18 @@ class DAO_Textos extends DAOGeneral {
         'lang_lengua' => array('tipodato' => 'integer'),
         'lang_texto' => array('tipodato' => 'varchar'),
         'lang_seccion' => array('tipodato' => 'varchar'),
+        'langLengua' => array('tipodato' => 'varchar','sql' => '(SELECT valor FROM mt_contenidos WHERE id_tabla = 4 AND id_valor = lang_textos.lang_lengua )')
     );
     
-    function get_lang_id() {
+    function get_langLengua() {
+        return $this->_langLengua;
+    }
+
+    function set_langLengua($_langLengua) {
+        $this->_langLengua = $_langLengua;
+    }
+
+        function get_lang_id() {
         return $this->_lang_id;
     }
 

@@ -5,6 +5,7 @@ class ConexionSQL {
     private static $_conData;
     private static $_obj = null;
     private $_error;
+    private $_errno;
     private $_link;
     /**
      *
@@ -71,8 +72,10 @@ class ConexionSQL {
      * @return type
      */
     public function consultar($query){
-        $result = mysqli_query($this->_link,$query);
-        $this->_error = mysqli_errno($this->_link);
+        if(!$result = mysqli_query($this->_link,$query)){
+            $this->_errno = mysqli_errno($this->_link);
+            $this->_error = mysqli_error($this->_link);
+        }
         return $result;
     }
     /**
@@ -108,6 +111,10 @@ class ConexionSQL {
     function get_error() {
         return $this->_error;
     }
+    
+    function get_errno(){
+        return $this->_errno;
+    }
 
 
 }
@@ -125,7 +132,7 @@ class Conexiones{
             'server' => 'localhost',
             'username' => 'root',
             'password' => '',
-            'database' => 'scannerbar'        
+            'database' => 'uvd_eudista'        
         ),
     );
     public function getServer(){
