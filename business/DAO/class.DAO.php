@@ -80,6 +80,13 @@ class DAOGeneral {
     public function getPrimario(){
         return $this->_primario;
     }
+    /**
+     * Obtener valor de llave primaria
+     * @return type
+     */
+    public function getValorPrimario(){
+        return $this->{'_'.$this->_primario};
+    }
 
     /**
      * 

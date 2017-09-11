@@ -63,6 +63,8 @@ class ControladorEudista extends Cabeceras {
 
     /**
      * 
+     * @return type
+     * @throws ControladorEudistaException
      */
     private function _guardarTemasFundamentales() {
         $_objTemas = new DAO_TemasFundamentales();
@@ -135,26 +137,14 @@ class ControladorEudista extends Cabeceras {
         $R = array();
         foreach ($arrTemasFundamen as $_objTemFun) {
             // obtener titulo
-            if($_objTemFun instanceof DAO_TemasFundamentales){
-                
-            }
-            $_objTextoTitulo = new DAO_Textos();
-            $_objTextoTitulo->set_lang_tbl($_objTemFun->getTabla());
-            $_objTextoTitulo->set_lang_id_tbl($_objTemFun->get_temf_id());
-            $_objTextoTitulo->set_lang_seccion("titulo");
-            $_objTextoTitulo->set_lang_lengua($this->_getCodigoLenguaje($lenguaje));
-            $_objTextoTitulo->consultar();
+            if($_objTemFun instanceof DAO_TemasFundamentales){}
+            $_objTextoTitulo = $this->_getTextos($_objTemFun, "titulo", $lenguaje);
             $langId = $_objTextoTitulo->get_lang_id();
             if(empty($langId)){
                 continue;
             }
             // obtener descripcion
-            $_objTextoDesc = new DAO_Textos();
-            $_objTextoDesc->set_lang_tbl($_objTemFun->getTabla());
-            $_objTextoDesc->set_lang_id_tbl($_objTemFun->get_temf_id());
-            $_objTextoDesc->set_lang_seccion("desc");
-            $_objTextoDesc->set_lang_lengua($this->_getCodigoLenguaje($lenguaje));
-            $_objTextoDesc->consultar();
+            $_objTextoDesc = $this->_getTextos($_objTemFun, "desc", $lenguaje);
             $aux = array(
                 'temf_id' => $_objTemFun->get_temf_id(),
                 'id_usuario' => $this->_id_usuario,
@@ -168,6 +158,25 @@ class ControladorEudista extends Cabeceras {
 
         return $R;
     }
+    /**
+     * Consultar texto
+     * @param type $tabla
+     * @param type $id_tabla
+     * @param type $seccion
+     * @param type $lengua
+     * @return \DAO_Textos
+     */
+    private function _getTextos(DAOGeneral $_objDAO,$seccion,$lengua) {
+        $_objTexto = new DAO_Textos();
+        $_objTexto->set_lang_tbl($_objDAO->getTabla());
+        $_objTexto->set_lang_id_tbl($_objDAO->getValorPrimario());
+        $_objTexto->set_lang_seccion($seccion);
+        $_objTexto->set_lang_lengua($this->_getCodigoLenguaje($lengua));
+        $_objTexto->consultar();
+        return $_objTexto;
+    }
+    
+    
 
     /**
      * Obtener el codigo del lenguaje a partir del codigo ISO
