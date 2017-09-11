@@ -286,13 +286,14 @@
                         </div>    
                         <form role="form" id="frm_standar">
                             <div class="box-body">
+                                <input type="text" class="form-control" id="id_articulo" name="id_articulo">
                                 <div class="form-group">
                                     <label for="cjm_titulo">Título</label>
-                                    <input type="text" class="form-control" id="cjm_titulo" name="cjm_titulo">
+                                    <input type="text" class="form-control" id="cjm_titulo" name="cjm_titulo" id="cjm_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" id="cjm_descripcion" name="cjm_descripcion" rows="3"></textarea>
+                                    <textarea class="form-control" id="cjm_descripcion" name="cjm_desc" id="cjm_desc" rows="3"></textarea>
                                 </div>
                             </div>
 

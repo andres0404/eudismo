@@ -284,15 +284,18 @@
                                 <option value="pt">Portugues</option>
                             </select>
                         </div>    
+                        
+
                         <form role="form" id="frm_standar">
                             <div class="box-body">
+                                <input type="text" class="form-control" id="id_articulo" name="id_articulo">
                                 <div class="form-group">
-                                    <label for="cjm_titulo">Título</label>
-                                    <input type="text" class="form-control" id="cjm_titulo">
+                                    <label for="funda_titulo">Título</label>
+                                    <input type="text" class="form-control" id="funda_titulo" name="funda_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" id="cjm_descripcion" rows="3"></textarea>
+                                    <textarea class="form-control" id="funda_desc" name="funda_desc" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -304,7 +307,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 2)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 3)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->

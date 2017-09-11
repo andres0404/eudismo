@@ -37,13 +37,13 @@ class ControladorEudista extends Cabeceras {
                     $return = $obj->_guardarCjm();
                     break;
                 case 2:// consultar CJM
-                    $return = $obj->_consultarCjm($_POST['lang'], isset($_POST['cjm_id']) ? $_POST['cjm_id'] : null);
+                    $return = $obj->_consultarCjm($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
                 case 3: // consultar temas fundamentales
                     $return = $obj->_guardarTemasFundamentales();
                     break;
                 case 4: // guardar temas fundamentales
-                    $return = $obj->_consultarTemasFundamentales($_POST['lang'], isset($_POST['temf_id']) ? $_POST['temf_id'] : null);
+                    $return = $obj->_consultarTemasFundamentales($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
                 case 6: // consultar familia eudista
                     $return = $obj->_listaProductos((isset($_REQUEST['id_sucursal']) ? $_REQUEST['id_sucursal'] : 0), (isset($_REQUEST['prod_clasificacion']) ? $_REQUEST['prod_clasificacion'] : 5));
@@ -54,7 +54,7 @@ class ControladorEudista extends Cabeceras {
             }
             $respuesta = array(
                 'cod_respuesta' => 1,
-                'mensaje' => "OK",
+                'mensaje' => "Elementos almacenados con exito",
                 'data' => $return // // establece datos entregados por web service y busca codigo
             );
             $con->commit();
@@ -79,19 +79,20 @@ class ControladorEudista extends Cabeceras {
      */
     private function _guardarCjm() {
         $_objCjm = new DAO_Cjm();
-        if (isset($_POST['cjm_id']) && empty($_POST['cjm_id'])) {
-            $_objCjm->set_cjm_id($_POST['cjm_id']);
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objCjm->set_cjm_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCjm->set_id_usuario($this->_id_usuario);
             $_objCjm->set_cjm_estado(1);
-            $_objCjm->set_cjm_orden($_POST['cjm_orden']);
+            $_objCjm->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCjm->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objCjm->get_sql_error(), 0);
             }
         } else {
-            $_objCjm->set_cjm_id($_POST['cjm_id']);
+            $_objCjm->set_cjm_id($_POST['id_articulo']);
             $_objCjm->consultar();
         }
-        $R['cjm_id'] = $_objCjm->get_cjm_id();
+        $R['id_articulo'] = $_objCjm->get_cjm_id();
         // consultar el codigo del lenguaje
         $codLang = $this->_getCodigoLenguaje($_POST['lang']);
         // guardar TITULO
@@ -130,7 +131,7 @@ class ControladorEudista extends Cabeceras {
             // obtener descripcion
             $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
             $aux = array(
-                'cjm_id' => $_objTemCjm->get_cjm_id(),
+                'id_articulo' => $_objTemCjm->get_cjm_id(),
                 'id_usuario' => $this->_id_usuario,
                 'cjm_orden' => $_objTemCjm->get_cjm_orden(),
                 'lang' => $_objCjmTitulo->get_langLengua(),
@@ -150,19 +151,19 @@ class ControladorEudista extends Cabeceras {
      */
     private function _guardarTemasFundamentales() {
         $_objTemas = new DAO_TemasFundamentales();
-        if (isset($_POST['temf_id']) && empty($_POST['temf_id'])) {
-            $_objTemas->set_temf_id($_POST['temf_id']);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objTemas->set_temf_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objTemas->set_id_usuario($this->_id_usuario);
             $_objTemas->set_temf_estado(1);
-            $_objTemas->set_temf_orden($_POST['temf_orden']);
+            $_objTemas->set_temf_orden(isset($_POST['temf_orden']) ? $_POST['temf_orden'] : "");
             if (!$_objTemas->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objTemas->get_sql_error(), 0);
             }
         } else {
-            $_objTemas->set_temf_id($_POST['temf_id']);
+            $_objTemas->set_temf_id($_POST['id_articulo']);
             $_objTemas->consultar();
         }
-        $R['temf_id'] = $_objTemas->get_temf_id();
+        $R['id_articulo'] = $_objTemas->get_temf_id();
         // consultar el codigo del lenguaje
         $codLang = $this->_getCodigoLenguaje($_POST['lang']);
         // guardar TITULO
@@ -202,7 +203,7 @@ class ControladorEudista extends Cabeceras {
             // obtener descripcion
             $_objTextoDesc = $this->_getTextos($_objTemFun, "desc", $lenguaje);
             $aux = array(
-                'temf_id' => $_objTemFun->get_temf_id(),
+                'id_articulo' => $_objTemFun->get_temf_id(),
                 'id_usuario' => $this->_id_usuario,
                 'temf_orden' => $_objTemFun->get_temf_orden(),
                 'lang' => $_objTextoTitulo->get_langLengua(),

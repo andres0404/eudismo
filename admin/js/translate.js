@@ -39,6 +39,7 @@ Translate.prototype.setValues = function(i, tr){
     this.frm.elements[i].value = tr;
     ind = i;
     trad.setProgressBar();
+    
 };
 
 Translate.prototype.setProgressBar = function(){
@@ -55,23 +56,26 @@ Translate.prototype.setProgressBar = function(){
     if(ind === this.frm.elements.length-1){
         document.getElementById('pg_bar').style.display = 'none';
         clearInterval(interval);
+        trad.sendData();
     }
 
 };
 
 Translate.prototype.sendData = function(){
-    var ser = $( '#'+this.frm.id ).serializeArray();
-    ser[ser.length] = { name: 'frm_idioma', value: document.getElementById('idTraducir').value};
-    ser[ser.length] = { name: 'function', value: this.mod};
+    console.log(1111);
+    var ser = $( '#frm_standar' ).serializeArray();
+    ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
+    ser[ser.length] = { name: 'funcion', value: this.mod};
     console.log(ser);
     $.ajax({
-        url : 'business/controller/class.informacion.php',
+        url : '../../business/controller/class.controlador.php',
         data : ser,
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            if(json.ok === 1){
+            if(json.cod_respuesta === 1){
                 trad.setMensaje(1, json.mensaje);
+                document.getElementById('id_articulo').value = json.data.id_articulo;
             }
 
         },  
