@@ -29,6 +29,8 @@ class ControladorEudista extends Cabeceras {
             $obj->_solicitud = json_encode($_POST);
             $return = NULL;
             //print_r($obj->_solicitud);
+            $con = ConexionSQL::getInstance();
+            $con->begin();
             switch (isset($_REQUEST['funcion']) ? $_REQUEST['funcion'] : null) {
                 case 1: // consultar temas fundamentales
                     $return = $obj->_guardarTemasFundamentales();
@@ -48,7 +50,9 @@ class ControladorEudista extends Cabeceras {
                 'mensaje' => "OK",
                 'data' => $return // // establece datos entregados por web service y busca codigo
             );
+            $con->commit();
         } catch (ControladorEudistaException $ex) {
+            $con->rollback();
             $respuesta = array(
                 'cod_respuesta' => $ex->getCode(),
                 'mensaje' => $ex->getMessage(),
@@ -68,15 +72,12 @@ class ControladorEudista extends Cabeceras {
      */
     private function _guardarTemasFundamentales() {
         $_objTemas = new DAO_TemasFundamentales();
-        $con = ConexionSQL::getInstance();
-        $con->begin();
         if (isset($_POST['temf_id']) && empty($_POST['temf_id'])) {
             $_objTemas->set_temf_id($_POST['temf_id']);
             $_objTemas->set_id_usuario($this->_id_usuario);
             $_objTemas->set_temf_estado(1);
             $_objTemas->set_temf_orden($_POST['temf_orden']);
             if (!$_objTemas->guardar()) {
-                $con->rollback();
                 throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objTemas->get_sql_error(), 0);
             }
         } else {
@@ -86,37 +87,35 @@ class ControladorEudista extends Cabeceras {
         $R['temf_id'] = $_objTemas->get_temf_id();
         // consultar el codigo del lenguaje
         $codLang = $this->_getCodigoLenguaje($_POST['lang']);
-        // guardar datos en textos (Titulo)
-        $_objTextos = new DAO_Textos();
-        if (isset($_POST['lang_id_titulo']) && !empty($_POST['lang_id_titulo'])) {
-            $_objTextos->set_lang_id($_POST['lang_id']);
-        }
-        $_objTextos->set_lang_id_tbl($_objTemas->get_temf_id());
-        $_objTextos->set_lang_tbl($_objTemas->getTabla());
-        $_objTextos->set_lang_lengua($codLang);
-        $_objTextos->set_lang_seccion("titulo");
-        $_objTextos->set_lang_texto($_POST['funda_titulo']);
-        if (!$_objTextos->guardar()) {
-            $con->rollback();
-            throw new ControladorEudistaException("No se pudo almacenar Titulo Temas Fundamentales " . $_objTextos->get_sql_error(), 0);
-        }
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objTemas, "titulo", $codLang, $_POST['funda_titulo']);
         $R['lang_id_titulo'] = $_objTextos->get_lang_id();
-        $_objTextosDesc = new DAO_Textos();
-        if (isset($_POST['lang_id_desc']) && !empty($_POST['lang_id_desc'])) {
-            $_objTextosDesc->set_lang_id($_POST['lang_id']);
-        }
-        $_objTextosDesc->set_lang_id_tbl($_objTemas->get_temf_id());
-        $_objTextosDesc->set_lang_tbl($_objTemas->getTabla());
-        $_objTextosDesc->set_lang_lengua($codLang);
-        $_objTextosDesc->set_lang_seccion("desc");
-        $_objTextosDesc->set_lang_texto($_POST['funda_desc']);
-        if (!$_objTextosDesc->guardar()) {
-            $con->rollback();
-            throw new ControladorEudistaException("No se pudo almacenar Descripcion Temas Fundamentales " . $_objTextosDesc->get_sql_error(), 0);
-        }
-        $con->commit();
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objTemas, "desc", $codLang, $_POST['funda_desc']);
         $R['lang_id_desc'] = $_objTextosDesc->get_lang_id();
         return $R;
+    }
+    /**
+     * Almacenar texto
+     * @param DAOGeneral $_objDAO
+     * @param type $seccion
+     * @param type $codLang
+     * @param type $texto
+     * @return \DAO_Textos
+     * @throws ControladorEudistaException
+     */
+    private function _setTextos(DAOGeneral $_objDAO,$seccion,$codLang,$texto) {
+        $_objTexto = new DAO_Textos();
+        $_objTexto->set_lang_tbl($_objDAO->getTabla());
+        $_objTexto->set_lang_id_tbl($_objDAO->getValorPrimario());
+        $_objTexto->set_lang_seccion($seccion);
+        $_objTexto->set_lang_lengua($codLang);
+        $_objTexto->consultar(); // se consulta para obtener llave primaria y modificar si es necesario
+        $_objTexto->set_lang_texto($texto);
+        if (!$_objTexto->guardar()) {
+            throw new ControladorEudistaException("No se pudo almacenar $seccion  ".$_objDAO->getTabla() ." " . $_objTexto->get_sql_error(), 0);
+        }
+        return $_objTexto;
     }
 
     /**
