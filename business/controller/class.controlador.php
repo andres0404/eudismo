@@ -45,11 +45,11 @@ class ControladorEudista extends Cabeceras {
                 case 4: // guardar temas fundamentales
                     $return = $obj->_consultarTemasFundamentales($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
-                case 6: // consultar familia eudista
-                    $return = $obj->_listaProductos((isset($_REQUEST['id_sucursal']) ? $_REQUEST['id_sucursal'] : 0), (isset($_REQUEST['prod_clasificacion']) ? $_REQUEST['prod_clasificacion'] : 5));
+                case 5: // consultar familia eudista
+                    $return = $obj->_guardarFormarAJesus();
                     break;
-                case 7: // guardar familia eudista
-                    //$return = $obj->
+                case 6: // guardar familia eudista
+                    $return = $obj->_consultarFormarAJesus($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
             }
             $respuesta = array(
@@ -141,6 +141,83 @@ class ControladorEudista extends Cabeceras {
             $R[] = $aux;
         }
 
+        return $R;
+    }
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarFormarAJesus() {
+        $_obj = new DAO_FormarAJesus();
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_obj->set_fj_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_obj->set_id_usuario($this->_id_usuario);
+            $_obj->set_fj_estado(1);
+            //$_obj->set_fj_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_obj->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_obj->get_sql_error(), 0);
+            }
+        } else {
+            $_obj->set_fj_id($_POST['id_articulo']);
+            $_obj->consultar();
+        }
+        $R['id_articulo'] = $_obj->get_fj_id();
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_obj, "tematica", $codLang, $_POST['fj_tematica']);
+        $R['lang_id_tematica'] = $_objTextos->get_lang_id();
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_obj, "ref_biblia", $codLang, $_POST['fj_ref_biblia']);
+        $R['lang_id_ref_biblia'] = $_objTextosDesc->get_lang_id();
+        // guardar LECTURA EUDISTA
+        $_objTextosDesc = $this->_setTextos($_obj, "lec_eudista", $codLang, $_POST['fj_lec_eudista']);
+        $R['lang_id_lec_eudista'] = $_objTextosDesc->get_lang_id();
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $fj_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarFormarAJesus($lenguaje, $fj_id = null) {
+        $_obj = new DAO_FormarAJesus();
+        $_obj->habilita1ResultadoEnArray();
+        if (!empty($fj_id)) {
+            $_obj->set_fj_id($fj_id);
+        }
+        if (!$arrFj = $_obj->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        }
+        $R = array();
+        foreach ($arrFj as $_objTemFj) {
+            // obtener titulo
+            if($_objTemFj instanceof DAO_FormarAJesus){}
+            $_objTitulo = $this->_getTextos($_objTemFj, "tematica", $lenguaje);
+            $langId = $_objTitulo->get_lang_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener referencia biblica
+            $_objTextoDesc = $this->_getTextos($_objTemFj, "ref_biblia", $lenguaje);
+            // obtener lectura eudista
+            $_objLecturaEudista = $this->_getTextos($_objTemFj, "lec_eudista", $lenguaje);
+            $aux = array(
+                'id_articulo' =>    $_objTemFj->get_fj_id(),
+                'id_usuario' =>     $this->_id_usuario,
+                //'fj_orden' =>       $_objTemFj->get_cj_orden(),
+                'lang' =>           $_objTitulo->get_langLengua(),
+                'fj_tematica' =>    $_objTitulo->get_lang_texto(),
+                'fj_ref_biblia' =>  $_objTextoDesc->get_lang_texto(),
+                'fj_lec_eudista' => $_objLecturaEudista->get_lang_texto(),
+                'fecha_publica' =>  $_objTemFj->get_fj_fecha_publicacion()
+            );
+            $R[] = $aux;
+        }
         return $R;
     }
 
