@@ -3,45 +3,66 @@ include_once 'class.DAO.php';
 
 class DAO_FamiliaEudista extends DAOGeneral {
     
+    protected $_fame_id;
     protected $_id_usuario;
-    protected $_imei;
-    protected $_usu_nombre;
+    protected $_fame_fecha;
+    protected $_fame_id_hija;
+    protected $_fame_estado;
     
-    protected $_tabla = 'scan_usuarios';
-    protected $_primario = 'id_usuario';
+    
+    protected $_tabla = 'familia_eudista';
+    protected $_primario = 'fame_id';
     protected $_ordenar = array();
+    
+    
     protected $_mapa = array(
-        //  id_elem => array('tipodato' ,'label','ayuda','opciones'=>array('valor'=>'label'), 'sql')
+            'fame_id' => array('tipodato' => 'integer'),
             'id_usuario' => array('tipodato' => 'integer'),
-        'id_usuario' => array('tipodato' => 'integer'),
-        'id_usuario' => array('tipodato' => 'integer'),
-        'id_usuario' => array('tipodato' => 'integer'),
-        'id_usuario' => array('tipodato' => 'integer'),
-        'id_usuario' => array('tipodato' => 'integer'), 
+            'fame_fecha' => array('tipodato' => 'date'),
+            'fame_id_hija' => array('tipodato' => 'integer'),
+            'fame_estado' => array('tipodato' => 'integer')
         );
+        
+        function get_fame_id() {
+            return $this->_fame_id;
+        }
+
         function get_id_usuario() {
             return $this->_id_usuario;
         }
 
-        function get_imei() {
-            return $this->_imei;
+        function get_fame_fecha() {
+            return $this->_fame_fecha;
         }
 
-        function get_usu_nombre() {
-            return $this->_usu_nombre;
+        function get_fame_id_hija() {
+            return $this->_fame_id_hija;
+        }
+
+        function get_fame_estado() {
+            return $this->_fame_estado;
+        }
+
+        function set_fame_id($_fame_id) {
+            $this->_fame_id = $_fame_id;
         }
 
         function set_id_usuario($_id_usuario) {
             $this->_id_usuario = $_id_usuario;
         }
 
-        function set_imei($_imei) {
-            $this->_imei = $_imei;
+        function set_fame_fecha($_fame_fecha) {
+            $this->_fame_fecha = $_fame_fecha;
         }
 
-        function set_usu_nombre($_usu_nombre) {
-            $this->_usu_nombre = $_usu_nombre;
+        function set_fame_id_hija($_fame_id_hija) {
+            $this->_fame_id_hija = $_fame_id_hija;
         }
+
+        function set_fame_estado($_fame_estado) {
+            $this->_fame_estado = $_fame_estado;
+        }
+
 
 
 }

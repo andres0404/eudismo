@@ -8,6 +8,8 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_TemasFundamentales.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Cjm.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Oraciones.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.mtablas.php';
@@ -50,6 +52,12 @@ class ControladorEudista extends Cabeceras {
                     break;
                 case 6: // guardar familia eudista
                     $return = $obj->_consultarFormarAJesus($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    break;
+                case 7:
+                    $return = $obj->_guardarOraciones();
+                    break;
+                case 8:
+                    $return = $obj->_consultarOraciones($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
             }
             $respuesta = array(
@@ -292,6 +300,281 @@ class ControladorEudista extends Cabeceras {
 
         return $R;
     }
+    
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarOraciones() {
+        $_objOracion = new DAO_Oraciones();
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objOracion->set_ora_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objOracion->set_id_usuario($this->_id_usuario);
+            $_objOracion->set_ora_estado(1);
+            $_objOracion->set_ora_categoria($_POST['ora_categoria']);
+//            $_objOracion->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_objOracion->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objOracion->get_sql_error(), 0);
+            }
+        } else {
+            $_objOracion->set_ora_id($_POST['id_articulo']);
+            $_objOracion->consultar();
+        }
+        $R['id_articulo'] = $_objOracion->get_ora_id();
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objOracion, "titulo", $codLang, $_POST['ora_titulo']);
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objOracion, "oracion", $codLang, $_POST['ora_oracion']);
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $ora_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarOraciones($lenguaje, $ora_id = null) {
+        $_objOracion = new DAO_Oraciones();
+        $_objOracion->habilita1ResultadoEnArray();
+        if (!empty($ora_id)) {
+            $_objOracion->set_ora_id($ora_id);
+        }
+        if (!$arrOra = $_objOracion->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        }
+        $R = array();
+        foreach ($arrOra as $_objTemOra) {
+            // obtener titulo
+            if($_objTemOra instanceof DAO_Oraciones){}
+            $_objOracionTitulo = $this->_getTextos($_objTemOra, "titulo", $lenguaje);
+            $langId = $_objOracionTitulo->get_lang_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener descripcion
+            $_objTextoDesc = $this->_getTextos($_objTemOra, "desc", $lenguaje);
+            $aux = array(
+                'id_articulo' => $_objTemOra->get_ora_id(),
+                'id_usuario' => $this->_id_usuario,
+                //'cjm_orden' => $_objTemOra->get_cjm_orden(),
+                'lang' => $_objOracionTitulo->get_langLengua(),
+                'ora_titulo' => $_objOracionTitulo->get_lang_texto(),
+                'ora_oracion' => $_objTextoDesc->get_lang_texto()
+            );
+            $R[] = $aux;
+        }
+
+        return $R;
+    }
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarCantosEudistas() {
+        $_objCeu = new DAO_CantosEudistas();
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objCeu->set_ceu_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objCeu->set_id_usuario($this->_id_usuario);
+            $_objCeu->set_ceu_estado(1);
+            $_objCeu->set_ceu_url_multimedia($_POST['ceu_url_multimedia']);
+            //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_objCeu->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objCeu->get_sql_error(), 0);
+            }
+        } else {
+            $_objCeu->set_ceu_id($_POST['id_articulo']);
+            $_objCeu->consultar();
+        }
+        $R['id_articulo'] = $_objCeu->get_ceu_id();
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objCeu, "titulo", $codLang, $_POST['ceu_titulo']);
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objCeu, "desc", $codLang, $_POST['ceu_desc']);
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $ceu_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarCantosEudistas($lenguaje, $ceu_id = null) {
+        $_objCeu = new DAO_CantosEudistas();
+        $_objCeu->habilita1ResultadoEnArray();
+        if (!empty($ceu_id)) {
+            $_objCeu->set_cjm_id($ceu_id);
+        }
+        if (!$arrCeu = $_objCeu->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        }
+        $R = array();
+        foreach ($arrCeu as $_objTemCjm) {
+            // obtener titulo
+            if($_objTemCjm instanceof DAO_CantosEudistas){}
+            $_objCeuTitulo = $this->_getTextos($_objTemCjm, "titulo", $lenguaje);
+            $langId = $_objCeuTitulo->get_lang_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener descripcion
+            $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
+            $aux = array(
+                'id_articulo' => $_objTemCjm->get_cjm_id(),
+                'id_usuario' => $this->_id_usuario,
+                'cjm_orden' => $_objTemCjm->get_cjm_orden(),
+                'lang' => $_objCeuTitulo->get_langLengua(),
+                'cjm_titulo' => $_objCeuTitulo->get_lang_texto(),
+                'cjm_desc' => $_objTextoDesc->get_lang_texto()
+            );
+            $R[] = $aux;
+        }
+        return $R;
+    }
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarFamiliaEudista() {
+        $_objFam = new DAO_FamiliaEudista();
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objFam->set_fame_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objFam->set_id_usuario($this->_id_usuario);
+            $_objFam->set_fame_estado(1);
+            $_objFam->set_fame_id_hija($_POST['fame_id_hija']);
+            //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_objFam->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objFam->get_sql_error(), 0);
+            }
+        } else {
+            $_objFam->set_fame_id($_POST['id_articulo']);
+            $_objFam->consultar();
+        }
+        $R['id_articulo'] = $_objFam->get_fame_id();
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['fame_titulo']);
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objFam, "desc", $codLang, $_POST['fame_desc']);
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $fame_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarFamiliaEudista($lenguaje, $fame_id = null) {
+        $_objFam = new DAO_FamiliaEudista();
+        $_objFam->habilita1ResultadoEnArray();
+        if (!empty($fame_id)) {
+            $_objFam->set_fame_id($fame_id);
+        }
+        if (!$arrFam = $_objFam->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        } 
+       $R = array();
+        foreach ($arrFam as $_objTemFa) {
+            // obtener titulo
+            if($_objTemFa instanceof DAO_FamiliaEudista){}
+            $_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
+            $langId = $_objCeuTitulo->get_lang_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener descripcion
+            $_objTextoDesc = $this->_getTextos($_objTemFa, "desc", $lenguaje);
+            $aux = array(
+                'id_articulo' => $_objTemFa->get_fame_id(),
+                'id_usuario' => $this->_id_usuario,
+                //'cjm_orden' => $_objTemFa->get_cjm_orden(),
+                'lang' => $_objCeuTitulo->get_langLengua(),
+                'fame_titulo' => $_objCeuTitulo->get_lang_texto(),
+                'fame_desc' => $_objTextoDesc->get_lang_texto()
+            );
+            $R[] = $aux;
+        }
+        return $R;
+    }
+    
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarNoticias() {
+        $_objFam = new DAO_Noticias();
+        //print_r($_POST);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objFam->set_novt_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objFam->set_fame_estado(1);
+            //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_objFam->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Noticia " . $_objFam->get_sql_error(), 0);
+            }
+        } else {
+            $_objFam->set_novt_id($_POST['id_articulo']);
+            $_objFam->consultar();
+        }
+        $R['id_articulo'] = $_objFam->get_novt_id();
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['novt_titulo']);
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objFam, "desc", $codLang, $_POST['novt_desc']);
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $novt_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarNoticias($lenguaje, $novt_id = null) {
+        $_objFam = new DAO_Noticias();
+        $_objFam->habilita1ResultadoEnArray();
+        if (!empty($novt_id)) {
+            $_objFam->set_fame_id($novt_id);
+        }
+        if (!$arrFam = $_objFam->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        } 
+       $R = array();
+        foreach ($arrFam as $_objTemFa) {
+            // obtener titulo
+            if($_objTemFa instanceof DAO_Noticias){}
+            $_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
+            $langId = $_objCeuTitulo->get_lang_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener descripcion
+            $_objTextoDesc = $this->_getTextos($_objTemFa, "desc", $lenguaje);
+            $aux = array(
+                'id_articulo' => $_objTemFa->get_novt_id(),
+                'lang' => $_objCeuTitulo->get_langLengua(),
+                'fame_titulo' => $_objCeuTitulo->get_lang_texto(),
+                'fame_desc' => $_objTextoDesc->get_lang_texto()
+            );
+            $R[] = $aux;
+        }
+        return $R;
+    }
     /**
      * Consultar texto
      * @param type $tabla
@@ -349,11 +632,6 @@ class ControladorEudista extends Cabeceras {
             }
         }
         return false;
-    }
-
-    private function _guardarFamiliaEudista() {
-        $_objFamilia = new DAO_FamiliaEudista();
-        $_objFamilia->set_id_usuario(1);
     }
 
 }
