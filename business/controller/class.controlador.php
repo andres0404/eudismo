@@ -9,6 +9,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_TemasFundamentales.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Cjm.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Oraciones.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
@@ -59,6 +60,29 @@ class ControladorEudista extends Cabeceras {
                 case 8:
                     $return = $obj->_consultarOraciones($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
+                case 9:
+                    $return = $obj->_guardarCantosEudistas();
+                    break;
+                case 10:
+                    $return = $obj->_consultarCantosEudistas($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    break;
+                case 11:
+                    $return = $obj->_guardarFamiliaEudista();
+                    break;
+                case 12:
+                    $return = $obj->_consultarFamiliaEudista($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    break;
+                case 13:
+                    $return = $obj->_guardarNoticias();
+                    break;
+                case 14:
+                    $return = $obj->_consultarNoticias($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    break;
+                case 15:
+                    $return = $obj->_guardarTestimonios();
+                    break;
+                case 16:
+                    $return = $obj->_consultarTestimonios($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
             }
             $respuesta = array(
                 'cod_respuesta' => 1,
@@ -570,6 +594,73 @@ class ControladorEudista extends Cabeceras {
                 'lang' => $_objCeuTitulo->get_langLengua(),
                 'fame_titulo' => $_objCeuTitulo->get_lang_texto(),
                 'fame_desc' => $_objTextoDesc->get_lang_texto()
+            );
+            $R[] = $aux;
+        }
+        return $R;
+    }
+    /**
+     * 
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _guardarTestimonios() {
+        $_objFam = new DAO_Testimonios();
+        //print_r($_POST);
+        // consultar el codigo del lenguaje
+        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
+            $_objFam->set_test_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objFam->set_test_lengua_nativa($codLang);
+            $_objFam->set_test_estado(1);
+            //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            if (!$_objFam->guardar()) {
+                throw new ControladorEudistaException("No se pudo almacenar Noticia " . $_objFam->get_sql_error(), 0);
+            }
+        } else {
+            $_objFam->set_test_id($_POST['id_articulo']);
+            $_objFam->consultar();
+        }
+        $R['id_articulo'] = $_objFam->get_test_id();
+        // guardar TITULO
+        $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['test_titulo']);
+        // guardar DESCRIPCION
+        $_objTextosDesc = $this->_setTextos($_objFam, "desc", $codLang, $_POST['test_desc']);
+        return $R;
+    }
+    /**
+     * 
+     * @param type $lenguaje
+     * @param type $test_id
+     * @return type
+     * @throws ControladorEudistaException
+     */
+    private function _consultarTestimonios($lenguaje, $test_id = null) {
+        $_objFam = new DAO_Testimonios();
+        $_objFam->habilita1ResultadoEnArray();
+        if (!empty($test_id)) {
+            $_objFam->set_fame_id($test_id);
+        }
+        if (!$arrFam = $_objFam->consultar()) {
+            throw new ControladorEudistaException("No se encontro elemento", 0);
+        } 
+        $R = array();
+        foreach ($arrFam as $_objTemFa) {
+            // obtener titulo
+            if($_objTemFa instanceof DAO_Testimonios){}
+            $_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
+            $langId = $_objCeuTitulo->get_test_id();
+            if(empty($langId)){
+                continue;
+            }
+            // obtener descripcion
+            $_objTextoDesc = $this->_getTextos($_objTemFa, "desc", $lenguaje);
+            $aux = array(
+                'id_articulo' => $_objTemFa->get_test_id(),
+                'lang' => $_objCeuTitulo->get_langLengua(),
+                'test_lengua_nativa' => $_objTemFa->get_test_lengua_nativa(),
+                'fame_titulo' => $_objCeuTitulo->get_test_texto(),
+                'fame_desc' => $_objTextoDesc->get_test_texto()
             );
             $R[] = $aux;
         }
