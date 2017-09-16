@@ -9,6 +9,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_TemasFundamentales.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Cjm.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Oraciones.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FormarAJesus.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
@@ -48,7 +49,7 @@ class ControladorEudista extends Cabeceras {
                 case 4: // guardar temas fundamentales
                     $return = $obj->_consultarTemasFundamentales($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
                     break;
-                case 5: // consultar familia eudista
+                case 5: // consultar formar a jesus
                     $return = $obj->_guardarFormarAJesus();
                     break;
                 case 6: // guardar familia eudista
@@ -381,7 +382,7 @@ class ControladorEudista extends Cabeceras {
                 continue;
             }
             // obtener descripcion
-            $_objTextoDesc = $this->_getTextos($_objTemOra, "desc", $lenguaje);
+            $_objTextoDesc = $this->_getTextos($_objTemOra, "oracion", $lenguaje);
             $aux = array(
                 'id_articulo' => $_objTemOra->get_ora_id(),
                 'id_usuario' => $this->_id_usuario,

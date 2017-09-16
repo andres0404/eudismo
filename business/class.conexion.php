@@ -134,6 +134,12 @@ class Conexiones{
             'password' => '1.5Y7u.p3Bv2',
             'database' => 'uvd_eudista'        
         ),
+        'localhost' => array(
+            'server' => 'localhost',
+            'username' => 'root',
+            'password' => '',
+            'database' => 'uvd_eudista'        
+        ),
     );
     public function getServer(){
         return $this->_server;
@@ -152,7 +158,7 @@ class Conexiones{
      * @return Conexiones
      */
     public static function getConLocal(){
-         return self::_getConexion('local');
+         return self::_getConexion('localhost');
     }
     /**
      * 
