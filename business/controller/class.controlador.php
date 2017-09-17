@@ -117,9 +117,9 @@ class ControladorEudista extends Cabeceras {
             $_objCjm->set_cjm_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCjm->set_id_usuario($this->_id_usuario);
             $_objCjm->set_cjm_estado(1);
-            $_objCjm->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
+            //$_objCjm->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCjm->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objCjm->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar CJM " . $_objCjm->get_sql_error(), 0);
             }
         } else {
             $_objCjm->set_cjm_id($_POST['id_articulo']);
@@ -190,7 +190,7 @@ class ControladorEudista extends Cabeceras {
             $_obj->set_fj_estado(1);
             //$_obj->set_fj_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_obj->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_obj->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Formar a Jesus " . $_obj->get_sql_error(), 0);
             }
         } else {
             $_obj->set_fj_id($_POST['id_articulo']);
@@ -265,7 +265,7 @@ class ControladorEudista extends Cabeceras {
             $_objTemas->set_temf_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objTemas->set_id_usuario($this->_id_usuario);
             $_objTemas->set_temf_estado(1);
-            $_objTemas->set_temf_orden(isset($_POST['temf_orden']) ? $_POST['temf_orden'] : "");
+            //$_objTemas->set_temf_orden(isset($_POST['temf_orden']) ? $_POST['temf_orden'] : "");
             if (!$_objTemas->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objTemas->get_sql_error(), 0);
             }
@@ -341,7 +341,7 @@ class ControladorEudista extends Cabeceras {
             $_objOracion->set_ora_categoria($_POST['ora_categoria']);
 //            $_objOracion->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objOracion->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objOracion->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Oraciones " . $_objOracion->get_sql_error(), 0);
             }
         } else {
             $_objOracion->set_ora_id($_POST['id_articulo']);
@@ -411,7 +411,7 @@ class ControladorEudista extends Cabeceras {
             $_objCeu->set_ceu_url_multimedia($_POST['ceu_url_multimedia']);
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objCeu->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Cantos Eudistas " . $_objCeu->get_sql_error(), 0);
             }
         } else {
             $_objCeu->set_ceu_id($_POST['id_articulo']);
@@ -480,7 +480,7 @@ class ControladorEudista extends Cabeceras {
             $_objFam->set_fame_id_hija($_POST['fame_id_hija']);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Temas Fundamentales " . $_objFam->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Familia Eudista " . $_objFam->get_sql_error(), 0);
             }
         } else {
             $_objFam->set_fame_id($_POST['id_articulo']);
@@ -548,7 +548,7 @@ class ControladorEudista extends Cabeceras {
             $_objFam->set_fame_estado(1);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Noticia " . $_objFam->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Noticias " . $_objFam->get_sql_error(), 0);
             }
         } else {
             $_objFam->set_novt_id($_POST['id_articulo']);
@@ -616,7 +616,7 @@ class ControladorEudista extends Cabeceras {
             $_objFam->set_test_estado(1);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
-                throw new ControladorEudistaException("No se pudo almacenar Noticia " . $_objFam->get_sql_error(), 0);
+                throw new ControladorEudistaException("No se pudo almacenar Testimonios " . $_objFam->get_sql_error(), 0);
             }
         } else {
             $_objFam->set_test_id($_POST['id_articulo']);
