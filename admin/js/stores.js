@@ -2,77 +2,191 @@
     Created on : 27/05/2017, 10:19:48 AM
     Author     : luis.caceres
 */
-
-
-// Objetos de los datos consultados
-var arrStudBooks = []; // objeto JSON de los libros a entregar
-var resStudBooks = []; // resultado del JSON cargado
-var idstudGenesi = null;
-var selPeridodo = null;
+var arrLng = [0,0,0,0,0,0];
+var arrStr = [];
+var arrCfg = [];
 function Consultas(){
     
 }
 
-Consultas.prototype.getStudentBooks = function(per){  
-    console.log(per);
-    if(per === undefined){
-        selPeridodo = periodo;
-    }else{
-        selPeridodo = per;
-    }
-    console.log(selPeridodo);
-    idstudGenesi = $("#idGenSearch").val();
-    $("#result_search").html('');
+Consultas.prototype.init = function(ex, fn, le, ps){
+    //console.log(ex, fn, le, ps);
+    this.fn = fn;
+    this.le = le;
+    this.ps = ps;
+    switch (ex){
+        case 1: 
+            if(arrLng[this.ps] === 0){
+               csl.getCJM(this.fn , this.le);   
+            }   
+            break;
+        case 2: 
+            if(arrLng[this.ps] === 0){
+               csl.getTemas(this.fn , this.le);   
+            }   
+            break;  
+        case 3: 
+            if(arrLng[this.ps] === 0){
+               csl.getFormar(this.fn , this.le);   
+            }   
+            break;     
+        default :
+            console.log('Paila');
+    }     
+};
+
+/*
+ * Consulta para La CJM
+ */
+Consultas.prototype.getCJM = function(){  
+    //console.log(this.ps, this.fn, this.le);
+    var lg = this.le;
+    arrLng[this.ps] = 1;
     $.ajax({
-        url : '../business/controller/class.controladorLibros.php',
+        url : '../../business/controller/class.controlador.php',
         data : { 
-            funcion: 1, 
-            id_genesis: idstudGenesi,
-            periodo: selPeridodo
+            funcion: this.fn,
+            lang: this.le
         },
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            //console.log(json);
-            resStudBooks = json;
-            if(json.ok === 1){
-                //console.log(json.datos[0]['u_nombres'])
-                $("#studentNames").html(json.datos[0]['u_nombres']+' '+json.datos[0]['u_apellidos']);
-                $("#result_search").html('');
-                var entr;
-                var chk;
-                var ben = null;
-                $.each(json.datos, function(k,v){
-                    
-                    if(v['libro_asignado'] === null){
-                        if(v['id_libro'] !== null){ ben = 1;}                 
-                        entr = '<small class="label label-danger">Sin entregar</small>';
-                        chk = '<td><input type="checkbox" id="'+v['id_libro']+'"></td>';
-                    }else{            
-                        entr = '<small class="label label-success">Entregado</small>';
-                        chk = '<td></td>';
-                    }
-                    if(v['lib_autor'] === null){
-                        v['lib_autor'] = '';
-                        v['lib_titulo'] = '';
-                        entr = '<small class="label label-info">No tiene libro</small>';
-                        chk = '<td></td>';                        
-                    }                      
-                    $("#result_search").append('<tr>'+
-                        chk+
-                        '<td class="mailbox-name"><a href="#">'+v['lib_autor']+'</a></td>'+
-                        '<td class="mailbox-subject"><b>'+v['lib_titulo']+'</td>'+
-                        '<td class="mailbox-date">'+v['nrc_nombre']+'</td>'+
-                        '<td class="mailbox-date">'+entr+'</td>'+
-                    '</tr>');
-                    //console.log(v['libro_asignado'], ben);
-                    if(ben === 1){$("#control-buttons-bks").css({ display: "block" });}
-                    
-                }); 
-            }else if(json.ok === 0){
-                $("#studentNames").html("Para el peridodo "+selPeridodo+" no hay NRC's asigandos para el ID");
+            //console.log(json.cod_respuesta);
+            if(json.cod_respuesta === 1){
+                console.log('lang', lg);
+                arrStr = json.data;
+                $('#lg-'+lg).html('');
+                $.each(json.data, function(k,v){                 
+                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.cjm_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+
+                                '<dd>'+v.cjm_desc+'</dd>'+
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.cjmFull('+v.id_articulo+')">Actualizar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                        '</div>'+
+                    '</div>');
+                });
+                
             }
-
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
+/*
+ * Consulta para Temas Fundamentales
+ */
+Consultas.prototype.getTemas = function(){  
+    //console.log(this.ps, this.fn, this.le);
+    var lg = this.le;
+    arrLng[this.ps] = 1;
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: this.fn,
+            lang: this.le
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            //console.log(json.cod_respuesta);
+            if(json.cod_respuesta === 1){
+                //console.log('lang', lg);
+                arrStr = json.data;
+                $('#lg-'+lg).html('');
+                $.each(json.data, function(k,v){                 
+                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.funda_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+
+                                '<dd>'+v.funda_desc+'</dd>'+
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                        '</div>'+
+                    '</div>');
+                });
+                
+            }
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
+/*
+ * Consulta para Formar a Jésus (Itinerario)
+ */
+Consultas.prototype.getFormar = function(){  
+    //console.log(this.ps, this.fn, this.le);
+    var lg = this.le;
+    arrLng[this.ps] = 1;
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: this.fn,
+            lang: this.le
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            //console.log(json.cod_respuesta);
+            if(json.cod_respuesta === 1){
+                //console.log('lang', lg);
+                arrStr = json.data;
+                $('#lg-'+lg).html('');
+                $.each(json.data, function(k,v){                 
+                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.funda_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+
+                                '<dd>'+v.funda_desc+'</dd>'+
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.formarFull('+v.id_articulo+')">Actualizar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                        '</div>'+
+                    '</div>');
+                });
+                
+            }
+            
         },
         failure: function (response) {
             alert(response.responseText);
@@ -84,84 +198,94 @@ Consultas.prototype.getStudentBooks = function(per){
     
 };
 
-var cns = new Consultas();
 
 /*
- * funcion para llenar el objeto a enviar de libros entregados
- * params{int} fn
- * indice de la función a ejecutar
+ * Set form update CJM
  */
 
-var AppBooks = {
-    init:function(fn){
-        // Constructor
-        switch (fn) {
-            case 1:
-                //console.log(fn);  
-                if($('#result_search input:checked').length > 0){
-                    $("#alert-bks").css({ display: "none" });
-                    AppBooks.createObjBooks();
-                }else{
-                    $("#alert-bks").css({ display: "block" });
-                    $('#modal-default').modal('toggle');
-                }
-            break;
+Consultas.prototype.cjmFull = function(ip){
+    //console.log(ip, this.le);
+    document.getElementById('idTraducir').value = this.le;
+    document.getElementById('idOrigen').value = this.le;
+    document.getElementById('id_articulo').value = ip;
+    //console.log(arrStr.length);
+    for(var i = 0; i < arrStr.length; i++){
+        var iAr = parseInt(arrStr[i].id_articulo);
+        if(ip === iAr){
+            console.log(arrStr[i].id_articulo, arrStr[i].cjm_desc);
+            document.getElementById('cjm_titulo').value = arrStr[i].cjm_titulo;
+            document.getElementById('cjm_desc').value = arrStr[i].cjm_desc;
         }
-        
-    },
-    createObjBooks:function(){
-        $('#result_search input:checked').each(function() {
-            
-            for (var i = 0; i < resStudBooks.datos.length; i++){
-                if (resStudBooks.datos[i].id_libro === $(this).attr('id')){
-                    itemsBooks = {};
-                    itemsBooks['id_libro'] = resStudBooks.datos[i].id_libro;
-                    itemsBooks['nrc'] = resStudBooks.datos[i].nrc_nrc;
-                    itemsBooks['id_genesis'] = resStudBooks.datos[i].id_genesis;                   
-                    arrStudBooks.push(itemsBooks);
-                }
-            }
-      
-        });   
-        //console.log(arrStudBooks);
-        AppBooks.sendBooks();
-    },
-    sendBooks:function(){
-        $.ajax({
-            url : '../business/controller/class.controladorLibros.php',
-            data : { 
-                funcion: 2, 
-                arrStudBooks: JSON.stringify(arrStudBooks)            
-            },
-            type : 'POST',
-            dataType : 'json',
-            success : function(json) {
-                //console.log(json);
-                arrStudBooks = [];
-                $('#modal-default').modal('toggle');
-                if(json.ok === 1){
-                    //console.log(json.ok);
-                    cns.getStudentBooks();
-                }
-            },
-            failure: function (response) {
-                //alert(response.responseText);
-                arrStudBooks = [];
-                
-            },
-            error: function (response) {
-                //alert(response.responseText);
-                arrStudBooks = [];
-            }
-        });        
- 
-    },
-    /*
-     * Controlador de las estadísticas
-     */
-    statisticsBooks:function(){
-        
     }
+    arrCfg = [1, 2, this.le, csl.sePosLang(this.le)];
 };
 
+
+
+/*
+ * Set form update Temas Fudamentales
+ */
+Consultas.prototype.temasFull = function(ip){
+    //console.log(ip, this.le);
+    document.getElementById('idTraducir').value = this.le;
+    document.getElementById('idOrigen').value = this.le;
+    document.getElementById('id_articulo').value = ip;
+    //console.log(arrStr.length);
+    for(var i = 0; i < arrStr.length; i++){
+        var iAr = parseInt(arrStr[i].id_articulo);
+        if(ip === iAr){
+            console.log(arrStr[i].id_articulo, arrStr[i].cjm_desc);
+            document.getElementById('funda_titulo').value = arrStr[i].funda_titulo;
+            document.getElementById('funda_desc').value = arrStr[i].funda_desc;
+        }
+    }
+    arrCfg = [2, 4, document.getElementById('idTraducir').value, csl.sePosLang(this.le)];
+};
+
+
+/*
+ * Set form update CJM
+ */
+Consultas.prototype.formarFull = function(ip){
+    //console.log(ip, this.le);
+    document.getElementById('idTraducir').value = this.le;
+    document.getElementById('idOrigen').value = this.le;
+    document.getElementById('id_articulo').value = ip;
+    //console.log(arrStr.length);
+    for(var i = 0; i < arrStr.length; i++){
+        var iAr = parseInt(arrStr[i].id_articulo);
+        if(ip === iAr){
+            console.log(arrStr[i].id_articulo, arrStr[i].cjm_desc);
+            document.getElementById('funda_titulo').value = arrStr[i].funda_titulo;
+            document.getElementById('funda_desc').value = arrStr[i].funda_desc;
+        }
+    }
+    arrCfg = [2, 4, document.getElementById('idTraducir').value, csl.sePosLang(this.le)];
+};
+
+
+/*
+ * 
+ */
+Consultas.prototype.sePosLang = function(le){
+    var rtn = null;
+    if(le === 'es'){
+        rtn = 1;
+    }else if(le === 'en'){
+        rtn = 2;
+    }else if(le === 'fr'){
+        rtn = 3;
+    }else if(le === 'de'){
+        rtn = 4;
+    }else if(le === 'it'){
+        rtn = 5;
+    }else if(le === 'pt'){
+        rtn = 6;
+    }
+    return rtn;
+};
+
+
+
+var csl = new Consultas();
 

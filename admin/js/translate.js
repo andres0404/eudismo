@@ -62,10 +62,11 @@ Translate.prototype.setProgressBar = function(){
 };
 
 Translate.prototype.sendData = function(){
-    console.log(1111);
+    //console.log(1111);
     var ser = $( '#frm_standar' ).serializeArray();
     ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
     ser[ser.length] = { name: 'funcion', value: this.mod};
+    ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
     console.log(ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
@@ -76,6 +77,9 @@ Translate.prototype.sendData = function(){
             if(json.cod_respuesta === 1){
                 trad.setMensaje(1, json.mensaje);
                 document.getElementById('id_articulo').value = json.data.id_articulo;
+                arrLng[arrCfg[3]] = 0;
+                console.log(arrCfg);
+                csl.init(arrCfg[0], arrCfg[1], document.getElementById('idTraducir').value, arrCfg[3]);
             }
 
         },  

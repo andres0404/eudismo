@@ -35,6 +35,8 @@
   <![endif]-->
 
     <!-- Google Font -->
+    <!-- jQuery 3 -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <script src="../js/stores.js"></script>
     <script src="../js/translate.js"></script>
@@ -94,7 +96,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-right">
-                                        <a href="../business/class.sessions.php?kill=1" class="btn btn-default btn-flat" ocvn>Cerrar sesión</a>
+                                        <a href="../../business/class.sessions.php?kill=1" class="btn btn-default btn-flat" ocvn>Cerrar sesión</a>
                                     </div>
                                 </li>
                             </ul>
@@ -127,32 +129,32 @@
                         </a>
                     </li>                   
                     <li>
-                        <a href="temas/">
+                        <a href="../temas/">
                             <i class="fa fa-area-chart"></i> <span>Temas fundamentales</span>
                         </a>
                     </li>                                  
                     <li>
-                        <a href="formar/">
+                        <a href="../formar/">
                             <i class="fa fa-area-chart"></i> <span>Formar a Jesús</span>
                         </a>
                     </li>                                  
                     <li>
-                        <a href="oraciones/">
+                        <a href="../oraciones/">
                             <i class="fa fa-area-chart"></i> <span>Oraciones</span>
                         </a>
                     </li>                                  
                     <li>
-                        <a href="cantos/">
+                        <a href="../cantos/">
                             <i class="fa fa-area-chart"></i> <span>Cantos Eudistas</span>
                         </a>
                     </li>                                  
                     <li>
-                        <a href="familia/">
+                        <a href="../familia/">
                             <i class="fa fa-area-chart"></i> <span>La gran familia Eudista</span>
                         </a>
                     </li>                                                                    
                     <li>
-                        <a href="novedades/">
+                        <a href="../novedades/">
                             <i class="fa fa-area-chart"></i> <span>Novedades / Noticias</span>
                         </a>
                     </li>                                  
@@ -177,39 +179,69 @@
                         <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title">La CJM </h3>
-                                <button type="submit" class="btn btn-primary" style="float: right;"data-toggle="modal" data-target="#modal-default">Nuevo</button>
+                                <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default">Nuevo</button>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
 
                                 <div class="table-responsive mailbox-messages">
-                                    <table class="table table-hover table-striped">
-                                        <tbody id="result_search">
-                                        </tbody>
-                                    </table>
-                                  <!-- /.table -->
-                                </div>
+                                    
+                                    <!-- Custom tabs (Language with tabs)-->
+                                    <div class="nav-tabs-custom">
+                                      <!-- Tabs within a box -->
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#lg-es" data-toggle="tab">
+                                                    <img src="../../resources/img/langs/co.png" style="width: 15px;margin-top: -2px;"/>
+                                                     Español
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(1, 2, 'en', 2)">
+                                                    <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Inglés
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(1, 2, 'fr', 3)">
+                                                    <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Francés
+                                                </a>
+                                            </li>     
+                                            <li>
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(1, 2, 'de', 4)">
+                                                    <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Alemán
+                                                </a>
+                                            </li>                                             
+                                            <li>
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(1, 2, 'it', 5)">
+                                                    <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Italiano
+                                                </a>
+                                            </li>   
+                                            <li>
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(1, 2, 'pt', 5)">
+                                                    <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Portugués
+                                                </a>
+                                            </li>  
+                                        </ul>
+                                        <div class="tab-content no-padding">
+                                            <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
+                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
+                                            <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
+                                            <div class="chart tab-pane" id="lg-it" style="position: relative;">Italiano</div>
+                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;">Portugués</div>
+                                        </div>
+
+                                    </div>
                                 <!-- /.mail-box-messages -->
                             </div>
                             <!-- /.box-body -->
-                            <div class="box-footer no-padding">
-                                <div class="mailbox-controls" style="display: none;" id="control-buttons-bks">
-                                    <!-- Check all button -->
-                                    <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
 
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-block btn-primary"  data-toggle="modal" data-target="#modal-default">Enviar <i class="fa fa-arrow-circle-right"></i></button>
-                                    </div>
-
-                                </div>
-                                <!-- /.pull-right -->
-                            </div>
-                            <div class="alert alert-danger alert-dismissible" id="alert-bks">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <h4><i class="icon fa fa-ban"></i> ERROR!</h4>
-                                    Debe seleccionar al menos un libro!
-                            </div>
                         </div>
                     </div>
                     <!-- /. box -->
@@ -284,16 +316,17 @@
                                 <option value="pt">Portugues</option>
                             </select>
                         </div>    
+                        <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar">
                             <div class="box-body">
-                                <input type="text" class="form-control" id="id_articulo" name="id_articulo">
+                                
                                 <div class="form-group">
                                     <label for="cjm_titulo">Título</label>
                                     <input type="text" class="form-control" id="cjm_titulo" name="cjm_titulo" id="cjm_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" id="cjm_descripcion" name="cjm_desc" id="cjm_desc" rows="3"></textarea>
+                                    <textarea class="form-control"  name="cjm_desc" id="cjm_desc" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -318,13 +351,14 @@
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 3 -->
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
+<script>
+    csl.init(1, 2, 'es', 1);
+</script>
 </body>
 </html>
