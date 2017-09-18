@@ -218,8 +218,9 @@ CREATE TABLE `usuarios` (
   `u_clave` varchar(50) DEFAULT NULL,
   `u_sexo` smallint(5) unsigned DEFAULT NULL,
   `u_activo` smallint(5) unsigned DEFAULT '1',
-  PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_usuario`),
+  KEY `UNICO_USUARIO` (`u_correo`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuarios` */
 

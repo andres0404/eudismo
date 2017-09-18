@@ -29,6 +29,11 @@ class DAO_Usuarios extends DAOGeneral {
         'u_activo' => array('tipodato' => 'integer')
     );
     
+    function verificarCorreo(){
+        $query = "SELECT * FROM usuarios WHERE u_correo = '$this->_u_correo'";
+        
+    }
+    
     function get_u_ISOLengua() {
         return $this->_u_ISOLengua;
     }

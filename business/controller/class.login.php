@@ -1,11 +1,11 @@
 <?php
-        header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+        /*header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Methods: POST');
         header('Access-Control-Max-Age: 1000');
         header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        */
         
-        
-include_once '../globals.php';
+//include_once '../globals.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/DAO/DAO_Usuarios.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/class.sessions.php';
 
@@ -34,8 +34,6 @@ class Login{
                     break;
             }
         }
-        
-        
     }
     /**
      * 
@@ -53,7 +51,7 @@ class Login{
     private function _registrarYLoguear() {
         $_objUsu = $this->_registrarUsuario();
         if(!($_objUsu instanceof DAO_Usuarios)){
-            $this->_respuesta(0, "No se pudo registrar usuario");
+            $this->_respuesta(false, "No se pudo registrar usuario");
             return false;
         }
         $this->_establecerDatos($_objUsu->get_u_correo(),$_POST['u_clave']);
@@ -72,9 +70,10 @@ class Login{
         $_objUsu->set_u_lengua($_POST['u_lengua']);
         $_objUsu->set_u_nombre($_POST['u_nombre']);
         $_objUsu->set_u_correo($_POST['u_correo']);
-        $_objUsu->set_u_clave($_POST['u_clave']);
+        $_objUsu->set_u_clave(sha1($_POST['u_clave']));
         $_objUsu->set_u_activo($_POST['u_activo']);
-        if(!$_objUsu->guardar()){
+        //print_r($_objUsu);
+        if(!$_objUsu->guardar()) {
             return false;
         }
         return $_objUsu;
@@ -106,7 +105,7 @@ class Login{
                     $_objUsu->get_u_ISOLengua(),
                     $_objUsu->get_u_lengua(),
                     $_objUsu->get_u_correo(),
-                    $_objUsu->get_u_tipo_usuario()
+                    $_objUsu->get_u_tipousuario()
                 );
             $this->_respuesta(true);
         }
