@@ -19,16 +19,67 @@ class Login{
     private $_nombre;
 
     public static function run(){
-        $_obj = new self();
-        $_obj->_establecerDatos();
-        $_obj->_verificarDatosUsuario();
+        if(isset($_POST['funcion'])){
+            $_obj = new self();
+            switch ($_POST['funcion']){
+                case 1:// loguear
+                    $_obj->_establecerDatos($_POST['u_correo'],$_POST['u_clave']);
+                    $_obj->_verificarDatosUsuario();
+                    break;
+                case 2: // Registrar + logueo
+                    $_obj->_registrarYLoguear();
+                    break;
+                case 3: // registrar
+                    $_obj->_registrarUsuario();
+                    break;
+            }
+        }
+        
+        
+    }
+    /**
+     * 
+     * @param type $uCorreo
+     * @param type $uClave
+     */
+    private function _establecerDatos($uCorreo,$uClave){
+        //print_r($_POST);
+        $this->_usuario = $uCorreo;
+        $this->_clave = sha1($uClave);
+    }
+    /**
+     * Registrar y loguear usuario
+     */
+    private function _registrarYLoguear() {
+        $_objUsu = $this->_registrarUsuario();
+        if(!($_objUsu instanceof DAO_Usuarios)){
+            $this->_respuesta(0, "No se pudo registrar usuario");
+            return false;
+        }
+        $this->_establecerDatos($_objUsu->get_u_correo(),$_POST['u_clave']);
+        $this->_verificarDatosUsuario();
+    }
+    /**
+     * Registrarse 
+     * @return boolean|\DAO_Usuarios
+     */
+    private function _registrarUsuario() {
+        $_objUsu = new DAO_Usuarios();
+        if(isset($_POST['id_usuario'])){
+            $_objUsu->set_id_usuario($_POST['id_usuario']);
+        }
+        $_objUsu->set_u_tipousuario($_POST['u_tipousuario']);
+        $_objUsu->set_u_lengua($_POST['u_lengua']);
+        $_objUsu->set_u_nombre($_POST['u_nombre']);
+        $_objUsu->set_u_correo($_POST['u_correo']);
+        $_objUsu->set_u_clave($_POST['u_clave']);
+        $_objUsu->set_u_activo($_POST['u_activo']);
+        if(!$_objUsu->guardar()){
+            return false;
+        }
+        return $_objUsu;
     }
     
-    private function _establecerDatos(){
-        //print_r($_POST);
-        $this->_usuario = $_POST['u_correo'];
-        $this->_clave = sha1($_POST['u_clave']);
-    }
     /**
      * Verificacion y logueo de usuario
      */
@@ -64,12 +115,12 @@ class Login{
      * 
      * @param type $respuesta
      */
-    private function _respuesta($respuesta){
+    private function _respuesta($respuesta,$mensaje = ''){
         $arrRespu = array();
         if($respuesta){
-            $arrRespu = array("ok" => 1, "url" => $this->_url, "mensaje" => "Bienvenido {$this->_nombre} ", "tipo_usuario" => $this->_tipo_usuario, "token" => 1);
+            $arrRespu = array("ok" => 1, "url" => $this->_url, "mensaje" => (empty($mensaje) ? "Bienvenido {$this->_nombre} " : $mensaje) , "tipo_usuario" => $this->_tipo_usuario, "token" => 1);
         }else{
-            $arrRespu = array("ok" => "0", "url" => "", "mensaje" => "Error en las credenciales", "tipo_usuario" => "","token" => 0);
+            $arrRespu = array("ok" => "0", "url" => "", "mensaje" => (empty($mensaje) ? "Error en las credenciales" : $mensaje), "tipo_usuario" => "","token" => 0);
         }
         header('Content-type: application/json');   
         //echo "oh!";

@@ -158,7 +158,7 @@ class Conexiones{
      * @return Conexiones
      */
     public static function getConLocal(){
-         return self::_getConexion('localhost');
+         return self::_getConexion('local');
     }
     /**
      * 
