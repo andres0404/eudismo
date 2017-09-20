@@ -208,9 +208,18 @@ class ControladorEudista extends Cabeceras {
         // guardar DESCRIPCION
         $_objTextosDesc = $this->_setTextos($_obj, "ref_biblia", $codLang, $_POST['fj_ref_biblia']);
         $R['lang_id_ref_biblia'] = $_objTextosDesc->get_lang_id();
+        
+        // guardar OBJETIVO
+        $_objTextosDesc = $this->_setTextos($_obj, "objetivo", $codLang, $_POST['fj_objetivo']);
+        $R['lang_id_fj_objetivo'] = $_objTextosDesc->get_lang_id();
+        
         // guardar LECTURA EUDISTA
         $_objTextosDesc = $this->_setTextos($_obj, "lec_eudista", $codLang, $_POST['fj_lec_eudista']);
         $R['lang_id_lec_eudista'] = $_objTextosDesc->get_lang_id();
+        
+        // guardar ORACION FINAL
+        $_objTextosDesc = $this->_setTextos($_obj, "oracion_final", $codLang, $_POST['fj_oracion_final']);
+        $R['lang_id_oracion_final'] = $_objTextosDesc->get_lang_id();
         return $R;
     }
     /**
@@ -242,6 +251,10 @@ class ControladorEudista extends Cabeceras {
             $_objTextoDesc = $this->_getTextos($_objTemFj, "ref_biblia", $lenguaje);
             // obtener lectura eudista
             $_objLecturaEudista = $this->_getTextos($_objTemFj, "lec_eudista", $lenguaje);
+            
+            $_objObjetivo = $this->_getTextos($_objTemFj, "fj_objetivo", $lenguaje);
+            
+            $_objOracionFinal = $this->_getTextos($_objTemFj, "fj_oracion_final", $lenguaje);
             $aux = array(
                 'id_articulo' =>    $_objTemFj->get_fj_id(),
                 'id_usuario' =>     $this->_id_usuario,
@@ -249,7 +262,9 @@ class ControladorEudista extends Cabeceras {
                 'lang' =>           $_objTitulo->get_langLengua(),
                 'fj_tematica' =>    $_objTitulo->get_lang_texto(),
                 'fj_ref_biblia' =>  $_objTextoDesc->get_lang_texto(),
+                'fj_objetivo' =>    $_objObjetivo->get_lang_texto(),
                 'fj_lec_eudista' => $_objLecturaEudista->get_lang_texto(),
+                'fj_oracion_final'=>$_objOracionFinal->get_lang_texto(),
                 'fecha_publica' =>  $_objTemFj->get_fj_fecha_publicacion()
             );
             $R[] = $aux;
