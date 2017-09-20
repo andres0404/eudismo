@@ -191,6 +191,7 @@ class ControladorEudista extends Cabeceras {
             $_obj->set_fj_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_obj->set_id_usuario($this->_id_usuario);
             $_obj->set_fj_estado(1);
+            $_obj->set_fj_fecha_publicacion($_POST['fecha_publica']);
             //$_obj->set_fj_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_obj->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Formar a Jesus " . $_obj->get_sql_error(), 0);
@@ -252,9 +253,9 @@ class ControladorEudista extends Cabeceras {
             // obtener lectura eudista
             $_objLecturaEudista = $this->_getTextos($_objTemFj, "lec_eudista", $lenguaje);
             
-            $_objObjetivo = $this->_getTextos($_objTemFj, "fj_objetivo", $lenguaje);
+            $_objObjetivo = $this->_getTextos($_objTemFj, "objetivo", $lenguaje);
             
-            $_objOracionFinal = $this->_getTextos($_objTemFj, "fj_oracion_final", $lenguaje);
+            $_objOracionFinal = $this->_getTextos($_objTemFj, "oracion_final", $lenguaje);
             $aux = array(
                 'id_articulo' =>    $_objTemFj->get_fj_id(),
                 'id_usuario' =>     $this->_id_usuario,
@@ -262,9 +263,9 @@ class ControladorEudista extends Cabeceras {
                 'lang' =>           $_objTitulo->get_langLengua(),
                 'fj_tematica' =>    $_objTitulo->get_lang_texto(),
                 'fj_ref_biblia' =>  $_objTextoDesc->get_lang_texto(),
-                'fj_objetivo' =>    $_objObjetivo->get_lang_texto(),
+                'fj_objetivo' =>    $_objObjetivo->get_lang_texto(),//
                 'fj_lec_eudista' => $_objLecturaEudista->get_lang_texto(),
-                'fj_oracion_final'=>$_objOracionFinal->get_lang_texto(),
+                'fj_oracion_final'=>$_objOracionFinal->get_lang_texto(),//
                 'fecha_publica' =>  $_objTemFj->get_fj_fecha_publicacion()
             );
             $R[] = $aux;
