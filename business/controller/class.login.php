@@ -1,9 +1,9 @@
 <?php
-        /*header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Methods: POST');
         header('Access-Control-Max-Age: 1000');
         header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-        */
+        
         
 //include_once '../globals.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/DAO/DAO_Usuarios.php';
@@ -109,17 +109,22 @@ class Login{
                     $_objUsu->get_u_correo(),
                     $_objUsu->get_u_tipousuario()
                 );
-            $this->_respuesta(true);
+            $this->_respuesta(true,'Bienvenido a nuestra App Eudista',$_objUsu->getArray());
         }
     }
     /**
      * 
      * @param type $respuesta
      */
-    private function _respuesta($respuesta,$mensaje = ''){
+    private function _respuesta($respuesta,$mensaje = '',$datos = null){
         $arrRespu = array();
         if($respuesta){
-            $arrRespu = array("ok" => 1, "url" => $this->_url, "mensaje" => (empty($mensaje) ? "Bienvenido {$this->_nombre} " : $mensaje) , "tipo_usuario" => $this->_tipo_usuario, "token" => 1);
+            $arrRespu = array("ok" => 1, 
+                "url" => $this->_url, 
+                "mensaje" => (empty($mensaje) ? "Bienvenido {$this->_nombre} " : $mensaje) , 
+                "tipo_usuario" => $this->_tipo_usuario, 
+                "datos" => $datos,
+                "token" => 1);
         }else{
             $arrRespu = array("ok" => "0", "url" => "", "mensaje" => (empty($mensaje) ? "Error en las credenciales" : $mensaje), "tipo_usuario" => "","token" => 0);
         }

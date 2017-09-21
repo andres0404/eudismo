@@ -186,6 +186,18 @@ class DAOGeneral {
     function get_sql_error() {
         return $this->_error;
     }
+    
+    /**
+     * Obtener los valores de la clase en formato array
+     * @return array
+     */
+    public function getArray() {
+        $arrDatos = array();
+        foreach ($this->_mapa as $nom_campo => $arrAtributos) {
+            $arrDatos[$nom_campo] = $this->{'get_' . $nom_campo}();
+        }
+        return $arrDatos;
+    }
 
 
 
