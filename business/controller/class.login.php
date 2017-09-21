@@ -68,7 +68,7 @@ class Login{
         }
         //$_objUsu->set_u_tipousuario($_POST['u_tipousuario']);
         $_objUsu->set_u_tipousuario(1);
-        $_objUsu->set_u_lengua($_POST['u_lengua']);
+        $_objUsu->set_u_lengua($this->_getCodigoLenguaje($_POST['u_lengua']));
         $_objUsu->set_u_nombre($_POST['u_nombre']);
         $_objUsu->set_u_correo($_POST['u_correo']);
         $_objUsu->set_u_clave(sha1($_POST['u_correo']));
@@ -111,6 +111,22 @@ class Login{
                 );
             $this->_respuesta(true,'Bienvenido a nuestra App Eudista',$_objUsu->getArray());
         }
+    }
+    /**
+     * Obtener el codigo del lenguaje a partir del codigo ISO
+     * @param type $codISO
+     * @return boolean
+     */
+    private function _getCodigoLenguaje($codISO) {
+        $_objMTablas = new MTablas();
+        $lenguajes = $_objMTablas->getTablaCheckBox(4);
+        $codLang = null;
+        foreach ($lenguajes as $id => $langISO) {
+            if ($langISO == $codISO) {
+                return $id;
+            }
+        }
+        return false;
     }
     /**
      * 
