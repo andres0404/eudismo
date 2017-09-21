@@ -12,7 +12,7 @@ class DAO_Usuarios extends DAOGeneral {
     protected $_u_correo;
     protected $_u_clave;
     protected $_u_activo;
-
+    protected $_u_img_perfil;
 
     protected $_tabla = 'usuarios';
     protected $_primario = 'id_usuario';
@@ -26,7 +26,8 @@ class DAO_Usuarios extends DAOGeneral {
         'u_nombre' => array('tipodato' => 'varcahr'),
         'u_correo' => array('tipodato' => 'varchar'),
         'u_clave' => array('tipodato' => 'varchar'),
-        'u_activo' => array('tipodato' => 'integer')
+        'u_activo' => array('tipodato' => 'integer'),
+        'u_img_perfil' => array('tipodato' => 'varchar')
     );
     
     function verificarCorreo(){
@@ -34,6 +35,13 @@ class DAO_Usuarios extends DAOGeneral {
         
     }
     
+    function get_u_img_perfil() {
+        return $this->_u_img_perfil;
+    }
+
+    function set_u_img_perfil($_u_img_perfil) {
+        $this->_u_img_perfil = $_u_img_perfil;
+    }    
     function get_u_ISOLengua() {
         return $this->_u_ISOLengua;
     }

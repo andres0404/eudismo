@@ -66,12 +66,14 @@ class Login{
         if(isset($_POST['id_usuario'])){
             $_objUsu->set_id_usuario($_POST['id_usuario']);
         }
-        $_objUsu->set_u_tipousuario($_POST['u_tipousuario']);
+        //$_objUsu->set_u_tipousuario($_POST['u_tipousuario']);
+        $_objUsu->set_u_tipousuario(1);
         $_objUsu->set_u_lengua($_POST['u_lengua']);
         $_objUsu->set_u_nombre($_POST['u_nombre']);
         $_objUsu->set_u_correo($_POST['u_correo']);
-        $_objUsu->set_u_clave(sha1($_POST['u_clave']));
-        $_objUsu->set_u_activo($_POST['u_activo']);
+        $_objUsu->set_u_clave(sha1($_POST['u_correo']));
+        $_objUsu->set_u_activo(1);
+        $_objUsu->set_u_img_perfil($_POST['u_img_perfil']);
         //print_r($_objUsu);
         if(!$_objUsu->guardar()) {
             return false;
@@ -85,7 +87,7 @@ class Login{
     private function _verificarDatosUsuario() {
         $_objUsu = new DAO_Usuarios();
         $_objUsu->set_u_correo($this->_usuario);
-        $_objUsu->set_u_clave($this->_clave);
+        //$_objUsu->set_u_clave($this->_clave);
         $_objUsu->set_u_activo(1);
         //$_objUsu->set_u_tipo_usuario(array(4,5)); // administrador
         //$_objUsu->set_namespace("uvd_usuarios");
