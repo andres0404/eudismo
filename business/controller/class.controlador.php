@@ -559,6 +559,7 @@ class ControladorEudista extends SubirMultimedia {
             $aux = array(
                 'id_articulo' => $_objTemFa->get_fame_id(),
                 'id_usuario' => $this->_id_usuario,
+                'fame_id_padre' => $_objTemFa->get_fame_id_padre(),
                 //'cjm_orden' => $_objTemFa->get_cjm_orden(),
                 'lang' => $_objCeuTitulo->get_langLengua(),
                 'fame_titulo' => $_objCeuTitulo->get_lang_texto(),
