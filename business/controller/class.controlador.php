@@ -1,5 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+//header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_REFERER']);
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
@@ -25,6 +25,8 @@ class ControladorEudista extends SubirMultimedia {
 
     private $_solicitud;
     private $_id_usuario = 1;
+    private $_correo_sugerencias = 'hernando.silva@uniminuto.edu';
+    private $_mensaje;
 
     public function __construct() {
         ;
@@ -96,7 +98,7 @@ class ControladorEudista extends SubirMultimedia {
             }
             $respuesta = array(
                 'cod_respuesta' => 1,
-                'mensaje' => "Elementos almacenados con exito",
+                'mensaje' => $obj->_mensaje,
                 'data' => $return // // establece datos entregados por web service y busca codigo
             );
             $con->commit();
@@ -628,8 +630,8 @@ class ControladorEudista extends SubirMultimedia {
             $aux = array(
                 'id_articulo' => $_objTemFa->get_novt_id(),
                 'lang' => $_objCeuTitulo->get_langLengua(),
-                'fame_titulo' => $_objCeuTitulo->get_lang_texto(),
-                'fame_desc' => $_objTextoDesc->get_lang_texto()
+                'novt_titulo' => $_objCeuTitulo->get_lang_texto(),
+                'novt_desc' => $_objTextoDesc->get_lang_texto()
             );
             $R[] = $aux;
         }
@@ -702,17 +704,31 @@ class ControladorEudista extends SubirMultimedia {
         }
         return $R;
     }
-    
+    /**
+     * 
+     */
     private function _enviarMailSugerencias() {
         $lengua = $_POST['lang'];
         $_POST['id_articulo'];
-        $myfile = fopen("/eudista/admin/plantillas/plantilla_mail.html", "r") or die("Unable to open file!");
-        $html = fread($myfile,filesize("/eudista/admin/plantillas/plantilla_mail.html"));
+        $myfile = fopen($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html", "r") or die("Unable to open file!");
+        $html = fread($myfile,filesize($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html"));
         fclose($myfile);
         $search = array('{lengua}','{logo}','{sponsor}','{present}','{message}','{and_more}');
         $replace = array($lengua,'App Eudista','Uniminuto','Sugerencia de traducción',$_POST['titulo'],$_POST['texto']);
         $plantilla = str_replace($search, $replace, $html);
-        
+        // MAIL
+        $para      = $this->_correo_sugerencias;
+        $titulo    = 'Traducción sugerida';
+        $mensaje   = 'Traducción sugerida App Eudista';
+        $cabeceras = array(
+            'From: webmaster@example.com',
+            'Content-type: text/html; charset=iso-8859-1',
+            'Reply-To: webmaster@example.com',
+            'X-Mailer: PHP/' . phpversion()
+        );
+        mail($para, $titulo, $mensaje, implode("\r\n", $cabeceras));
+        $this->_mensaje = 'Tu sugerencia ha sido enviada correctamente';
+        return true;
     }
     /**
      * Consultar texto
