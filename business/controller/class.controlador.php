@@ -17,9 +17,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.subir.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.mtablas.php';
 
-class ControladorEudista extends Cabeceras {
+class ControladorEudista extends SubirMultimedia {
 
     private $_solicitud;
     private $_id_usuario = 1;
@@ -87,6 +88,10 @@ class ControladorEudista extends Cabeceras {
                     break;
                 case 16:
                     $return = $obj->_consultarTestimonios($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    break;
+                case 17:
+                    $return = $obj->_enviarMailSugerencias();
+                    break;
             }
             $respuesta = array(
                 'cod_respuesta' => 1,
@@ -427,7 +432,6 @@ class ControladorEudista extends Cabeceras {
             $_objCeu->set_ceu_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCeu->set_id_usuario($this->_id_usuario);
             $_objCeu->set_ceu_estado(1);
-            $_objCeu->set_ceu_url_multimedia($_POST['ceu_url_multimedia']);
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Cantos Eudistas " . $_objCeu->get_sql_error(), 0);
@@ -437,6 +441,15 @@ class ControladorEudista extends Cabeceras {
             $_objCeu->consultar();
         }
         $R['id_articulo'] = $_objCeu->get_ceu_id();
+        // subir archivo multimedia
+        try{
+            if( isset( $_FILES['archivo_multi'] ) ){
+                $_objCeu->set_ceu_url_multimedia( $this->_subirArchivo( $_FILES['archivo_multi'] ) );
+                $_objCeu->guardar();
+            }
+        } catch (SubirMultimediaException $e){
+            throw new ControladorEudistaException($e->getMessage(),0);
+        }
         // consultar el codigo del lenguaje
         $codLang = $this->_getCodigoLenguaje($_POST['lang']);
         // guardar TITULO
@@ -476,6 +489,7 @@ class ControladorEudista extends Cabeceras {
                 'id_articulo' => $_objTemCjm->get_cjm_id(),
                 'id_usuario' => $this->_id_usuario,
                 'cjm_orden' => $_objTemCjm->get_cjm_orden(),
+                'ceu_url_multimedia' => $_objTemCjm->get_ceu_url_multimedia(),
                 'lang' => $_objCeuTitulo->get_langLengua(),
                 'cjm_titulo' => $_objCeuTitulo->get_lang_texto(),
                 'cjm_desc' => $_objTextoDesc->get_lang_texto()
@@ -496,7 +510,7 @@ class ControladorEudista extends Cabeceras {
             $_objFam->set_fame_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objFam->set_id_usuario($this->_id_usuario);
             $_objFam->set_fame_estado(1);
-            $_objFam->set_fame_id_hija($_POST['fame_id_hija']);
+            $_objFam->set_fame_id_padre($_POST['fame_id_padre']);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Familia Eudista " . $_objFam->get_sql_error(), 0);
@@ -647,7 +661,7 @@ class ControladorEudista extends Cabeceras {
         // guardar DESCRIPCION
         $_objTextosDesc = $this->_setTextos($_objFam, "desc", $codLang, $_POST['test_desc']);
         return $R;
-    }
+    }  
     /**
      * 
      * @param type $lenguaje
@@ -685,6 +699,18 @@ class ControladorEudista extends Cabeceras {
             $R[] = $aux;
         }
         return $R;
+    }
+    
+    private function _enviarMailSugerencias() {
+        $lengua = $_POST['lang'];
+        $_POST['id_articulo'];
+        $myfile = fopen("/eudista/admin/plantillas/plantilla_mail.html", "r") or die("Unable to open file!");
+        $html = fread($myfile,filesize("/eudista/admin/plantillas/plantilla_mail.html"));
+        fclose($myfile);
+        $search = array('{lengua}','{logo}','{sponsor}','{present}','{message}','{and_more}');
+        $replace = array($lengua,'App Eudista','Uniminuto','Sugerencia de traducción',$_POST['titulo'],$_POST['texto']);
+        $plantilla = str_replace($search, $replace, $html);
+        
     }
     /**
      * Consultar texto

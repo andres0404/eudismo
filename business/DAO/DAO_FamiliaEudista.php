@@ -6,7 +6,7 @@ class DAO_FamiliaEudista extends DAOGeneral {
     protected $_fame_id;
     protected $_id_usuario;
     protected $_fame_fecha;
-    protected $_fame_id_hija;
+    protected $_fame_id_padre;
     protected $_fame_estado;
     
     
@@ -19,11 +19,18 @@ class DAO_FamiliaEudista extends DAOGeneral {
             'fame_id' => array('tipodato' => 'integer'),
             'id_usuario' => array('tipodato' => 'integer'),
             'fame_fecha' => array('tipodato' => 'date'),
-            'fame_id_hija' => array('tipodato' => 'integer'),
+            'fame_id_padre' => array('tipodato' => 'integer'),
             'fame_estado' => array('tipodato' => 'integer')
         );
-        
-        function get_fame_id() {
+        function get_fame_id_padre() {
+            return $this->_fame_id_padre;
+        }
+
+        function set_fame_id_padre($_fame_id_padre) {
+            $this->_fame_id_padre = $_fame_id_padre;
+        }
+
+                function get_fame_id() {
             return $this->_fame_id;
         }
 
@@ -35,9 +42,6 @@ class DAO_FamiliaEudista extends DAOGeneral {
             return $this->_fame_fecha;
         }
 
-        function get_fame_id_hija() {
-            return $this->_fame_id_hija;
-        }
 
         function get_fame_estado() {
             return $this->_fame_estado;
@@ -55,9 +59,7 @@ class DAO_FamiliaEudista extends DAOGeneral {
             $this->_fame_fecha = $_fame_fecha;
         }
 
-        function set_fame_id_hija($_fame_id_hija) {
-            $this->_fame_id_hija = $_fame_id_hija;
-        }
+      
 
         function set_fame_estado($_fame_estado) {
             $this->_fame_estado = $_fame_estado;
