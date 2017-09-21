@@ -23,7 +23,7 @@ class Login{
             $_obj = new self();
             switch ($_POST['funcion']){
                 case 1:// loguear
-                    $_obj->_establecerDatos($_POST['u_correo'],$_POST['u_clave']);
+                    $_obj->_establecerDatos($_POST['u_correo'],$_POST['u_correo']);
                     $_obj->_verificarDatosUsuario();
                     break;
                 case 2: // Registrar + logueo
@@ -54,7 +54,7 @@ class Login{
             $this->_respuesta(false, "No se pudo registrar usuario");
             return false;
         }
-        $this->_establecerDatos($_objUsu->get_u_correo(),$_POST['u_clave']);
+        $this->_establecerDatos($_objUsu->get_u_correo(),$_POST['u_correo']);
         $this->_verificarDatosUsuario();
     }
     /**
