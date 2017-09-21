@@ -586,7 +586,7 @@ class ControladorEudista extends SubirMultimedia {
         //print_r($_POST);
         if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
             $_objFam->set_novt_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
-            $_objFam->set_fame_estado(1);
+            $_objFam->set_novt_estado(1);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Noticias " . $_objFam->get_sql_error(), 0);
@@ -615,7 +615,7 @@ class ControladorEudista extends SubirMultimedia {
         $_objFam = new DAO_Noticias();
         $_objFam->habilita1ResultadoEnArray();
         if (!empty($novt_id)) {
-            $_objFam->set_fame_id($novt_id);
+            $_objFam->set_novt_id($novt_id);
         }
         if (!$arrFam = $_objFam->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
@@ -682,7 +682,7 @@ class ControladorEudista extends SubirMultimedia {
         $_objFam = new DAO_Testimonios();
         $_objFam->habilita1ResultadoEnArray();
         if (!empty($test_id)) {
-            $_objFam->set_fame_id($test_id);
+            $_objFam->set_test_id($test_id);
         }
         if (!$arrFam = $_objFam->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
