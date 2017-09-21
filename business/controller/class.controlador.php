@@ -16,6 +16,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FormarAJesus
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FamiliaEudista.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Noticias.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.subir.php';
