@@ -136,6 +136,6 @@ class Login{
     
 }
 
-if(isset($_POST['u_correo']) && isset($_POST['u_clave'])){
+if(isset($_POST['u_correo']) && isset($_POST['u_nombre'])){
     Login::run();
 }
