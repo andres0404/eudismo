@@ -13,6 +13,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_TemasFundame
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Cjm.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Oraciones.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FormarAJesus.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FamiliaEudista.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
