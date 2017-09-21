@@ -26,7 +26,7 @@ class ControladorEudista extends SubirMultimedia {
     private $_solicitud;
     private $_id_usuario = 1;
     private $_correo_sugerencias = 'hernando.silva@uniminuto.edu';
-    private $_mensaje;
+    private $_mensaje = 'Datos almacenados correctamente';
 
     public function __construct() {
         ;
@@ -184,7 +184,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
-
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     /**
@@ -278,6 +278,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
 
@@ -349,7 +350,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
-
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     
@@ -420,7 +421,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
-
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     /**
@@ -499,6 +500,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     /**
@@ -569,6 +571,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     
@@ -635,6 +638,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     /**
@@ -702,6 +706,7 @@ class ControladorEudista extends SubirMultimedia {
             );
             $R[] = $aux;
         }
+        $this->_mensaje = 'Datos encontrados';
         return $R;
     }
     /**
