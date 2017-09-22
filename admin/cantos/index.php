@@ -263,15 +263,15 @@
                         <!-- Selector de idioma fuente -->
  
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
-                        <form role="form" id="frm_standar">
+                        <form role="form" id="frm_standar" enctype="multipart/form-data" >
                             <div class="box-body">                                                 
                                 <div class="form-group">
                                     <label for="ora_nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="cu_titulo" name="cu_titulo">
+                                    <input type="text" class="form-control" id="ceu_titulo" name="ceu_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control"  name="cu_desc" id="cu_desc" rows="3"></textarea>
+                                    <textarea class="form-control"  name="ceu_desc" id="ceu_desc" rows="3"></textarea>
                                 </div>                               
                                 <div class="form-group">
                                     <label for="archivo_multi">Canto</label>
@@ -280,7 +280,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="ora_nombre">YouTube</label>
-                                    <input type="text" class="form-control" id="cu_url" name="cu_url">
+                                    <input type="text" class="form-control" id="ceu_url" name="ceu_url">
                                 </div>
                             </div>
 

@@ -96,6 +96,9 @@ class ControladorEudista extends SubirMultimedia {
                 case 17:
                     $return = $obj->_enviarMailSugerencias();
                     break;
+                case 18:
+                    $return = $obj->_listarCategoriaOraciones();
+                    break;
             }
             $respuesta = array(
                 'cod_respuesta' => 1,
@@ -178,7 +181,7 @@ class ControladorEudista extends SubirMultimedia {
             $aux = array(
                 'id_articulo' => $_objTemCjm->get_cjm_id(),
                 'id_usuario' => $this->_id_usuario,
-                'cjm_orden' => $_objTemCjm->get_cjm_orden(),
+                //'cjm_orden' => $_objTemCjm->get_cjm_orden(),
                 'lang' => $_objCjmTitulo->get_langLengua(),
                 'cjm_titulo' => $_objCjmTitulo->get_lang_texto(),
                 'cjm_desc' => $_objTextoDesc->get_lang_texto()
@@ -437,6 +440,7 @@ class ControladorEudista extends SubirMultimedia {
             $_objCeu->set_ceu_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCeu->set_id_usuario($this->_id_usuario);
             $_objCeu->set_ceu_estado(1);
+            //$_objCeu->set
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Cantos Eudistas " . $_objCeu->get_sql_error(), 0);
@@ -710,13 +714,67 @@ class ControladorEudista extends SubirMultimedia {
         $this->_mensaje = 'Datos encontrados';
         return $R;
     }
+    
+    private function _listarCategoriaOraciones() {
+        $_objMT = new MTablas();
+        return $_objMT->getTablaCheckBox(5);
+    }
+    /*
+Array
+(
+    [cantos_eudistas] => DAO_CantosEudistas
+    [cjm] => DAO_Cjm
+    [familia_eudista] => DAO_FamiliaEudista
+    [formar_jesus] => DAO_FormarAJesus
+    [novedades_noticias] => DAO_Noticias
+    [temas_fundamentales] => DAO_TemasFundamentales
+    [oraciones] => DAO_Oraciones
+    [testimonios] => DAO_Testimonios
+)     */
     /**
      * 
      */
     private function _enviarMailSugerencias() {
         $lengua = $_POST['lang'];
-        $_POST['id_articulo'];
-        $myfile = fopen($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html", "r") or die("Unable to open file!");
+        $_objMT = new MTablas();
+        $datos = array();
+        switch ($_POST['nom_seccion']){
+            case 'cantos_eudistas':
+                $datos = $this->_consultarCantosEudistas($lengua,$_POST['id_articulo']);
+                break;
+            case 'cjm':
+                $datos = $this->_consultarCjm($lengua,$_POST['id_articulo']);
+                break;
+            case 'familia_eudista':
+                $datos = $this->_consultarFamiliaEudista($lengua,$_POST['id_articulo']);
+                break;
+            case 'formar_jesus':
+                $datos = $this->_consultarFormarAJesus($lengua,$_POST['id_articulo']);
+                break;
+            case 'novedades_noticias':
+                $datos = $this->_consultarNoticias($lengua,$_POST['id_articulo']);
+                break;
+            case 'temas_fundamentales':
+                $datos = $this->_consultarTemasFundamentales($lengua,$_POST['id_articulo']);
+                break;
+            case 'oraciones':
+                $datos = $this->_consultarOraciones($lengua,$_POST['id_articulo']);
+                break;
+            case 'testimonios':
+                $datos = $this->_consultarTestimonios($lengua,$_POST['id_articulo']);
+                break;
+        }
+        /*foreach(){
+            
+        }*/
+        print_r($datos);
+        die();
+        if(!is_array($datos) || count($datos) < 1){
+            return false;
+        }
+        if(!$myfile = fopen($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html", "r") ) {
+            return false;
+        }
         $html = fread($myfile,filesize($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html"));
         fclose($myfile);
         $search = array('{lengua}','{logo}','{sponsor}','{present}','{message}','{and_more}');

@@ -120,14 +120,18 @@ Translate.prototype.setMensaje = function(tm, msg){
 
 Translate.prototype.sendDataCantos = function(){
     var ser = $( '#frm_standar' ).serializeArray();
-    ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
+    var file = $('#archivo_multi')[0];
+    console.log('1', ser);
+    ser[ser.length] = { name: 'lang', value: 'es'};
     ser[ser.length] = { name: 'funcion', value: 9};
+    ser[ser.length] = { name: 'archivo_multi', value: file};
     ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
-    //console.log(ser);
+    console.log('2',ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : ser,
         type : 'POST',
+        enctype: 'multipart/form-data',
         dataType : 'json',
         success : function(json) {
             if(json.cod_respuesta === 1){
