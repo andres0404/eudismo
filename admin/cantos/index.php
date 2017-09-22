@@ -122,7 +122,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
                     <li>
-                        <a href="../">
+                        <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
@@ -261,43 +261,26 @@
                 </div>
                     <div class="form-group">
                         <!-- Selector de idioma fuente -->
-                        <label for="idOrigen" class="col-sm-4 control-label">Idioma fuente</label>
-                        <div class="col-sm-8">
-                            <select class="form-control select2" style="width: 100%;"  id="idOrigen">
-                                <option value="es" selected = "selected">Español</option>
-                                <option value="en">Inglés</option>
-                                <option value="de">Alemán</option>
-                                <option value="fr">Francés</option>
-                                <option value="it">Italiano</option>
-                                <option value="pt">Portugues</option>
-                            </select>
-                        </div>
-                        <!-- Selector de idioma a traducir -->
-                        <label for="idTraducir" class="col-sm-4 control-label">Idioma a traducir</label>
-                        <div class="col-sm-8">
-                            <select class="form-control select2" style="width: 100%;"  id="idTraducir">
-                                <option value="es" selected = "selected">Español</option>
-                                <option value="en">Inglés</option>
-                                <option value="de">Alemán</option>
-                                <option value="fr">Francés</option>
-                                <option value="it">Italiano</option>
-                                <option value="pt">Portugues</option>
-                            </select>
-                        </div>    
+ 
+                        <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar">
                             <div class="box-body">                                                 
                                 <div class="form-group">
                                     <label for="ora_nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="ora_nombre">
+                                    <input type="text" class="form-control" id="cu_titulo" name="cu_titulo">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputFile">Canto</label>
-                                    <input type="file" id="exampleInputFile">
+                                    <label>Descripción</label>
+                                    <textarea class="form-control"  name="cu_desc" id="cu_desc" rows="3"></textarea>
+                                </div>                               
+                                <div class="form-group">
+                                    <label for="archivo_multi">Canto</label>
+                                    <input type="file" id="exampleInputFile" id="archivo_multi" name="archivo_multi">
                                     <p class="help-block">Los arcchivos deben ser: bla bla</p>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ora_nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="ora_nombre">
+                                    <label for="ora_nombre">YouTube</label>
+                                    <input type="text" class="form-control" id="cu_url" name="cu_url">
                                 </div>
                             </div>
 
@@ -309,7 +292,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 5)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.sendDataCantos()">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
