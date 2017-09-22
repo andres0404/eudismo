@@ -440,6 +440,7 @@ class ControladorEudista extends SubirMultimedia {
             $_objCeu->set_ceu_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCeu->set_id_usuario($this->_id_usuario);
             $_objCeu->set_ceu_estado(1);
+            $_objCeu->set_ceu_url($_POST['ceu_url']);
             //$_objCeu->set
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
