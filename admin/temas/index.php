@@ -219,7 +219,7 @@
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(2, 4, 'pt', 5)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(2, 4, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>

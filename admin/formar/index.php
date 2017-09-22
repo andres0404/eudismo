@@ -198,31 +198,31 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(2, 4, 'en', 2)">
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(3, 6, 'en', 2)">
                                                     <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
                                                     Inglés
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(2, 4, 'fr', 3)">
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(3, 6, 'fr', 3)">
                                                     <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
                                                     Francés
                                                 </a>
                                             </li>     
                                             <li>
-                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(2, 4, 'de', 4)">
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(3, 6, 'de', 4)">
                                                     <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
                                                     Alemán
                                                 </a>
                                             </li>                                             
                                             <li>
-                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(2, 4, 'it', 5)">
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(3, 6, 'it', 5)">
                                                     <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
                                                     Italiano
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(2, 4, 'pt', 5)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(3, 6, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>
@@ -230,11 +230,11 @@
                                         </ul>
                                         <div class="tab-content no-padding">
                                             <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
-                                            <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
-                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
-                                            <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
-                                            <div class="chart tab-pane" id="lg-it" style="position: relative;">Italiano</div>
-                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;">Portugués</div>
+                                            <div class="chart tab-pane" id="lg-en" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-de" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-it" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;"></div>
                                         </div>
 
                                     </div>
@@ -332,7 +332,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Objetivo</label>
-                                    <textarea class="form-control" id="iti_objetivo" rows="3"></textarea>
+                                    <textarea class="form-control" id="fj_objetivo" name="fj_objetivo" rows="3"></textarea>
                                 </div>                                   
                                 <div class="form-group">
                                     <label>Lectura Eudsita</label>
@@ -340,13 +340,13 @@
                                 </div>   
                                 <div class="form-group">
                                     <label>Oración final</label>
-                                    <textarea class="form-control" id="iti_oracion" rows="3"></textarea>
+                                    <textarea class="form-control" id="fj_oracion_final" name="fj_oracion_final" rows="3"></textarea>
                                 </div>   
                                 <div class="input-group date">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" class="form-control pull-right" id="iti_fecha" name="iti_fecha">
+                                    <input type="text" class="form-control pull-right" id="fecha_publica" name="fecha_publica">
                                 </div>
                                 
                                 
@@ -360,7 +360,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 3)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 5)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -391,7 +391,7 @@
 <script>
     $('.select2').select2()
     //Date picker
-    $('#iti_fecha').datepicker({
+    $('#fecha_publica').datepicker({
         autoclose: true
     })
     $('#modal_itinerario').slimScroll({
@@ -399,6 +399,7 @@
     });
 
     csl.init(3, 6, 'es', 1);
+    var arrD = [3, 6]
 </script>
 </body>
 </html>

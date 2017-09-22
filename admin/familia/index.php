@@ -64,9 +64,9 @@
             <!-- Logo -->
             <a href="#" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>B</b>U</span>
+                <span class="logo-mini"><b>A</b>E</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>Books</b>UVD</span>
+                <span class="logo-lg"><b>App</b>EUDISTA</span>
             </a>
             <!-- Header Navbar -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -124,7 +124,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
                     <li class="active">
-                        <a href="./">
+                        <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
@@ -149,7 +149,7 @@
                         </a>
                     </li>                                  
                     <li>
-                        <a href="../familia/">
+                        <a href="./">
                             <i class="fa fa-area-chart"></i> <span>La gran familia Eudista</span>
                         </a>
                     </li>                                                                    
@@ -178,7 +178,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">La CJM </h3>
+                                <h3 class="box-title">La gran familia Eudista</h3>
                                 <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default">Nuevo</button>
                                 <!-- /.box-tools -->
                             </div>
@@ -198,31 +198,31 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(1, 2, 'en', 2)">
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(6, 12, 'en', 2)">
                                                     <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
                                                     Inglés
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(1, 2, 'fr', 3)">
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(6, 12, 'fr', 3)">
                                                     <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
                                                     Francés
                                                 </a>
                                             </li>     
                                             <li>
-                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(1, 2, 'de', 4)">
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(6, 12, 'de', 4)">
                                                     <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
                                                     Alemán
                                                 </a>
                                             </li>                                             
                                             <li>
-                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(1, 2, 'it', 5)">
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(6, 12, 'it', 5)">
                                                     <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
                                                     Italiano
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(1, 2, 'pt', 6)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(6, 12, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>
@@ -319,14 +319,22 @@
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar">
                             <div class="box-body">
-                                
+                                <label for="ora_categoria" class="col-sm-4 control-label">Categoría</label>
                                 <div class="form-group">
-                                    <label for="cjm_titulo">Título</label>
-                                    <input type="text" class="form-control" id="cjm_titulo" name="cjm_titulo" id="cjm_titulo">
+                                    <select class="form-control select2" style="width: 100%;" id="fame_id_padre" name="fame_id_padre">
+                                        <option value="Familia 1" selected = "selected">Familia 1</option>
+                                        <option value="Familia 2">Familia 2</option>
+                                        <option value="Familia 3">Familia 3</option>
+                                        <option value="Familia 4">Familia 4</option>
+                                    </select>
+                                </div>  
+                                <div class="form-group">
+                                    <label for="fame_titulo">Título</label>
+                                    <input type="text" class="form-control" id="fami_titulo" name="fame_titulo" id="fame_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control"  name="cjm_desc" id="cjm_desc" rows="3"></textarea>
+                                    <textarea class="form-control"  name="fame_desc" id="fame_desc" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -338,7 +346,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 9)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 11)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -358,8 +366,8 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
-    csl.init(1, 2, 'es', 1);
-    var arrD = [1, 2]
+    csl.init(6, 12, 'es', 1);
+    var arrD = [6, 12]
 </script>
 </body>
 </html>

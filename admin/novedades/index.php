@@ -124,7 +124,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
                     <li class="active">
-                        <a href="./">
+                        <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
@@ -154,7 +154,7 @@
                         </a>
                     </li>                                                                    
                     <li>
-                        <a href="../novedades/">
+                        <a href="./">
                             <i class="fa fa-area-chart"></i> <span>Novedades / Noticias</span>
                         </a>
                     </li>                                  
@@ -178,7 +178,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">La CJM </h3>
+                                <h3 class="box-title">Novedades / Noticias</h3>
                                 <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default">Nuevo</button>
                                 <!-- /.box-tools -->
                             </div>
@@ -198,31 +198,31 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(1, 2, 'en', 2)">
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(7, 14, 'en', 2)">
                                                     <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
                                                     Inglés
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(1, 2, 'fr', 3)">
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(7, 14, 'fr', 3)">
                                                     <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
                                                     Francés
                                                 </a>
                                             </li>     
                                             <li>
-                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(1, 2, 'de', 4)">
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(7, 14, 'de', 4)">
                                                     <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
                                                     Alemán
                                                 </a>
                                             </li>                                             
                                             <li>
-                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(1, 2, 'it', 5)">
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(7, 14,, 'it', 5)">
                                                     <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
                                                     Italiano
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(1, 2, 'pt', 6)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(7, 14, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>
@@ -230,11 +230,11 @@
                                         </ul>
                                         <div class="tab-content no-padding">
                                             <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
-                                            <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
-                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
-                                            <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
-                                            <div class="chart tab-pane" id="lg-it" style="position: relative;">Italiano</div>
-                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;">Portugués</div>
+                                            <div class="chart tab-pane" id="lg-en" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-de" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-it" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;"></div>
                                         </div>
 
                                     </div>
@@ -279,7 +279,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Crear la CJM!</h4>
+                    <h4 class="modal-title">Crear un Noticia!</h4>
                 </div>
                 <div class="modal-body">
                     <div class="progress" id="pg_bar">
@@ -321,12 +321,12 @@
                             <div class="box-body">
                                 
                                 <div class="form-group">
-                                    <label for="cjm_titulo">Título</label>
-                                    <input type="text" class="form-control" id="cjm_titulo" name="cjm_titulo" id="cjm_titulo">
+                                    <label for="novt_titulo">Título</label>
+                                    <input type="text" class="form-control" id="cjm_titulo" name="novt_titulo" id="novt_titulo">
                                 </div>
                                 <div class="form-group">
-                                    <label>Descripción</label>
-                                    <textarea class="form-control"  name="cjm_desc" id="cjm_desc" rows="3"></textarea>
+                                    <label>Noticia</label>
+                                    <textarea class="form-control"  name="novt_desc" id="novt_desc" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -338,7 +338,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 9)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 13)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -358,8 +358,8 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
-    csl.init(1, 2, 'es', 1);
-    var arrD = [1, 2]
+    csl.init(7, 14, 'es', 1);
+    var arrD = [7, 14]
 </script>
 </body>
 </html>

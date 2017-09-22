@@ -122,7 +122,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
                     <li>
-                        <a href="../">
+                        <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
@@ -184,10 +184,64 @@
                             <div class="box-body no-padding">
 
                                 <div class="table-responsive mailbox-messages">
-                                    <table class="table table-hover table-striped">
-                                        <tbody id="result_search">
-                                        </tbody>
-                                    </table>
+
+                                    <!-- Custom tabs (Language with tabs)-->
+                                    <div class="nav-tabs-custom">
+                                      <!-- Tabs within a box -->
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#lg-es" data-toggle="tab">
+                                                    <img src="../../resources/img/langs/co.png" style="width: 15px;margin-top: -2px;"/>
+                                                     Español
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(4, 8, 'en', 2)">
+                                                    <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Inglés
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(4, 8, 'fr', 3)">
+                                                    <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Francés
+                                                </a>
+                                            </li>     
+                                            <li>
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(4, 8, 'de', 4)">
+                                                    <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Alemán
+                                                </a>
+                                            </li>                                             
+                                            <li>
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(4, 8, 'it', 5)">
+                                                    <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Italiano
+                                                </a>
+                                            </li>   
+                                            <li>
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(4, 8, 'pt', 5)">
+                                                    <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
+                                                    Portugués
+                                                </a>
+                                            </li>  
+                                        </ul>
+                                        <div class="tab-content no-padding">
+                                            <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
+                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
+                                            <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
+                                            <div class="chart tab-pane" id="lg-it" style="position: relative;">Italiano</div>
+                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;">Portugués</div>
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                  <!-- /.table -->
+                                </div>           
+                                    
+                                    
                                   <!-- /.table -->
                                 </div>
                                 <!-- /.mail-box-messages -->
@@ -284,22 +338,26 @@
                                 <option value="pt">Portugues</option>
                             </select>
                         </div>    
+                        <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar">
                             <div class="box-body">
                                 <label for="ora_categoria" class="col-sm-4 control-label">Categoría</label>
                                 <div class="form-group">
-                                    <select class="form-control select2" style="width: 100%;" id="ora_categoria">
-                                        <option value="ct-1" selected = "selected">Categoría 1</option>
-                                        <option value="ct-2">Categoría 2</option>
+                                    <select class="form-control select2" style="width: 100%;" id="ora_categoria" name="ora_categoria">
+                                        <option value="1" selected = "selected">Jesús</option>
+                                        <option value="2">Maria</option>
+                                        <option value="3">San Pedro</option>
+                                        <option value="4">Espiritu Santo</option>
+                                        <option value="5">Los Ángeles</option>
                                     </select>
                                 </div>                                                    
                                 <div class="form-group">
                                     <label for="ora_nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="ora_nombre">
+                                    <input type="text" class="form-control" id="ora_titulo" name="ora_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Oración</label>
-                                    <textarea class="form-control" id="ora_oracion" rows="3"></textarea>
+                                    <textarea class="form-control" id="ora_oracion" name="ora_oracion" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -311,7 +369,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 4)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 7)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -333,8 +391,8 @@
 <!-- Select2 -->
 <script src="../bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
-    $('.select2').select2()
-
+    csl.init(4, 8, 'es', 1);
+    var arrD = [4, 8]
 </script>
 </body>
 </html>
