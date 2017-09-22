@@ -15,7 +15,7 @@ Translate.prototype.init = function(idf, mod){
     //console.log(this.frm.elements.length);
     for(var i = 0; i < this.frm.elements.length; i++){
         var fv = this.frm.elements[i].value;
-        console.log(fv, i);
+        //console.log(fv, i);
         trad.traductor(fv, i);
         
     }
@@ -43,6 +43,7 @@ Translate.prototype.setValues = function(i, tr){
 };
 
 Translate.prototype.setProgressBar = function(){
+    //console.log('setProgressBar');
     var frm = this.frm.elements.length;
     document.getElementById('pg_bar').style.display = 'block';
     var current_progress = 0;
@@ -52,7 +53,7 @@ Translate.prototype.setProgressBar = function(){
         .css("width", current_progress + "%");
 
     }, 100);  
-
+    //console.log('', ind, this.frm.elements.length-1);
     if(ind === this.frm.elements.length-1){
         document.getElementById('pg_bar').style.display = 'none';
         clearInterval(interval);
@@ -62,12 +63,11 @@ Translate.prototype.setProgressBar = function(){
 };
 
 Translate.prototype.sendData = function(){
-    //console.log(1111);
     var ser = $( '#frm_standar' ).serializeArray();
     ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
     ser[ser.length] = { name: 'funcion', value: this.mod};
     ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
-    console.log(ser);
+    //console.log(ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : ser,
@@ -78,8 +78,10 @@ Translate.prototype.sendData = function(){
                 trad.setMensaje(1, json.mensaje);
                 document.getElementById('id_articulo').value = json.data.id_articulo;
                 arrLng[arrCfg[3]] = 0;
-                console.log(arrCfg);
-                csl.init(arrCfg[0], arrCfg[1], document.getElementById('idTraducir').value, arrCfg[3]);
+                var ps = csl.sePosLang(document.getElementById('idTraducir').value);
+                //console.log('Acá', arrD[0], arrD[1], document.getElementById('idTraducir').value, csl.sePosLang(document.getElementById('idTraducir').value));
+                arrLng[ps] = 0;
+                csl.init( arrD[0], arrD[1], document.getElementById('idTraducir').value, csl.sePosLang(document.getElementById('idTraducir').value)  );
             }
 
         },  
@@ -111,6 +113,41 @@ Translate.prototype.setMensaje = function(tm, msg){
     setTimeout(function(){
         document.getElementById('al_frm').style.display = 'none';
     },3000);
+};
+
+
+
+
+Translate.prototype.sendDataCantos = function(){
+    var ser = $( '#frm_standar' ).serializeArray();
+    ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
+    ser[ser.length] = { name: 'funcion', value: 9};
+    ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
+    //console.log(ser);
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : ser,
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            if(json.cod_respuesta === 1){
+                console.log(json);
+            }
+
+        },  
+        statusCode: {
+            404: function() {
+                alert( "URL no encontrada" );
+            }
+        },    
+        error : function(xhr, status) {
+            trad.setMensaje(2, 'Se presentó un problema');
+        },
+        complete : function(xhr, status) {
+            //alert('Petición realizada');
+        }
+    }); 
+    
 };
 
 var trad = new Translate();
