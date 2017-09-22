@@ -119,20 +119,21 @@ Translate.prototype.setMensaje = function(tm, msg){
 
 
 Translate.prototype.sendDataCantos = function(){
+    /*
+    var dat = new FormData($(this)[0]);
+    console.log(dat);
     var ser = $( '#frm_standar' ).serializeArray();
-    var file = $('#archivo_multi')[0];
-    console.log('1', ser);
+    
     ser[ser.length] = { name: 'lang', value: 'es'};
     ser[ser.length] = { name: 'funcion', value: 9};
-    ser[ser.length] = { name: 'archivo_multi', value: file};
-    ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
+    
     console.log('2',ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
-        data : ser,
-        type : 'POST',
-        enctype: 'multipart/form-data',
-        dataType : 'json',
+        data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData:false,   
         success : function(json) {
             if(json.cod_respuesta === 1){
                 console.log(json);
@@ -151,6 +152,44 @@ Translate.prototype.sendDataCantos = function(){
             //alert('Petición realizada');
         }
     }); 
+    */
+   
+   event.preventDefault();
+
+        // Get form
+        var form = $('#frm_standar')[0];
+        var data = new FormData(form);
+        data.append("lang", "es");
+        data.append("funcion", "9");
+
+        // disabled the submit button
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "../../business/controller/class.controlador.php",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                $("#result").text(data);
+                console.log("SUCCESS : ", data);
+                $("#btnSubmit").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                $("#result").text(e.responseText);
+                console.log("ERROR : ", e);
+                $("#btnSubmit").prop("disabled", false);
+
+            }
+        })
+   
+    
     
 };
 
