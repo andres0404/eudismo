@@ -227,11 +227,11 @@
                                         </ul>
                                         <div class="tab-content no-padding">
                                             <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
-                                            <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
-                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
-                                            <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
-                                            <div class="chart tab-pane" id="lg-it" style="position: relative;">Italiano</div>
-                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;">Portugués</div>
+                                            <div class="chart tab-pane" id="lg-en" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-fr" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-de" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-it" style="position: relative;"></div>
+                                            <div class="chart tab-pane" id="lg-pt" style="position: relative;"></div>
                                         </div>
 
                                     </div>

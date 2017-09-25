@@ -73,7 +73,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_guardarCantosEudistas();
                     break;
                 case 10:
-                    $return = $obj->_consultarCantosEudistas($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    $return = $obj->_consultarCantosEudistas("es", (isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null), (isset($_POST['ceu_categoria']) ? $_POST['ceu_categoria'] : null) );
                     break;
                 case 11:
                     $return = $obj->_guardarFamiliaEudista();
@@ -441,6 +441,7 @@ class ControladorEudista extends SubirMultimedia {
             $_objCeu->set_id_usuario($this->_id_usuario);
             $_objCeu->set_ceu_estado(1);
             $_objCeu->set_ceu_url($_POST['ceu_url']);
+            $_objCeu->set_ceu_categoria($_POST['ceu_categoria']);
             //$_objCeu->set
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
@@ -449,6 +450,8 @@ class ControladorEudista extends SubirMultimedia {
         } else {
             $_objCeu->set_ceu_id($_POST['id_articulo']);
             $_objCeu->consultar();
+            $_objCeu->set_ceu_url($_POST['ceu_url']);
+            $_objCeu->set_ceu_categoria($_POST['ceu_categoria']);
         }
         $R['id_articulo'] = $_objCeu->get_ceu_id();
         // subir archivo multimedia
@@ -461,7 +464,8 @@ class ControladorEudista extends SubirMultimedia {
             throw new ControladorEudistaException($e->getMessage(),0);
         }
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        //$codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $this->_getCodigoLenguaje("es");
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objCeu, "titulo", $codLang, $_POST['ceu_titulo']);
         // guardar DESCRIPCION
@@ -475,15 +479,19 @@ class ControladorEudista extends SubirMultimedia {
      * @return type
      * @throws ControladorEudistaException
      */
-    private function _consultarCantosEudistas($lenguaje, $ceu_id = null) {
+    private function _consultarCantosEudistas($lenguaje, $ceu_id = null,$ceu_categoria = NULL) {
         $_objCeu = new DAO_CantosEudistas();
         $_objCeu->habilita1ResultadoEnArray();
         if (!empty($ceu_id)) {
-            $_objCeu->set_cjm_id($ceu_id);
+            $_objCeu->set_ceu_id($ceu_id);
+        }
+        else if(!empty ($ceu_categoria)){
+            $_objCeu->set_ceu_categoria($ceu_categoria);
         }
         if (!$arrCeu = $_objCeu->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
         }
+        //print_r($arrCeu);
         $R = array();
         foreach ($arrCeu as $_objTemCjm) {
             // obtener titulo
@@ -494,12 +502,13 @@ class ControladorEudista extends SubirMultimedia {
                 continue;
             }
             // obtener descripcion
+            //print_r($_SERVER);
+            $ruta = "{$_SERVER['HTTP_ORIGIN']}/eudista/business/controller/";
             $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
             $aux = array(
-                'id_articulo' => $_objTemCjm->get_cjm_id(),
+                'id_articulo' => $_objTemCjm->get_ceu_id(),
                 'id_usuario' => $this->_id_usuario,
-                'cjm_orden' => $_objTemCjm->get_cjm_orden(),
-                'ceu_url_multimedia' => $_objTemCjm->get_ceu_url_multimedia(),
+                'ceu_url_multimedia' => $ruta.$_objTemCjm->get_ceu_url_multimedia(),
                 'lang' => $_objCeuTitulo->get_langLengua(),
                 'cjm_titulo' => $_objCeuTitulo->get_lang_texto(),
                 'cjm_desc' => $_objTextoDesc->get_lang_texto()

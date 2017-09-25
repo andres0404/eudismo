@@ -183,12 +183,34 @@
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
 
+
+                                
+                                
                                 <div class="table-responsive mailbox-messages">
-                                    <table class="table table-hover table-striped">
-                                        <tbody id="result_search">
-                                        </tbody>
-                                    </table>
-                                  <!-- /.table -->
+                                    <!-- Inicio Lista de categorias de los cantos --> 
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Lista de categorias de cantos</h3>
+                                        </div>
+                                        <div class="box-body" style="display: block;">
+                                            <ul class="todo-list ui-sortable"  id="list-cantos" ></ul>
+                                        </div>
+                                    </div>   
+                                    <!-- Fin Lista de categorias de los cantos --> 
+                                    
+                                    <!-- INICIO DE LA LISTA DE LOS CANTOS CATEGORIZADOS -->
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title" id="tit-categorias"></h3>
+                                        </div>
+                                        <div class="box-body" style="display: block;">
+                                            <div id="list-cantos-categorias"></div>
+                                        </div>
+                                    </div>                                       
+                                    
+                                    <!-- FIN DE LA LISTA DE LOS CANTOS CATEGORIZADOS -->
+                                    <div class="table-responsive mailbox-messages"></div> 
+
                                 </div>
                                 <!-- /.mail-box-messages -->
                             </div>
@@ -264,7 +286,12 @@
  
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar" enctype="multipart/form-data" >
-                            <div class="box-body">                                                 
+                            <div class="box-body">    
+                                <div class="form-group">
+                                    <label for="id-list-categorias">Categoria</label>
+                                    <select class="form-control select2" style="width: 100%;"  id="ceu_categoria" name="ceu_categoria">
+                                    </select>
+                                </div> 
                                 <div class="form-group">
                                     <label for="ora_nombre">Nombre</label>
                                     <input type="text" class="form-control" id="ceu_titulo" name="ceu_titulo">
@@ -276,7 +303,7 @@
                                 <div class="form-group">
                                     <label for="archivo_multi">Canto</label>
                                     <input type="file" id="exampleInputFile" id="archivo_multi" name="archivo_multi">
-                                    <p class="help-block">Los arcchivos deben ser: bla bla</p>
+                                    <p class="help-block">Los arcchivos deben ser: MP3, MP4 y WMA</p>
                                 </div>
                                 <div class="form-group">
                                     <label for="ora_nombre">YouTube</label>
@@ -315,7 +342,7 @@
 <script src="../bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
     $('.select2').select2()
-
+    csl.init(8);
 </script>
 </body>
 </html>

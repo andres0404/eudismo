@@ -118,40 +118,34 @@ Translate.prototype.setMensaje = function(tm, msg){
 
 
 
-Translate.prototype.sendDataCantos = function(){
-    var ser = $( '#frm_standar' ).serializeArray();
-    var file = $('#archivo_multi')[0];
-    console.log('1', ser);
-    ser[ser.length] = { name: 'lang', value: 'es'};
-    ser[ser.length] = { name: 'funcion', value: 9};
-    ser[ser.length] = { name: 'archivo_multi', value: file};
-    ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
-    console.log('2',ser);
+Translate.prototype.sendDataCantos = function(){  
+    event.preventDefault();
+    var form = $('#frm_standar')[0];
+    var data = new FormData(form);
+    data.append("lang", "es");
+    data.append("id_articulo", document.getElementById('id_articulo').value );
+    data.append("funcion", "9");
     $.ajax({
-        url : '../../business/controller/class.controlador.php',
-        data : ser,
-        type : 'POST',
+        type: "POST",
         enctype: 'multipart/form-data',
-        dataType : 'json',
-        success : function(json) {
-            if(json.cod_respuesta === 1){
-                console.log(json);
-            }
-
-        },  
-        statusCode: {
-            404: function() {
-                alert( "URL no encontrada" );
-            }
-        },    
-        error : function(xhr, status) {
-            trad.setMensaje(2, 'Se presentó un problema');
+        url: "../../business/controller/class.controlador.php",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+            $("#result").text(data);
+            console.log("SUCCESS : ", data);
+            $("#btnSubmit").prop("disabled", false);
         },
-        complete : function(xhr, status) {
-            //alert('Petición realizada');
+        error: function (e) {
+            $("#result").text(e.responseText);
+            console.log("ERROR : ", e);
+            $("#btnSubmit").prop("disabled", false);
         }
-    }); 
-    
+    });   
 };
+
 
 var trad = new Translate();
