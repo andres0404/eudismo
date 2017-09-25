@@ -10,6 +10,7 @@ class DAO_CantosEudistas extends DAOGeneral {
     protected $_ceu_fecha;
     protected $_ceu_url_multimedia;
     protected $_ceu_estado;
+    protected $_ceu_url;
     
     protected $_tabla = 'cantos_eudistas';
     protected $_primario = 'ceu_id';
@@ -21,9 +22,17 @@ class DAO_CantosEudistas extends DAOGeneral {
         'ceu_url_multimedia' => array('tipodato' => 'varchar'),
         'ceu_fecha' => array('tipodato' => 'date'),
         'ceu_estado' => array('tipodato' => 'integer'),
+        'ceu_url' => array('tipodato' => 'varchar')
     );
-    
-    function get_ceu_id() {
+    function get_ceu_url() {
+        return $this->_ceu_url;
+    }
+
+    function set_ceu_url($_ceu_url) {
+        $this->_ceu_url = $_ceu_url;
+    }
+
+        function get_ceu_id() {
         return $this->_ceu_id;
     }
 
