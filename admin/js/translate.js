@@ -118,79 +118,34 @@ Translate.prototype.setMensaje = function(tm, msg){
 
 
 
-Translate.prototype.sendDataCantos = function(){
-    /*
-    var dat = new FormData($(this)[0]);
-    console.log(dat);
-    var ser = $( '#frm_standar' ).serializeArray();
-    
-    ser[ser.length] = { name: 'lang', value: 'es'};
-    ser[ser.length] = { name: 'funcion', value: 9};
-    
-    console.log('2',ser);
+Translate.prototype.sendDataCantos = function(){  
+    event.preventDefault();
+    var form = $('#frm_standar')[0];
+    var data = new FormData(form);
+    data.append("lang", "es");
+    data.append("id_articulo", document.getElementById('id_articulo').value );
+    data.append("funcion", "9");
     $.ajax({
-        url : '../../business/controller/class.controlador.php',
-        data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-        contentType: false,       // The content type used when sending data to the server.
-        cache: false,             // To unable request pages to be cached
-        processData:false,   
-        success : function(json) {
-            if(json.cod_respuesta === 1){
-                console.log(json);
-            }
-
-        },  
-        statusCode: {
-            404: function() {
-                alert( "URL no encontrada" );
-            }
-        },    
-        error : function(xhr, status) {
-            trad.setMensaje(2, 'Se presentó un problema');
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "../../business/controller/class.controlador.php",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+            $("#result").text(data);
+            console.log("SUCCESS : ", data);
+            $("#btnSubmit").prop("disabled", false);
         },
-        complete : function(xhr, status) {
-            //alert('Petición realizada');
+        error: function (e) {
+            $("#result").text(e.responseText);
+            console.log("ERROR : ", e);
+            $("#btnSubmit").prop("disabled", false);
         }
-    }); 
-    */
-   
-   event.preventDefault();
-
-        // Get form
-        var form = $('#frm_standar')[0];
-        var data = new FormData(form);
-        data.append("lang", "es");
-        data.append("funcion", "9");
-
-        // disabled the submit button
-
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "../../business/controller/class.controlador.php",
-            data: data,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 600000,
-            success: function (data) {
-
-                $("#result").text(data);
-                console.log("SUCCESS : ", data);
-                $("#btnSubmit").prop("disabled", false);
-
-            },
-            error: function (e) {
-
-                $("#result").text(e.responseText);
-                console.log("ERROR : ", e);
-                $("#btnSubmit").prop("disabled", false);
-
-            }
-        })
-   
-    
-    
+    });   
 };
+
 
 var trad = new Translate();

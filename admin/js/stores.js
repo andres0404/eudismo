@@ -2,7 +2,7 @@
     Created on : 27/05/2017, 10:19:48 AM
     Author     : luis.caceres
 */
-var arrLng = [0,0,0,0,0,0,0];
+var arrLng = [0,0,0,0,0,0,0,0];
 var arrStr = [];
 var arrCfg = [];
 function Consultas(){
@@ -51,7 +51,14 @@ Consultas.prototype.init = function(ex, fn, le, ps){
             if(arrLng[this.ps] === 0){
                 csl.getNovedades(this.fn , this.le);   
             }   
-            break;                      
+            break;    
+        case 8:
+            csl.getCantosCategorias();
+            break;
+        case 9:
+            csl.getCantosEudistas(fn);
+            break;
+            
         default :
             console.log('Paila');
     }     
@@ -511,6 +518,120 @@ Consultas.prototype.sePosLang = function(le){
     }
     return rtn;
 };
+
+
+
+/*
+ * Consulta para las categorias de los cantos
+ */
+
+Consultas.prototype.getCantosCategorias = function(){  
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: 18,
+            lang: ''
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            console.log(json);
+            if(json.cod_respuesta === 1){
+                
+                arrStr = json.data;
+                $('#list-cantos').html('');
+                $.each(json.data, function(k,v){  
+                    //console.log(k, '->> ', json.data[k]);
+                    var tit = "'La Categoría: "+json.data[k]+"'";
+                    console.log(tit);
+                    if(k === 1){
+                        $('#ceu_categoria').append('<option value="'+k+'" selected = "selected">'+json.data[k]+'</option>');
+                    }
+                    else{
+                        $('#ceu_categoria').append('<option value="'+k+'">'+json.data[k]+'</option>');
+                    }
+                    
+                    $('#list-cantos').append('<li onclick="csl.init(9, '+k+'); csl.setTitle('+tit+');">'+
+			'<span class="handle ui-sortable-handle">'+
+                            '<i class="fa fa-ellipsis-v"></i>'+
+                            '<i class="fa fa-ellipsis-v"></i>'+
+			'</span>'+
+			'<span class="text" id="text-initial">'+json.data[k]+'</span>'+
+                    '</li>');
+                });
+                
+            }
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
+
+/*
+ * Consulta para los cantos eudistas
+ * @param {type} fn
+ * @returns {undefined}
+ */
+Consultas.prototype.getCantosEudistas = function(fn){  
+    console.log(fn);
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: 10,
+            ceu_categoria: fn,
+            lang: ''
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            console.log(json);
+            if(json.cod_respuesta === 1){
+                $('#list-cantos-categorias').html('');
+                $.each(json.data, function(k,v){  
+      
+                    $('#list-cantos-categorias').append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.cjm_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+
+                                '<dd>'+v.cjm_desc+'</dd>'+
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                        '</div>'+
+                    '</div>');              
+                    
+                });
+                
+            }
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
+Consultas.prototype.setTitle = function(tit){ 
+    console.log(tit);
+    document.getElementById('tit-categorias').innerHTML = tit;
+}
 
 
 
