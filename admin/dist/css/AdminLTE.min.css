@@ -106,3 +106,8 @@
     text-align: center;
     border-radius: 3px;
 }
+
+
+#reproductor{
+    display: block !important;
+}

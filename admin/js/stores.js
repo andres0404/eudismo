@@ -541,22 +541,22 @@ Consultas.prototype.getCantosCategorias = function(){
                 arrStr = json.data;
                 $('#list-cantos').html('');
                 $.each(json.data, function(k,v){  
-                    //console.log(k, '->> ', json.data[k]);
-                    var tit = "'La Categoría: "+json.data[k]+"'";
+                    //console.log(k, '->> ', json.data[k]);  cod_categoria
+                    var tit = "'La Categoría: "+v['nom_categoria']+"'";
                     console.log(tit);
                     if(k === 1){
-                        $('#ceu_categoria').append('<option value="'+k+'" selected = "selected">'+json.data[k]+'</option>');
+                        $('#ceu_categoria').append('<option value="'+v['cod_categoria']+'" selected = "selected">'+v['nom_categoria']+'</option>');
                     }
                     else{
-                        $('#ceu_categoria').append('<option value="'+k+'">'+json.data[k]+'</option>');
+                        $('#ceu_categoria').append('<option value="'+v['cod_categoria']+'">'+v['nom_categoria']+'</option>');
                     }
                     
-                    $('#list-cantos').append('<li onclick="csl.init(9, '+k+'); csl.setTitle('+tit+');">'+
+                    $('#list-cantos').append('<li onclick="csl.init(9, '+v['cod_categoria']+'); csl.setTitle('+tit+');">'+
 			'<span class="handle ui-sortable-handle">'+
                             '<i class="fa fa-ellipsis-v"></i>'+
                             '<i class="fa fa-ellipsis-v"></i>'+
 			'</span>'+
-			'<span class="text" id="text-initial">'+json.data[k]+'</span>'+
+			'<span class="text" id="text-initial">'+v['nom_categoria']+'</span>'+
                     '</li>');
                 });
                 
@@ -578,6 +578,8 @@ Consultas.prototype.getCantosCategorias = function(){
  * @param {type} fn
  * @returns {undefined}
  */
+
+
 Consultas.prototype.getCantosEudistas = function(fn){  
     console.log(fn);
     $.ajax({
@@ -600,14 +602,21 @@ Consultas.prototype.getCantosEudistas = function(fn){
                             '<h3 class="box-title">'+v.cjm_titulo+'</h3>'+
                             '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
                         '</div>'+
-                        '<div class="box-body">'+
+                        '<div class="box-body" id="reproductor">'+
                             '<dl>'+
+                                
                                 '<dd>'+v.cjm_desc+'</dd>'+
+                                '<audio controls >'+
+                                    '<source src="'+v.ceu_url_multimedia+'" type="audio/mp3">'+
+                                '</audio>'+
+                                
+                                
+                                
                             '</dl>'+
                         '</div>'+
                     '</div>'+
                     // Botones de configuración
-                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                    '<div class="box-footer ui-sortable-handle" id="footer-cantos" style="cursor: move; display="block !important;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
                             '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
@@ -616,6 +625,8 @@ Consultas.prototype.getCantosEudistas = function(fn){
                     
                 });
                 
+            }else{
+                $('#list-cantos-categorias').html('');
             }
             
         },

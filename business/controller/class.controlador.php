@@ -503,7 +503,8 @@ class ControladorEudista extends SubirMultimedia {
             }
             // obtener descripcion
             //print_r($_SERVER);
-            $ruta = "{$_SERVER['HTTP_ORIGIN']}/eudista/business/controller/";
+            $origen = !empty($_SERVER['HTTP_ORIGIN']) ? ('http://'.$_SERVER['HTTP_HOST']."/boletin") :  $_SERVER['HTTP_ORIGIN'] ;
+            $ruta = "{$origen}/eudista/business/controller/";
             $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
             $aux = array(
                 'id_articulo' => $_objTemCjm->get_ceu_id(),
@@ -680,7 +681,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objFam->get_test_id();
         // guardar TITULO
-        $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['test_titulo']);
+        //$_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['test_titulo']);
         // guardar DESCRIPCION
         $_objTextosDesc = $this->_setTextos($_objFam, "desc", $codLang, $_POST['test_desc']);
         return $R;
@@ -705,19 +706,19 @@ class ControladorEudista extends SubirMultimedia {
         foreach ($arrFam as $_objTemFa) {
             // obtener titulo
             if($_objTemFa instanceof DAO_Testimonios){}
-            $_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
+            /*$_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
             $langId = $_objCeuTitulo->get_test_id();
             if(empty($langId)){
                 continue;
-            }
+            }*/
             // obtener descripcion
             $_objTextoDesc = $this->_getTextos($_objTemFa, "desc", $lenguaje);
             $aux = array(
                 'id_articulo' => $_objTemFa->get_test_id(),
-                'lang' => $_objCeuTitulo->get_langLengua(),
+                'lang' => $_objTextoDesc->get_langLengua(),
                 'test_lengua_nativa' => $_objTemFa->get_test_lengua_nativa(),
-                'test_titulo' => $_objCeuTitulo->get_test_texto(),
-                'test_desc' => $_objTextoDesc->get_test_texto()
+                //'test_titulo' => $_objCeuTitulo->get_test_texto(),
+                'test_desc' => $_objTextoDesc->get_lang_texto()
             );
             $R[] = $aux;
         }
@@ -727,7 +728,15 @@ class ControladorEudista extends SubirMultimedia {
     
     private function _listarCategoriaOraciones() {
         $_objMT = new MTablas();
-        return $_objMT->getTablaCheckBox(5);
+        $arrCatego =  $_objMT->getTablaCheckBox(5);
+        $R = array();
+        foreach($arrCatego as $key => $valor){
+            $R[] = array(
+                'cod_categoria' => $key,
+                'nom_categoria' => $valor
+            );
+        }
+        return $R;
     }
     /*
 Array

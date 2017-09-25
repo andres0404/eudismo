@@ -338,7 +338,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 9)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 1)">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->

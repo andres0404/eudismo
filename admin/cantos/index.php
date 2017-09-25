@@ -52,6 +52,9 @@
         .example-modal .modal {
           background: transparent !important;
         }
+        #footer-cantos{
+            display: block !important;
+        }
     </style>
 </head>
 
