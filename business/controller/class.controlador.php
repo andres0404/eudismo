@@ -783,11 +783,15 @@ Array
                 $datos = $this->_consultarTestimonios($lengua,$_POST['id_articulo']);
                 break;
         }
-        /*foreach(){
-            
-        }*/
-        print_r($datos);
-        die();
+        $titulo = '';
+        foreach($datos as $claves => $valores){
+            if(strpos($claves, "titulo") || strpos($claves, "tematica")){
+                $titulo = $valores;
+                break;
+            }
+        }
+        //print_r($datos);
+        //die();
         if(!is_array($datos) || count($datos) < 1){
             return false;
         }
@@ -797,7 +801,7 @@ Array
         $html = fread($myfile,filesize($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html"));
         fclose($myfile);
         $search = array('{lengua}','{logo}','{sponsor}','{present}','{message}','{and_more}');
-        $replace = array($lengua,'App Eudista','Uniminuto','Sugerencia de traducción',$_POST['titulo'],$_POST['texto']);
+        $replace = array($lengua,'App Eudista','Uniminuto',"Sugerencia de traducción '$titulo'" ,$_POST['titulo'],$_POST['texto']);
         $plantilla = str_replace($search, $replace, $html);
         // MAIL
         $para      = $this->_correo_sugerencias;
