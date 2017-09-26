@@ -140,6 +140,11 @@ class ControladorEudista extends SubirMultimedia {
         } else {
             $_objCjm->set_cjm_id($_POST['id_articulo']);
             $_objCjm->consultar();
+            $_objCjm->set_cjm_imagen( ( empty($_POST['cjm_imagen']) || $_POST['cjm_imagen'] == 'undefined' ) ? "" : $_POST['cjm_imagen'] );
+            // actualiza imagen
+            if (!$_objCjm->guardar()) {
+                throw new ControladorEudistaException("No se pudo actualizar CJM " . $_objCjm->get_sql_error(), 0);
+            }
         }
         $R['id_articulo'] = $_objCjm->get_cjm_id();
         // consultar el codigo del lenguaje
@@ -674,6 +679,7 @@ class ControladorEudista extends SubirMultimedia {
         if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
             $_objFam->set_test_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objFam->set_test_lengua_nativa($codLang);
+            $_objFam->set_id_usuario($this->_id_usuario);
             $_objFam->set_test_estado(1);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
@@ -722,7 +728,9 @@ class ControladorEudista extends SubirMultimedia {
                 'lang' => $_objTextoDesc->get_langLengua(),
                 'test_lengua_nativa' => $_objTemFa->get_test_lengua_nativa(),
                 //'test_titulo' => $_objCeuTitulo->get_test_texto(),
-                'test_desc' => $_objTextoDesc->get_lang_texto()
+                'test_desc' => $_objTextoDesc->get_lang_texto(),
+                'imgPerfil' => $_objTemFa->get_imgPerfil(),
+                'nombre' => $_objTemFa->get_uNombre()
             );
             $R[] = $aux;
         }
