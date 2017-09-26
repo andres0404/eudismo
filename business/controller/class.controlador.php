@@ -709,6 +709,7 @@ class ControladorEudista extends SubirMultimedia {
      */
     private function _consultarTestimonios($lenguaje, $test_id = null) {
         $_objFam = new DAO_Testimonios();
+        $_objFam->setOrdenar(array('test_id DESC'));
         $_objFam->habilita1ResultadoEnArray();
         if (!empty($test_id)) {
             $_objFam->set_test_id($test_id);
