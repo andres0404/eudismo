@@ -1,5 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
+//header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
@@ -97,7 +97,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_enviarMailSugerencias();
                     break;
                 case 18:
-                    $return = $obj->_listarCategoriaOraciones();
+                    $return = $obj->_listarCategoriaOraciones($_POST['lang']);
                     break;
             }
             $respuesta = array(
@@ -132,6 +132,7 @@ class ControladorEudista extends SubirMultimedia {
             $_objCjm->set_cjm_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objCjm->set_id_usuario($this->_id_usuario);
             $_objCjm->set_cjm_estado(1);
+            $_objCjm->set_cjm_imagen( ( empty($_POST['cjm_imagen']) || $_POST['cjm_imagen'] == 'undefined' ) ? "" : $_POST['cjm_imagen'] );
             //$_objCjm->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCjm->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar CJM " . $_objCjm->get_sql_error(), 0);
@@ -184,7 +185,8 @@ class ControladorEudista extends SubirMultimedia {
                 //'cjm_orden' => $_objTemCjm->get_cjm_orden(),
                 'lang' => $_objCjmTitulo->get_langLengua(),
                 'cjm_titulo' => $_objCjmTitulo->get_lang_texto(),
-                'cjm_desc' => $_objTextoDesc->get_lang_texto()
+                'cjm_desc' => $_objTextoDesc->get_lang_texto(),
+                'cjm_imagen' => $_objTemCjm->get_cjm_imagen()
             );
             $R[] = $aux;
         }
@@ -601,6 +603,7 @@ class ControladorEudista extends SubirMultimedia {
         //print_r($_POST);
         if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
             $_objFam->set_novt_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
+            $_objFam->set_novt_imagen((empty($_POST['novt_imagen']) || $_POST['novt_imagen'] == 'undefined') ? "" : $_POST['novt_imagen'] );
             $_objFam->set_novt_estado(1);
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
@@ -650,7 +653,8 @@ class ControladorEudista extends SubirMultimedia {
                 'id_articulo' => $_objTemFa->get_novt_id(),
                 'lang' => $_objCeuTitulo->get_langLengua(),
                 'novt_titulo' => $_objCeuTitulo->get_lang_texto(),
-                'novt_desc' => $_objTextoDesc->get_lang_texto()
+                'novt_desc' => $_objTextoDesc->get_lang_texto(),
+                'novt_imagen' => $_objTemFa->get_novt_imagen()
             );
             $R[] = $aux;
         }
@@ -725,10 +729,17 @@ class ControladorEudista extends SubirMultimedia {
         $this->_mensaje = 'Datos encontrados';
         return $R;
     }
-    
-    private function _listarCategoriaOraciones() {
+    /**
+     * Traer la lista de categorias de oraciones en su correspondiante idioma
+     * @return type
+     */
+    private function _listarCategoriaOraciones($lengua) {
         $_objMT = new MTablas();
-        $arrCatego =  $_objMT->getTablaCheckBox(5);
+        $arrCatego =  $_objMT->getTablaCheckBox(4,NULL,$lengua);
+        $dato = each($arrCatego);
+        $jsonValoresOracion = $_objMT->getTablaCheckBox(5,$dato['key']);
+        $jsonLista = each($jsonValoresOracion);
+        $arrCatego = json_decode($jsonLista['value']);
         $R = array();
         foreach($arrCatego as $key => $valor){
             $R[] = array(

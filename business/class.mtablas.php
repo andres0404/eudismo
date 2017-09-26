@@ -10,6 +10,7 @@ class MTablas {
     
     private $_idTabla;
     private $_idDato;
+    private $_valor;
     private $_orden;
     
     public function __construct() {
@@ -20,13 +21,15 @@ class MTablas {
      * Devuelve un array del tipo array(id_dato => valor)
      * @param type $idTabla
      * @param type $idDato
+     * @param type $valor Que coincida con el valor
      * @param type $orden array(1:id 2:valor, asc desc)
      * @param type $tipReturn modifica tipo de array devuelto 1: array(id_dato => valor) 2: array(valor => valor) 3: array(id_dato => id_dato)
      */
-    public static function getTablaCheckBox($idTabla, $idDato = null,$orden = null, $tipReturn = 1) {
+    public static function getTablaCheckBox($idTabla, $idDato = null,$valor = NULL,$orden = null, $tipReturn = 1) {
         $obj = new self();
         $obj->_idTabla = $idTabla;
         $obj->_idDato = $idDato;
+        $obj->_valor = $valor;
         $obj->_orden = $orden;
         if(!$R = $obj->_consultar()){
             return array();
@@ -51,6 +54,9 @@ class MTablas {
         $where = "";
         if(!empty($this->_idDato)){
             $where = "AND b.id_valor = $this->_idDato ";
+        }
+        if(!empty($this->_valor)){
+            $where = "AND b.valor = '$this->_valor' ";
         }
         $query = "SELECT  a.nom_tabla,b.* FROM 
 mt_tablas a,
