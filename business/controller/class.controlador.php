@@ -240,7 +240,8 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_obj->get_fj_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        //$codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_obj, "tematica", $codLang, $_POST['fj_tematica']);
         $R['lang_id_tematica'] = $_objTextos->get_lang_id();

@@ -66,14 +66,20 @@ Translate.prototype.sendData = function(){
     var ser = $( '#frm_standar' ).serializeArray();
     ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
     ser[ser.length] = { name: 'funcion', value: this.mod};
-    ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
+    
     var imgGen = document.getElementById('img_cjm');
+    var famPad = document.getElementById('fame_id_padre');
     console.log(imgGen);
     if (imgGen !== null) {
         console.log('entra');
         ser[ser.length] = { name: 'cjm_imagen', value: baseImg};
     }
-    
+    if (famPad !== null) {
+        ser[ser.length] = { name: 'fame_id_padre', value: famPad};
+        ser[ser.length] = { name: 'id_articulo', value: ''};
+    }else{
+        ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
+    }
     //console.log(ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',

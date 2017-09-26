@@ -279,7 +279,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Crear la CJM!</h4>
+                    <h4 class="modal-title">Crear la Gran Familia Eudista!</h4>
                 </div>
                 <div class="modal-body">
                     <div class="progress" id="pg_bar">
@@ -317,17 +317,10 @@
                             </select>
                         </div>    
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
+                        
                         <form role="form" id="frm_standar">
                             <div class="box-body">
-                                <label for="ora_categoria" class="col-sm-4 control-label">Categoría</label>
-                                <div class="form-group">
-                                    <select class="form-control select2" style="width: 100%;" id="fame_id_padre" name="fame_id_padre">
-                                        <option value="Familia 1" selected = "selected">Familia 1</option>
-                                        <option value="Familia 2">Familia 2</option>
-                                        <option value="Familia 3">Familia 3</option>
-                                        <option value="Familia 4">Familia 4</option>
-                                    </select>
-                                </div>  
+                                <input type="hidden" class="form-control" id="fame_id_padre" name="fame_id_padre">
                                 <div class="form-group">
                                     <label for="fame_titulo">Título</label>
                                     <input type="text" class="form-control" id="fami_titulo" name="fame_titulo" id="fame_titulo">
@@ -354,6 +347,36 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    
+    
+     <!-- /.modal -->
+    <div class="modal fade" id="modal-hijos">
+        <div class="modal-dialog" id="mod-modal-hijos">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+
+                    
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        <!-- /.modal-content -->
+        </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    
+    
+    
+    
 </div>
 <!-- ./wrapper -->
 

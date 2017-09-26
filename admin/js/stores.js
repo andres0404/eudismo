@@ -331,7 +331,7 @@ Consultas.prototype.getFamilia = function(){
                         '</div>'+
                         '<div class="box-body">'+
                             '<dl>'+                               
-                                '<dd>'+v.fame_id_padre+'</dd>'+                              
+                                //'<dd>'+v.fame_id_padre+'</dd>'+                              
                                 '<dd>'+v.fame_desc+'</dd>'+                              
                             '</dl>'+
                         '</div>'+
@@ -339,8 +339,65 @@ Consultas.prototype.getFamilia = function(){
                     // Botones de configuración
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
-                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.oracionesFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.oracionesFull('+v.fame_id_padre+')">Ver Hijos</button>'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.oracionesFull('+v.id_articulo+')">Crear Hijo</button>'+
+                        '</div>'+
+                    '</div>');
+                });
+                
+            }
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
+
+
+/*
+ * Consulta para las Oraciones
+ */
+Consultas.prototype.getFamiliaHijos = function(){  
+    //console.log(this.ps, this.fn, this.le);
+    var lg = this.le;
+    arrLng[this.ps] = 1;
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: this.fn,
+            lang: this.le
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            //console.log(json.cod_respuesta);
+            if(json.cod_respuesta === 1){
+                //console.log('lang', lg);
+                arrStr = json.data;
+                $('#lg-'+lg).html('');
+                $.each(json.data, function(k,v){                 
+                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.fame_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+                               
+                                //'<dd>'+v.fame_id_padre+'</dd>'+                              
+                                '<dd>'+v.fame_desc+'</dd>'+                              
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.Familia('+v.fame_id_padre+')">Ver Hijos</button>'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.Familia('+v.id_articulo+')">Crear Hijo</button>'+
                         '</div>'+
                     '</div>');
                 });

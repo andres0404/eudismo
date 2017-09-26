@@ -116,3 +116,7 @@
 #reproductor{
     display: block !important;
 }
+
+#mod-modal-hijos{
+    width: 80%;
+}
