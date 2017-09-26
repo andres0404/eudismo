@@ -5,6 +5,9 @@
 var arrLng = [0,0,0,0,0,0,0,0];
 var arrStr = [];
 var arrCfg = [];
+var oraCat = 1;
+    var posCat = 'es';
+    var lenCat = 1;    
 function Consultas(){
     
 }
@@ -14,11 +17,12 @@ Consultas.prototype.init = function(ex, fn, le, ps){
     this.fn = fn;
     this.le = le;
     this.ps = ps;
+    posCat = ps;
+    lenCat = le;
     switch (ex){
         case 1: 
-            console.log()
             if(arrLng[this.ps] === 0){
-                console.log('->  csl.getCJM');
+                //console.log('->  csl.getCJM');
                 csl.getCJM(this.fn , this.le);   
             }   
             break;
@@ -33,7 +37,9 @@ Consultas.prototype.init = function(ex, fn, le, ps){
             }   
             break;  
         case 4: 
+            //console.log('->  csl.getOraciones', arrLng[this.ps]);
             if(arrLng[this.ps] === 0){
+                
                 csl.getOraciones(this.fn , this.le);   
             }   
             break;         
@@ -53,7 +59,7 @@ Consultas.prototype.init = function(ex, fn, le, ps){
             }   
             break;    
         case 8:
-            csl.getCantosCategorias();
+            csl.getOracionesCategorias();
             break;
         case 9:
             csl.getCantosEudistas(fn);
@@ -93,6 +99,7 @@ Consultas.prototype.getCJM = function(){
                         '</div>'+
                         '<div class="box-body">'+
                             '<dl>'+
+                                '<img src="'+v.cjm_imagen+'" width="150px" style="float: left; margin-right: 10px;">'+
                                 '<dd>'+v.cjm_desc+'</dd>'+
                             '</dl>'+
                         '</div>'+
@@ -241,13 +248,15 @@ Consultas.prototype.getFormar = function(){
  */
 Consultas.prototype.getOraciones = function(){  
     //console.log(this.ps, this.fn, this.le);
+
     var lg = this.le;
     arrLng[this.ps] = 1;
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : { 
             funcion: this.fn,
-            lang: this.le
+            lang: this.le,
+            ora_categoria: oraCat
         },
         type : 'POST',
         dataType : 'json',
@@ -257,6 +266,7 @@ Consultas.prototype.getOraciones = function(){
                 //console.log('lang', lg);
                 arrStr = json.data;
                 $('#lg-'+lg).html('');
+                //console.log('-> ',document.getElementById('lg-'+lg));
                 $.each(json.data, function(k,v){                 
                     $('#lg-'+lg).append('<div class="box box-solid">'+
                         '<div class="box-header with-border">'+
@@ -277,9 +287,9 @@ Consultas.prototype.getOraciones = function(){
                         '</div>'+
                     '</div>');
                 });
-                
+
             }
-            
+
         },
         failure: function (response) {
             alert(response.responseText);
@@ -287,7 +297,8 @@ Consultas.prototype.getOraciones = function(){
         error: function (response) {
             alert(response.responseText);
         }
-    });  
+    }); 
+
     
 };
 
@@ -525,7 +536,7 @@ Consultas.prototype.sePosLang = function(le){
  * Consulta para las categorias de los cantos
  */
 
-Consultas.prototype.getCantosCategorias = function(){  
+Consultas.prototype.getOracionesCategorias = function(){  
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : { 
@@ -535,29 +546,30 @@ Consultas.prototype.getCantosCategorias = function(){
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            console.log(json);
+            //console.log(json);
             if(json.cod_respuesta === 1){
                 
                 arrStr = json.data;
-                $('#list-cantos').html('');
+                $('#list-oraciones').html('');
                 $.each(json.data, function(k,v){  
                     //console.log(k, '->> ', json.data[k]);  cod_categoria
                     var tit = "'La Categoría: "+v['nom_categoria']+"'";
-                    console.log(tit);
+                    //console.log(tit);
                     if(k === 1){
-                        $('#ceu_categoria').append('<option value="'+v['cod_categoria']+'" selected = "selected">'+v['nom_categoria']+'</option>');
+                        $('#ora_categoria').append('<option value="'+v['cod_categoria']+'" selected = "selected">'+v['nom_categoria']+'</option>');
                     }
                     else{
-                        $('#ceu_categoria').append('<option value="'+v['cod_categoria']+'">'+v['nom_categoria']+'</option>');
+                        $('#ora_categoria').append('<option value="'+v['cod_categoria']+'">'+v['nom_categoria']+'</option>');
                     }
                     
-                    $('#list-cantos').append('<li onclick="csl.init(9, '+v['cod_categoria']+'); csl.setTitle('+tit+');">'+
+                    $('#list-oraciones').append('<li onclick="csl.setCatOra('+v['cod_categoria']+'); csl.setTitle('+tit+');">'+
 			'<span class="handle ui-sortable-handle">'+
                             '<i class="fa fa-ellipsis-v"></i>'+
                             '<i class="fa fa-ellipsis-v"></i>'+
 			'</span>'+
 			'<span class="text" id="text-initial">'+v['nom_categoria']+'</span>'+
                     '</li>');
+                    
                 });
                 
             }
@@ -581,12 +593,11 @@ Consultas.prototype.getCantosCategorias = function(){
 
 
 Consultas.prototype.getCantosEudistas = function(fn){  
-    console.log(fn);
+    //console.log(fn);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : { 
             funcion: 10,
-            ceu_categoria: fn,
             lang: ''
         },
         type : 'POST',
@@ -640,10 +651,21 @@ Consultas.prototype.getCantosEudistas = function(fn){
     
 };
 Consultas.prototype.setTitle = function(tit){ 
-    console.log(tit);
+    //console.log(tit);
     document.getElementById('tit-categorias').innerHTML = tit;
 }
 
+Consultas.prototype.setCatOra = function(id){
+    oraCat = id;
+    
+    for(i = 0; i < arrLng.length; i++){
+        arrLng[i] = 0;
+    }
+    document.getElementById('lg-'+lenCat).innerHTML = '';
+    csl.init(4, 8, lenCat, posCat);
+    
+    //console.log(4, 8, lenCat, posCat);
+};
 
 
 var csl = new Consultas();

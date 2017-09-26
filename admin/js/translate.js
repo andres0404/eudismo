@@ -67,6 +67,13 @@ Translate.prototype.sendData = function(){
     ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
     ser[ser.length] = { name: 'funcion', value: this.mod};
     ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
+    var imgGen = document.getElementById('img_cjm');
+    console.log(imgGen);
+    if (imgGen !== null) {
+        console.log('entra');
+        ser[ser.length] = { name: 'cjm_imagen', value: baseImg};
+    }
+    
     //console.log(ser);
     $.ajax({
         url : '../../business/controller/class.controlador.php',
