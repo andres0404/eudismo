@@ -317,6 +317,13 @@
                             </select>
                         </div>    
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
+                        <div class="form-group">
+                            <label for="exampleInputFile">Imagen</label>
+                            <input type="file" id="img_cjm"  name="img_cjm">
+
+                            <p class="help-block"></p>
+                        </div>               
+                        
                         <form role="form" id="frm_standar">
                             <div class="box-body">
                                 
@@ -359,7 +366,42 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
     csl.init(1, 2, 'es', 1);
-    var arrD = [1, 2]
+    var arrD = [1, 2];
+    
+    var baseImg = '';
+    function handleFileSelect(evt) {
+            //console.log(evt);
+        var files = evt.target.files;
+
+        var tImg = files[0].size/1000;
+        if(tImg < 1001){
+            tamImg = 1;
+            for (var i = 0, f; f = files[i]; i++) {
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        //console.log('tamaño', e.target.result);
+                        baseImg =  e.target.result;
+                        //console.log(baseImg);
+                    };
+                })(f);
+                reader.readAsDataURL(f);
+            }
+        }else{
+            alert('ERROR', 'El tamaño de la imagen no debe superar los 1000K');
+            clearFileInputField('img_cjm')
+            tamImg = 0;
+        }
+    }
+
+function clearFileInputField(tagId) {
+    document.getElementById(tagId).innerHTML = document.getElementById(tagId).innerHTML;
+}
+
+document.getElementById('img_cjm').addEventListener('change', handleFileSelect, false);
 </script>
 </body>
 </html>

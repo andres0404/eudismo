@@ -184,13 +184,15 @@
                             <div class="box-body no-padding">
 
                                 <div class="table-responsive mailbox-messages">
-
+                                    <div class="box-body" style="display: block;">
+                                        <ul class="todo-list ui-sortable"  id="list-oraciones" ></ul>
+                                    </div>
                                     <!-- Custom tabs (Language with tabs)-->
                                     <div class="nav-tabs-custom">
                                       <!-- Tabs within a box -->
                                         <ul class="nav nav-tabs">
                                             <li class="active">
-                                                <a href="#lg-es" data-toggle="tab">
+                                                <a href="#lg-es" data-toggle="tab" onclick="csl.init(4, 8, 'es', 1)">
                                                     <img src="../../resources/img/langs/co.png" style="width: 15px;margin-top: -2px;"/>
                                                      Español
                                                 </a>
@@ -220,14 +222,17 @@
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(4, 8, 'pt', 5)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(4, 8, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>
                                             </li>  
                                         </ul>
                                         <div class="tab-content no-padding">
-                                            <div class="chart tab-pane active" id="lg-es" style="position: relative;"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title" id="tit-categorias">ALABANZA</h3>
+                                            </div>
+                                            <div class="chart tab-pane active" id="lg-es" style="position: relative;">Seleccione una categoría</div>
                                             <div class="chart tab-pane" id="lg-en" style="position: relative;">Inglés</div>
                                             <div class="chart tab-pane" id="lg-fr" style="position: relative;">Francés</div>
                                             <div class="chart tab-pane" id="lg-de" style="position: relative;">Alemán</div>
@@ -341,16 +346,12 @@
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
                         <form role="form" id="frm_standar">
                             <div class="box-body">
-                                <label for="ora_categoria" class="col-sm-4 control-label">Categoría</label>
                                 <div class="form-group">
-                                    <select class="form-control select2" style="width: 100%;" id="ora_categoria" name="ora_categoria">
-                                        <option value="1" selected = "selected">Jesús</option>
-                                        <option value="2">Maria</option>
-                                        <option value="3">San Pedro</option>
-                                        <option value="4">Espiritu Santo</option>
-                                        <option value="5">Los Ángeles</option>
+                                    <label for="ora_categoria">Categoria</label>
+                                    <select class="form-control select2" style="width: 100%;"  id="ora_categoria" name="ora_categoria">
                                     </select>
-                                </div>                                                    
+                                </div>              
+                                                  
                                 <div class="form-group">
                                     <label for="ora_nombre">Nombre</label>
                                     <input type="text" class="form-control" id="ora_titulo" name="ora_titulo">
@@ -369,7 +370,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 7)">Guardar</button>
+                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 7); clearid();">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -391,8 +392,11 @@
 <!-- Select2 -->
 <script src="../bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
+
     csl.init(4, 8, 'es', 1);
-    var arrD = [4, 8]
+    var arrD = [4, 8];
+    csl.init(8);
+    function clearid(){document.getElementById('id_articulo').value = '';}
 </script>
 </body>
 </html>
