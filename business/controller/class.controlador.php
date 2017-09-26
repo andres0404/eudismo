@@ -67,7 +67,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_guardarOraciones();
                     break;
                 case 8:
-                    $return = $obj->_consultarOraciones($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    $return = $obj->_consultarOraciones($_POST['lang'], (isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null),(isset($_POST['ora_categoria']) ? $_POST['ora_categoria'] : null)) ;
                     break;
                 case 9:
                     $return = $obj->_guardarCantosEudistas();
@@ -402,11 +402,14 @@ class ControladorEudista extends SubirMultimedia {
      * @return type
      * @throws ControladorEudistaException
      */
-    private function _consultarOraciones($lenguaje, $ora_id = null) {
+    private function _consultarOraciones($lenguaje, $ora_id = null,$ora_categoria = null) {
         $_objOracion = new DAO_Oraciones();
         $_objOracion->habilita1ResultadoEnArray();
         if (!empty($ora_id)) {
             $_objOracion->set_ora_id($ora_id);
+        }
+        if(!empty($ora_categoria)){
+            $_objOracion->set_ora_categoria($ora_categoria);
         }
         if (!$arrOra = $_objOracion->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
@@ -448,7 +451,6 @@ class ControladorEudista extends SubirMultimedia {
             $_objCeu->set_id_usuario($this->_id_usuario);
             $_objCeu->set_ceu_estado(1);
             $_objCeu->set_ceu_url($_POST['ceu_url']);
-            $_objCeu->set_ceu_categoria($_POST['ceu_categoria']);
             //$_objCeu->set
             //$_objCeu->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objCeu->guardar()) {
@@ -486,14 +488,11 @@ class ControladorEudista extends SubirMultimedia {
      * @return type
      * @throws ControladorEudistaException
      */
-    private function _consultarCantosEudistas($lenguaje, $ceu_id = null,$ceu_categoria = NULL) {
+    private function _consultarCantosEudistas($lenguaje, $ceu_id = null) {
         $_objCeu = new DAO_CantosEudistas();
         $_objCeu->habilita1ResultadoEnArray();
         if (!empty($ceu_id)) {
             $_objCeu->set_ceu_id($ceu_id);
-        }
-        else if(!empty ($ceu_categoria)){
-            $_objCeu->set_ceu_categoria($ceu_categoria);
         }
         if (!$arrCeu = $_objCeu->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
