@@ -87,6 +87,13 @@ class DAOGeneral {
     public function getValorPrimario(){
         return $this->{'_'.$this->_primario};
     }
+    /**
+     * 
+     * @param type $valor
+     */
+    public function setValorPrimario($valor) {
+        $this->{'_'.$this->_primario} = $valor;
+    }
 
     /**
      * 
@@ -181,6 +188,32 @@ class DAOGeneral {
             }
         }
         return false;
+    }
+    /**
+     * 
+     * @return boolean
+     */
+    function eliminar(){
+        $query = "DELETE FROM ".$this->getTabla()." WHERE ";
+        $where = array();
+        foreach($this->_mapa as $nom_campo => $arrAtributos) {
+            if (!isset($arrAtributos['sql']) && $this->{'_' . $nom_campo} !== null) {
+                $where[] = $nom_campo . " = '" . $this->{'_' . $nom_campo} . "'";
+            }
+        }
+        if(count($where) > 0){
+            $query .= implode(" AND ", $where);
+        }else{
+            $query .= " 1 ";
+        }
+        $con = ConexionSQL::getInstance();
+        echo $query;
+        die();
+        if(!$con->consultar($query)){
+            $this->_error = $con->get_error();
+            return false;
+        }
+        return true;
     }
     
     function get_sql_error() {

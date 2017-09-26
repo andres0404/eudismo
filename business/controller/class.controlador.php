@@ -1,5 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
+//header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
@@ -79,7 +79,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_guardarFamiliaEudista();
                     break;
                 case 12:
-                    $return = $obj->_consultarFamiliaEudista($_POST['lang'], isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null);
+                    $return = $obj->_consultarFamiliaEudista($_POST['lang'], (isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null), (isset($_POST['fame_id_padre']) ? $_POST['fame_id_padre'] : "0") );
                     break;
                 case 13:
                     $return = $obj->_guardarNoticias();
@@ -98,6 +98,9 @@ class ControladorEudista extends SubirMultimedia {
                     break;
                 case 18:
                     $return = $obj->_listarCategoriaOraciones($_POST['lang']);
+                    break;
+                case 19:
+                    $return = $obj->_eliminar($_POST['DAO'], $_POST['id_articulo'], $_POST['lang']);
                     break;
             }
             $respuesta = array(
@@ -118,6 +121,22 @@ class ControladorEudista extends SubirMultimedia {
         //$obj->_registrarSoicitud($response);
         $obj->cabeceras();
         echo $response;
+    }
+    
+    /**
+     * 
+     * @param type $tabla
+     * @param type $idArticulo
+     * @param type $lengua
+     */
+    public function _eliminar ($tabla, $idArticulo,$lengua) {
+        $objMT = new MTablas();
+        $tabla = $objMT->getTablaCheckBox(6,null,$tabla);
+        $arrTabla = each($tabla);
+        print_r($arrTabla);
+        $objDAO = new $arrTabla['value']();
+        $objDAO->setValorPrimario($idArticulo);
+        $this->_eliminarTexto($objDAO, $lengua);
     }
     
     /**
@@ -562,11 +581,14 @@ class ControladorEudista extends SubirMultimedia {
      * @return type
      * @throws ControladorEudistaException
      */
-    private function _consultarFamiliaEudista($lenguaje, $fame_id = null) {
+    private function _consultarFamiliaEudista($lenguaje, $fame_id = null,$fame_id_padre = "0") {
         $_objFam = new DAO_FamiliaEudista();
         $_objFam->habilita1ResultadoEnArray();
         if (!empty($fame_id)) {
             $_objFam->set_fame_id($fame_id);
+        }
+        if(!empty($fame_id_padre)){
+            $_objFam->set_fame_id_padre($fame_id_padre);
         }
         if (!$arrFam = $_objFam->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
@@ -871,7 +893,7 @@ Array
         $_objTexto->set_lang_tbl($_objDAO->getTabla());
         $_objTexto->set_lang_id_tbl($_objDAO->getValorPrimario());
         $_objTexto->set_lang_seccion($seccion);
-        $_objTexto->set_lang_lengua($codLang);
+        $_objTexto->set_lang_lengua($this->_getCodigoLenguaje($codLang));
         $_objTexto->consultar(); // se consulta para obtener llave primaria y modificar si es necesario
         $_objTexto->set_lang_texto($texto);
         if (!$_objTexto->guardar()) {
@@ -879,8 +901,22 @@ Array
         }
         return $_objTexto;
     }
-    
-    
+    /**
+     * 
+     * @param DAOGeneral $objDao
+     * @param type $codLang
+     * @throws ControladorEudistaException
+     */
+    private function _eliminarTexto(DAOGeneral $objDao, $codLang) {
+        $_objTexto = new DAO_Textos();
+        $_objTexto->set_lang_tbl($objDao->getTabla());
+        $_objTexto->set_lang_lengua($codLang);
+        $_objTexto->set_lang_id_tbl($objDao->getValorPrimario());
+        if(!$_objTexto->eliminar()){
+            throw new ControladorEudistaException("Error ".$_objTexto->get_sql_error());
+        }
+        return true;
+    }
 
     /**
      * Obtener el codigo del lenguaje a partir del codigo ISO
