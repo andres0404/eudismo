@@ -6,7 +6,6 @@ class DAO_Testimonios extends DAOGeneral {
 
     protected $_test_id;
     protected $_id_usuario;
-    protected $_test_foto;
     protected $_test_lengua_nativa;
     protected $_test_estado;
     protected $_imgPerfil;
@@ -19,7 +18,6 @@ class DAO_Testimonios extends DAOGeneral {
     protected $_mapa = array(
         'test_id' => array('tipodato' => 'integer'),
         'id_usuario' => array('tipodato' => 'integer'),
-        'test_foto' => array('tipodato' => 'varchar'),
         'test_lengua_nativa' => array('tipodato' => 'integer'),
         'test_estado' => array('tipodato' => 'integer'),
         'imgPerfil' => array('tipodato' => 'varchar','sql' => '(SELECT u_img_perfil FROM usuarios WHERE usuarios.id_usuario = testimonios.id_usuario)'),
@@ -48,10 +46,6 @@ class DAO_Testimonios extends DAOGeneral {
         return $this->_id_usuario;
     }
 
-    function get_test_foto() {
-        return $this->_test_foto;
-    }
-
     function get_ordenar() {
         return $this->_ordenar;
     }
@@ -62,10 +56,6 @@ class DAO_Testimonios extends DAOGeneral {
 
     function set_id_usuario($_id_usuario) {
         $this->_id_usuario = $_id_usuario;
-    }
-
-    function set_test_foto($_test_foto) {
-        $this->_test_foto = $_test_foto;
     }
 
     function set_ordenar($_ordenar) {

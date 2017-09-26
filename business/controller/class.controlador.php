@@ -617,6 +617,10 @@ class ControladorEudista extends SubirMultimedia {
         } else {
             $_objFam->set_novt_id($_POST['id_articulo']);
             $_objFam->consultar();
+            $_objFam->set_novt_imagen((empty($_POST['novt_imagen']) || $_POST['novt_imagen'] == 'undefined') ? "" : $_POST['novt_imagen'] );
+            if (!$_objFam->guardar()) {
+                throw new ControladorEudistaException("No se pudo actualizar Noticias " . $_objFam->get_sql_error(), 0);
+            }
         }
         $R['id_articulo'] = $_objFam->get_novt_id();
         // consultar el codigo del lenguaje
