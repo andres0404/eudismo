@@ -79,7 +79,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_guardarFamiliaEudista();
                     break;
                 case 12:
-                    $return = $obj->_consultarFamiliaEudista($_POST['lang'], (isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null), (isset($_POST['fame_id_padre']) ? $_POST['fame_id_padre'] : "0") );
+                    $return = $obj->_consultarFamiliaEudista($_POST['lang'], (isset($_POST['id_articulo']) ? $_POST['id_articulo'] : null), (isset($_POST['fame_id_padre']) ? $_POST['fame_id_padre'] : '0') );
                     break;
                 case 13:
                     $return = $obj->_guardarNoticias();
@@ -167,7 +167,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objCjm->get_cjm_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objCjm, "titulo", $codLang, $_POST['cjm_titulo']);
         $R['lang_id_titulo'] = $_objTextos->get_lang_id();
@@ -240,7 +240,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_obj->get_fj_id();
         // consultar el codigo del lenguaje
-        //$codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        //$codLang = $_POST['lang'];
         $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_obj, "tematica", $codLang, $_POST['fj_tematica']);
@@ -334,7 +334,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objTemas->get_temf_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objTemas, "titulo", $codLang, $_POST['funda_titulo']);
         $R['lang_id_titulo'] = $_objTextos->get_lang_id();
@@ -408,7 +408,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objOracion->get_ora_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objOracion, "titulo", $codLang, $_POST['ora_titulo']);
         // guardar DESCRIPCION
@@ -493,8 +493,8 @@ class ControladorEudista extends SubirMultimedia {
             throw new ControladorEudistaException($e->getMessage(),0);
         }
         // consultar el codigo del lenguaje
-        //$codLang = $this->_getCodigoLenguaje($_POST['lang']);
-        $codLang = $this->_getCodigoLenguaje("es");
+        //$codLang = $_POST['lang'];
+        $codLang = "es";//$this->_getCodigoLenguaje("es");
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objCeu, "titulo", $codLang, $_POST['ceu_titulo']);
         // guardar DESCRIPCION
@@ -557,7 +557,7 @@ class ControladorEudista extends SubirMultimedia {
             $_objFam->set_fame_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objFam->set_id_usuario($this->_id_usuario);
             $_objFam->set_fame_estado(1);
-            $_objFam->set_fame_id_padre($_POST['fame_id_padre']);
+            $_objFam->set_fame_id_padre(empty($_POST['fame_id_padre']) ? "0" : $_POST['fame_id_padre'] );
             //$_objFam->set_cjm_orden(isset($_POST['cjm_orden']) ? $_POST['cjm_orden'] : "" );
             if (!$_objFam->guardar()) {
                 throw new ControladorEudistaException("No se pudo almacenar Familia Eudista " . $_objFam->get_sql_error(), 0);
@@ -568,7 +568,8 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objFam->get_fame_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
+        
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['fame_titulo']);
         // guardar DESCRIPCION
@@ -582,18 +583,20 @@ class ControladorEudista extends SubirMultimedia {
      * @return type
      * @throws ControladorEudistaException
      */
-    private function _consultarFamiliaEudista($lenguaje, $fame_id = null,$fame_id_padre = "0") {
+    private function _consultarFamiliaEudista($lenguaje, $fame_id = null,$fame_id_padre = '0') {
         $_objFam = new DAO_FamiliaEudista();
         $_objFam->habilita1ResultadoEnArray();
         if (!empty($fame_id)) {
             $_objFam->set_fame_id($fame_id);
         }
-        if(!empty($fame_id_padre)){
+    if(!empty($fame_id_padre) || $fame_id_padre == '0'){
             $_objFam->set_fame_id_padre($fame_id_padre);
         }
+        //+print_r($_objFam);
         if (!$arrFam = $_objFam->consultar()) {
             throw new ControladorEudistaException("No se encontro elemento", 0);
         } 
+        //print_r($arrFam);
        $R = array();
         foreach ($arrFam as $_objTemFa) {
             // obtener titulo
@@ -646,7 +649,7 @@ class ControladorEudista extends SubirMultimedia {
         }
         $R['id_articulo'] = $_objFam->get_novt_id();
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         // guardar TITULO
         $_objTextos = $this->_setTextos($_objFam, "titulo", $codLang, $_POST['novt_titulo']);
         // guardar DESCRIPCION
@@ -701,7 +704,7 @@ class ControladorEudista extends SubirMultimedia {
         $_objFam = new DAO_Testimonios();
         //print_r($_POST);
         // consultar el codigo del lenguaje
-        $codLang = $this->_getCodigoLenguaje($_POST['lang']);
+        $codLang = $_POST['lang'];
         if (isset($_POST['id_articulo']) && ( empty($_POST['id_articulo']) || $_POST['id_articulo'] == 'undefined' ) ) {
             $_objFam->set_test_id($_POST['id_articulo'] == 'undefined' ? "" : $_POST['id_articulo']);
             $_objFam->set_test_lengua_nativa($codLang);

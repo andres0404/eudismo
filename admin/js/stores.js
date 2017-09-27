@@ -339,8 +339,8 @@ Consultas.prototype.getFamilia = function(){
                     // Botones de configuración
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
-                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.oracionesFull('+v.fame_id_padre+')">Ver Hijos</button>'+
-                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.oracionesFull('+v.id_articulo+')">Crear Hijo</button>'+
+                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.setFamilia('+v.id_articulo+')">Ver Hijos</button>'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="setFamilia('+v.id_articulo+')">Crear Hijo</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -396,8 +396,8 @@ Consultas.prototype.getFamiliaHijos = function(){
                     // Botones de configuración
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
-                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.Familia('+v.fame_id_padre+')">Ver Hijos</button>'+
-                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.Familia('+v.id_articulo+')">Crear Hijo</button>'+
+                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.setFamilia('+v.id_articulo+')">Ver Hijos</button>'+
+                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="setFamilia('+v.id_articulo+')">Crear Hijo</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -414,6 +414,12 @@ Consultas.prototype.getFamiliaHijos = function(){
     });  
     
 };
+
+function setFamilia(id){
+    console.log(id);
+    document.getElementById('id_articulo').value = '';
+    document.getElementById('fame_id_padre').value = id;
+}
 
 /*
  * Consulta para las Npvedades
@@ -558,7 +564,7 @@ Consultas.prototype.oracionesFull = function(ip){
         var iAr = parseInt(arrStr[i].id_articulo);
         if(ip === iAr){
             console.log(arrStr[i].id_articulo, arrStr[i].cjm_desc);
-            document.getElementById('ora_categoria').value = arrStr[i].ora_categoria;
+            //document.getElementById('ora_categoria').value = arrStr[i].ora_categoria;
             document.getElementById('ora_titulo').value = arrStr[i].ora_titulo;
             document.getElementById('ora_oracion').value = arrStr[i].ora_oracion;   
         }

@@ -75,7 +75,7 @@ Translate.prototype.sendData = function(){
         ser[ser.length] = { name: 'cjm_imagen', value: baseImg};
     }
     if (famPad !== null) {
-        ser[ser.length] = { name: 'fame_id_padre', value: famPad};
+        ser[ser.length] = { name: 'fame_id_padre', value: famPad.value};
         ser[ser.length] = { name: 'id_articulo', value: ''};
     }else{
         ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};

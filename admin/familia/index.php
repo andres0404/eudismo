@@ -317,10 +317,11 @@
                             </select>
                         </div>    
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
-                        
+                        <input type="text" class="form-control" id="fame_id_padre" name="fame_id_padre">
                         <form role="form" id="frm_standar">
+                            
                             <div class="box-body">
-                                <input type="hidden" class="form-control" id="fame_id_padre" name="fame_id_padre">
+                                
                                 <div class="form-group">
                                     <label for="fame_titulo">Título</label>
                                     <input type="text" class="form-control" id="fami_titulo" name="fame_titulo" id="fame_titulo">

@@ -158,7 +158,7 @@ class DAOGeneral {
         if(!empty($this->_limit)){
             $query .= (" LIMIT " . implode(",", $this->_limit));
         }
-        //echo $query;
+        //echo "$query;";
         $con = ConexionSQL::getInstance();
         $id = $con->consultar($query);
         $nummm = $con->getNumeroFilasConsultadas($id);
