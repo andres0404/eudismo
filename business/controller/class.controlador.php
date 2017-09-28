@@ -131,12 +131,17 @@ class ControladorEudista extends SubirMultimedia {
      */
     public function _eliminar ($tabla, $idArticulo,$lengua) {
         $objMT = new MTablas();
-        $tabla = $objMT->getTablaCheckBox(6,null,$tabla);
+        $tabla = $objMT->getTablaCheckBox(6,null,array("LIKE" => "%$tabla%"));
         $arrTabla = each($tabla);
-        print_r($arrTabla);
-        $objDAO = new $arrTabla['value']();
+        $datos = json_decode($arrTabla['value']);
+        $arr_tabla_vs_DAO = each($datos);
+        $objDAO = new $arr_tabla_vs_DAO['value']();
         $objDAO->setValorPrimario($idArticulo);
-        $this->_eliminarTexto($objDAO, $lengua);
+        if($this->_eliminarTexto($objDAO, $lengua)){// aliminar el registro
+            if(!$objDAO->eliminar()){
+                throw new ControladorEudistaException("Error ".$objDAO->get_sql_error());
+            }
+        }
     }
     
     /**
@@ -909,17 +914,25 @@ Array
      * 
      * @param DAOGeneral $objDao
      * @param type $codLang
+     * @return boolean true:no hay mas lenguas para el registro false: existen mas lenguas
      * @throws ControladorEudistaException
      */
     private function _eliminarTexto(DAOGeneral $objDao, $codLang) {
         $_objTexto = new DAO_Textos();
         $_objTexto->set_lang_tbl($objDao->getTabla());
-        $_objTexto->set_lang_lengua($codLang);
+        $_objTexto->set_lang_lengua($this->_getCodigoLenguaje($codLang));
         $_objTexto->set_lang_id_tbl($objDao->getValorPrimario());
         if(!$_objTexto->eliminar()){
             throw new ControladorEudistaException("Error ".$_objTexto->get_sql_error());
         }
-        return true;
+        $this->_mensaje = "Dato eliminado correctamente";
+        $_objTexto = new DAO_Textos();
+        $_objTexto->set_lang_tbl($objDao->getTabla());
+        $_objTexto->set_lang_id_tbl($objDao->getValorPrimario());
+        if($_objTexto->existeTextoDeLaTabla() == 0){
+            return TRUE;
+        }
+        return false;
     }
 
     /**

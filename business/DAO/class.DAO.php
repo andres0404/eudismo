@@ -207,8 +207,7 @@ class DAOGeneral {
             $query .= " 1 ";
         }
         $con = ConexionSQL::getInstance();
-        echo $query;
-        die();
+        //echo $query;die();
         if(!$con->consultar($query)){
             $this->_error = $con->get_error();
             return false;

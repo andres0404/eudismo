@@ -21,7 +21,7 @@ class MTablas {
      * Devuelve un array del tipo array(id_dato => valor)
      * @param type $idTabla
      * @param type $idDato
-     * @param type $valor Que coincida con el valor
+     * @param type $valor Que coincida con el valor, array('funcion' => 'campo')
      * @param type $orden array(1:id 2:valor, asc desc)
      * @param type $tipReturn modifica tipo de array devuelto 1: array(id_dato => valor) 2: array(valor => valor) 3: array(id_dato => id_dato)
      */
@@ -36,7 +36,7 @@ class MTablas {
         }
         $checkArray = array();
         for($i = 0; $i < count($R) ; $i++){
-            if($tipReturn == 1){
+            if($tipReturn == 1) {
                 $checkArray[$R[$i]['id_valor']] = $R[$i]['valor'];
             }else if($tipReturn == 2){
                 $checkArray[$R[$i]['valor']] = $R[$i]['valor'];
@@ -56,7 +56,13 @@ class MTablas {
             $where = "AND b.id_valor = $this->_idDato ";
         }
         if(!empty($this->_valor)){
-            $where = "AND b.valor = '$this->_valor' ";
+            if(is_array($this->_valor)){
+                $aux = each($this->_valor);
+                $where = "AND b.valor {$aux['key']} '{$aux['value']}' ";
+            }else{
+                $where = "AND b.valor = '$this->_valor' ";
+            }
+            
         }
         $query = "SELECT  a.nom_tabla,b.* FROM 
 mt_tablas a,
