@@ -1,5 +1,5 @@
 <?php
-//header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
+header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']); //$_SERVER['HTTP_REFERER']);
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
@@ -20,6 +20,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Noticias.php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.subir.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.sessions.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.mtablas.php';
 
 class ControladorEudista extends SubirMultimedia {
@@ -38,6 +39,8 @@ class ControladorEudista extends SubirMultimedia {
      */
     public static function run() {
         try {
+            if(!SessionPostulantes::verificarSesion(false))
+                die("Acceso denegado");
             $obj = new self();
             $obj->_solicitud = json_encode($_POST);
             $return = NULL;

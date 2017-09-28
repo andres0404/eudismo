@@ -89,7 +89,7 @@ class Login{
     private function _verificarDatosUsuario() {
         $_objUsu = new DAO_Usuarios();
         $_objUsu->set_u_tipousuario(1);
-        if(sha1($this->_usuario) == $this->_clave){
+        if(sha1($this->_usuario) != $this->_clave){
             $_objUsu->set_u_clave($this->_clave);
             $_objUsu->set_u_tipousuario(2); // admin
         }
@@ -148,7 +148,13 @@ class Login{
                 "datos" => $datos,
                 "token" => 1);
         }else{
-            $arrRespu = array("ok" => "0", "url" => "", "mensaje" => (empty($mensaje) ? "Error en las credenciales" : $mensaje), "tipo_usuario" => "","token" => 0);
+            $arrRespu = array(
+                "ok" => "0", 
+                "url" => "denegado", 
+                "mensaje" => (empty($mensaje) ? "Error en las credenciales" : $mensaje), 
+                "tipo_usuario" => "",
+                "token" => 0
+            );
         }
         header('Content-type: application/json');   
         //echo "oh!";
@@ -158,6 +164,6 @@ class Login{
     
 }
 
-if(isset($_POST['u_correo']) && isset($_POST['u_nombre'])){
+if(isset($_POST['u_correo']) && isset($_POST['u_clave'])){
     Login::run();
 }

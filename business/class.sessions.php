@@ -48,12 +48,12 @@ class SessionPostulantes {
      * @return boolean true: si encuentra una sesión 
      */
     public static function verificarSesion($reinicial = true) {
-        ini_set('session.save_path',realpath(dirname() . '/../sesiones'));
+        ini_set('session.save_path',realpath(dirname('') . '/../sesiones'));
         session_start();
         if (!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario'])  ) {
             session_destroy();
             if($reinicial){
-                header("Location: ../");
+               header("Location: /boletin/eudista/");
             }
             return false;
         }
