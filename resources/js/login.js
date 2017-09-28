@@ -8,8 +8,6 @@ function CallData(){
 }
 
 CallData.prototype.login = function(){
-	document.location = 'admin/';
-	/*
     console.log($("#usuario").val());
     $.ajax({
         url : 'business/controller/class.login.php',
@@ -17,15 +15,17 @@ CallData.prototype.login = function(){
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            console.log('->>>>');
+            console.log('->>>>', json);
             console.log(json, json.ok, json.tipo_usuario);
-            if(json.ok === 1 && json.tipo_usuario === "5"){
-                window.location = 'admin/';
+            if(json.ok === 1){
+                console.log('true',json);
+
+            }else{
+
             }
 
         }
     });
-	*/
 };
 
 var CD = new CallData();

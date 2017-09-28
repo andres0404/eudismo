@@ -38,8 +38,7 @@ Consultas.prototype.init = function(ex, fn, le, ps){
             break;  
         case 4: 
             //console.log('->  csl.getOraciones', arrLng[this.ps]);
-            if(arrLng[this.ps] === 0){
-                
+            if(arrLng[this.ps] === 0){ 
                 csl.getOraciones(this.fn , this.le);   
             }   
             break;         
@@ -64,6 +63,8 @@ Consultas.prototype.init = function(ex, fn, le, ps){
         case 9:
             csl.getCantosEudistas(fn);
             break;
+
+            
             
         default :
             console.log('Paila');
@@ -321,9 +322,9 @@ Consultas.prototype.getFamilia = function(){
             //console.log(json.cod_respuesta);
             if(json.cod_respuesta === 1){
                 //console.log('lang', lg);
-                arrStr = json.data;
                 $('#lg-'+lg).html('');
-                $.each(json.data, function(k,v){                 
+                $.each(json.data, function(k,v){   
+                    var lang = "'"+v.lang+"'";
                     $('#lg-'+lg).append('<div class="box box-solid">'+
                         '<div class="box-header with-border">'+
                             '<h3 class="box-title">'+v.fame_titulo+'</h3>'+
@@ -339,7 +340,7 @@ Consultas.prototype.getFamilia = function(){
                     // Botones de configuración
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
-                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.setFamilia('+v.id_articulo+')">Ver Hijos</button>'+
+                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" itemid="'+v.lang+'" data-target="#modal-hijos" onclick="csl.getFamiliaHijos('+lang+','+v.id_articulo+')">Ver Hijos</button>'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="setFamilia('+v.id_articulo+')">Crear Hijo</button>'+
                         '</div>'+
                     '</div>');
@@ -362,26 +363,25 @@ Consultas.prototype.getFamilia = function(){
 /*
  * Consulta para las Oraciones
  */
-Consultas.prototype.getFamiliaHijos = function(){  
-    //console.log(this.ps, this.fn, this.le);
-    var lg = this.le;
-    arrLng[this.ps] = 1;
+Consultas.prototype.getFamiliaHijos = function(lan, fip){  
     $.ajax({
         url : '../../business/controller/class.controlador.php',
         data : { 
-            funcion: this.fn,
-            lang: this.le
+            funcion: 12,
+            lang: lan,
+            fame_id_padre: fip
         },
         type : 'POST',
         dataType : 'json',
         success : function(json) {
             //console.log(json.cod_respuesta);
+            $('#list-hijos').html('');
             if(json.cod_respuesta === 1){
                 //console.log('lang', lg);
                 arrStr = json.data;
-                $('#lg-'+lg).html('');
+                
                 $.each(json.data, function(k,v){                 
-                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                    $('#list-hijos').append('<div class="box box-solid">'+
                         '<div class="box-header with-border">'+
                             '<h3 class="box-title">'+v.fame_titulo+'</h3>'+
                             '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
@@ -395,10 +395,6 @@ Consultas.prototype.getFamiliaHijos = function(){
                     '</div>'+
                     // Botones de configuración
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
-                        '<div class="pull-right box-tools">'+
-                            '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" data-target="#modal-hijos" onclick="csl.setFamilia('+v.id_articulo+')">Ver Hijos</button>'+
-                            '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="setFamilia('+v.id_articulo+')">Crear Hijo</button>'+
-                        '</div>'+
                     '</div>');
                 });
                 
@@ -416,7 +412,6 @@ Consultas.prototype.getFamiliaHijos = function(){
 };
 
 function setFamilia(id){
-    console.log(id);
     document.getElementById('id_articulo').value = '';
     document.getElementById('fame_id_padre').value = id;
 }
@@ -666,7 +661,7 @@ Consultas.prototype.getCantosEudistas = function(fn){
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            console.log(json);
+            //console.log(json);
             if(json.cod_respuesta === 1){
                 $('#list-cantos-categorias').html('');
                 $.each(json.data, function(k,v){  
@@ -683,9 +678,7 @@ Consultas.prototype.getCantosEudistas = function(fn){
                                 '<audio controls >'+
                                     '<source src="'+v.ceu_url_multimedia+'" type="audio/mp3">'+
                                 '</audio>'+
-                                
-                                
-                                
+
                             '</dl>'+
                         '</div>'+
                     '</div>'+

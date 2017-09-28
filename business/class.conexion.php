@@ -132,7 +132,7 @@ class Conexiones{
             'server' => '10.0.30.28',
             'username' => 'uvd_usr',
             'password' => '1.5Y7u.p3Bv2',
-            'database' => 'uvd_eudista'        
+            'database' => 'uvd_eudista'          
         ),
         'localhost' => array(
             'server' => 'localhost',

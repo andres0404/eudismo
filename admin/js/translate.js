@@ -66,7 +66,7 @@ Translate.prototype.sendData = function(){
     var ser = $( '#frm_standar' ).serializeArray();
     ser[ser.length] = { name: 'lang', value: document.getElementById('idTraducir').value};
     ser[ser.length] = { name: 'funcion', value: this.mod};
-    
+    var fP = null;
     var imgGen = document.getElementById('img_cjm');
     var famPad = document.getElementById('fame_id_padre');
     console.log(imgGen);
@@ -77,6 +77,7 @@ Translate.prototype.sendData = function(){
     if (famPad !== null) {
         ser[ser.length] = { name: 'fame_id_padre', value: famPad.value};
         ser[ser.length] = { name: 'id_articulo', value: ''};
+        fP = 1;
     }else{
         ser[ser.length] = { name: 'id_articulo', value: document.getElementById('id_articulo').value};
     }
@@ -87,14 +88,22 @@ Translate.prototype.sendData = function(){
         type : 'POST',
         dataType : 'json',
         success : function(json) {
+            if(fP === 1){
+                 document.getElementById('fame_id_padre').value = '';
+            }
+                
             if(json.cod_respuesta === 1){
+                console.log('->> ', fP);    
+
                 trad.setMensaje(1, json.mensaje);
-                document.getElementById('id_articulo').value = json.data.id_articulo;
+                //document.getElementById('id_articulo').value = json.data.id_articulo;
                 arrLng[arrCfg[3]] = 0;
                 var ps = csl.sePosLang(document.getElementById('idTraducir').value);
                 //console.log('Acá', arrD[0], arrD[1], document.getElementById('idTraducir').value, csl.sePosLang(document.getElementById('idTraducir').value));
                 arrLng[ps] = 0;
                 csl.init( arrD[0], arrD[1], document.getElementById('idTraducir').value, csl.sePosLang(document.getElementById('idTraducir').value)  );
+                
+                
             }
 
         },  
@@ -110,22 +119,9 @@ Translate.prototype.sendData = function(){
             //alert('Petición realizada');
         }
     }); 
-    
-};
 
-Translate.prototype.setMensaje = function(tm, msg){
-    if(tm === 1){
-        document.getElementById('al_frm').className = 'callout callout-success';  
-        document.getElementById('al_frm').getElementsByTagName('h4')[0].innerHTML = 'Exito';
-    }else{
-        document.getElementById('al_frm').className = 'callout callout-danger';  
-        document.getElementById('al_frm').getElementsByTagName('h4')[0].innerHTML = 'Error';
-    }
-    document.getElementById('al_frm').style.display = 'block';  
-    document.getElementById('al_frm').getElementsByTagName('p')[0].innerHTML = msg;  
-    setTimeout(function(){
-        document.getElementById('al_frm').style.display = 'none';
-    },3000);
+    
+    
 };
 
 
@@ -148,9 +144,11 @@ Translate.prototype.sendDataCantos = function(){
         cache: false,
         timeout: 600000,
         success: function (data) {
-            $("#result").text(data);
-            console.log("SUCCESS : ", data);
-            $("#btnSubmit").prop("disabled", false);
+            if(data.cod_respuesta === 1){
+                trad.setMensaje(1, data.mensaje);
+                csl.getCantosEudistas();
+            }
+
         },
         error: function (e) {
             $("#result").text(e.responseText);
@@ -159,6 +157,24 @@ Translate.prototype.sendDataCantos = function(){
         }
     });   
 };
+
+Translate.prototype.setMensaje = function(tm, msg){
+    if(tm === 1){
+        document.getElementById('al_frm').className = 'callout callout-success';  
+        document.getElementById('al_frm').getElementsByTagName('h4')[0].innerHTML = 'Exito';
+    }else{
+        document.getElementById('al_frm').className = 'callout callout-danger';  
+        document.getElementById('al_frm').getElementsByTagName('h4')[0].innerHTML = 'Error';
+    }
+    document.getElementById('al_frm').style.display = 'block';  
+    document.getElementById('al_frm').getElementsByTagName('p')[0].innerHTML = msg;  
+    setTimeout(function(){
+        document.getElementById('al_frm').style.display = 'none';
+        $('#modal-default').modal('hide');
+    },3000);
+};
+
+
 
 
 var trad = new Translate();

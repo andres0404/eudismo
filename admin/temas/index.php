@@ -363,11 +363,8 @@
 <script src="../bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
     $('.select2').select2()
-
-</script>
-
-<script>
     csl.init(2, 4, 'es', 1);
+    var arrD = [2, 4];
 </script>
 </body>
 </html>

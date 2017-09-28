@@ -179,7 +179,7 @@
                         <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title">La gran familia Eudista</h3>
-                                <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default">Nuevo</button>
+                                <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default" onclick="clearInpt()">Nuevo</button>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
@@ -361,7 +361,7 @@
                 </div>
                 <div class="modal-body">
 
-
+                    <div id="list-hijos"></div>
                     
                     
                 </div>
@@ -391,7 +391,10 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
     csl.init(6, 12, 'es', 1);
-    var arrD = [6, 12]
+    var arrD = [6, 12];
+    function clearInpt(){
+        document.getElementById('fame_id_padre').value = '';
+    }
 </script>
 </body>
 </html>
