@@ -529,8 +529,8 @@ class ControladorEudista extends SubirMultimedia {
             }
             // obtener descripcion
             //print_r($_SERVER);
-            $origen = !empty($_SERVER['HTTP_ORIGIN']) ? ('http://'.$_SERVER['HTTP_HOST']."/boletin") :  $_SERVER['HTTP_ORIGIN'] ;
-            $ruta = "{$origen}/eudista/business/controller/";
+            $origen = !empty($_SERVER['HTTP_ORIGIN']) ? ('http://'.$_SERVER['HTTP_HOST']) :  $_SERVER['HTTP_ORIGIN'] ;
+            $ruta = "{$origen}eudista/business/controller/";
             $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
             $aux = array(
                 'id_articulo' => $_objTemCjm->get_ceu_id(),
@@ -844,10 +844,10 @@ Array
         if(!is_array($datos) || count($datos) < 1){
             return false;
         }
-        if(!$myfile = fopen($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html", "r") ) {
+        if(!$myfile = fopen($_SERVER['DOCUMENT_ROOT']."eudista/admin/plantillas/plantilla_mail.html", "r") ) {
             return false;
         }
-        $html = fread($myfile,filesize($_SERVER['DOCUMENT_ROOT']."/eudista/admin/plantillas/plantilla_mail.html"));
+        $html = fread($myfile,filesize($_SERVER['DOCUMENT_ROOT']."eudista/admin/plantillas/plantilla_mail.html"));
         fclose($myfile);
         $search = array('{lengua}','{logo}','{sponsor}','{present}','{message}','{and_more}');
         $replace = array($lengua,'App Eudista','Uniminuto',"Sugerencia de traducción '$titulo'" ,$_POST['titulo'],$_POST['texto']);
