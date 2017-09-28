@@ -16,6 +16,7 @@ class Login{
 
     private $_usuario;
     private $_clave;
+    
     private $_tipo_usuario;
     private $_nombre;
 
@@ -24,7 +25,7 @@ class Login{
             $_obj = new self();
             switch ($_POST['funcion']){
                 case 1:// loguear
-                    $_obj->_establecerDatos($_POST['u_correo'],$_POST['u_correo']);
+                    $_obj->_establecerDatos($_POST['u_correo'],$_POST['u_clave']);
                     $_obj->_verificarDatosUsuario();
                     break;
                 case 2: // Registrar + logueo
@@ -87,8 +88,12 @@ class Login{
      */
     private function _verificarDatosUsuario() {
         $_objUsu = new DAO_Usuarios();
+        $_objUsu->set_u_tipousuario(1);
+        if(sha1($this->_usuario) == $this->_clave){
+            $_objUsu->set_u_clave($this->_clave);
+            $_objUsu->set_u_tipousuario(2); // admin
+        }
         $_objUsu->set_u_correo($this->_usuario);
-        //$_objUsu->set_u_clave($this->_clave);
         $_objUsu->set_u_activo(1);
         //$_objUsu->set_u_tipo_usuario(array(4,5)); // administrador
         //$_objUsu->set_namespace("uvd_usuarios");
