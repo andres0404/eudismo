@@ -83,6 +83,14 @@ class DAO_Textos extends DAOGeneral {
         $this->_lang_seccion = $_lang_seccion;
     }
 
-
+    function existeTextoDeLaTabla(){
+        $query = "select count(*) total from {$this->_tabla} where lang_tbl = '{$this->_lang_tbl}'  AND lang_id_tbl = $this->_lang_id_tbl ";
+        $con = ConexionSQL::getInstance();
+        $id = $con->consultar($query);
+        if($res = $con->obenerFila($id)){
+            return $res['total'];
+        }
+        return false;
+    }
 
 }
