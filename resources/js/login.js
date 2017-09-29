@@ -10,17 +10,18 @@ function CallData(){
 CallData.prototype.login = function(){
     console.log($("#usuario").val());
     $.ajax({
-        url : 'business/controller/class.login.php',
-        data : {usuario: $("#usuario").val(), password: $("#password").val() },
+        url : 'http://uvd.uniminuto.edu/boletin/eudista/business/controller/class.login.php',
+        data : {u_correo: $("#usuario").val(), u_clave: $("#password").val(), funcion:1 },
         type : 'POST',
         dataType : 'json',
         success : function(json) {
             console.log('->>>>', json);
             console.log(json, json.ok, json.tipo_usuario);
             if(json.ok === 1){
-                console.log('true',json);
+                window.location = 'admin/';
 
             }else{
+                alert('Datos incorrectos');
 
             }
 

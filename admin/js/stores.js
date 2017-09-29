@@ -6,8 +6,8 @@ var arrLng = [0,0,0,0,0,0,0,0];
 var arrStr = [];
 var arrCfg = [];
 var oraCat = 1;
-    var posCat = 'es';
-    var lenCat = 1;    
+var posCat = 'es';
+var lenCat = 1;    
 function Consultas(){
     
 }
@@ -63,7 +63,9 @@ Consultas.prototype.init = function(ex, fn, le, ps){
         case 9:
             csl.getCantosEudistas(fn);
             break;
-
+        case 10:
+            csl.getTestimonios(this.fn , this.le);
+            break;
             
             
         default :
@@ -92,6 +94,7 @@ Consultas.prototype.getCJM = function(){
                 //console.log('lang', lg);
                 arrStr = json.data;
                 $('#lg-'+lg).html('');
+                var mod = '"cjm"';
                 $.each(json.data, function(k,v){                 
                     $('#lg-'+lg).append('<div class="box box-solid">'+
                         '<div class="box-header with-border">'+
@@ -109,7 +112,7 @@ Consultas.prototype.getCJM = function(){
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.cjmFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 1)">Eliminar</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -163,7 +166,7 @@ Consultas.prototype.getTemas = function(){
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 2)">Eliminar</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -226,7 +229,7 @@ Consultas.prototype.getFormar = function(){
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.formarFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 3)">Eliminar</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -284,7 +287,7 @@ Consultas.prototype.getOraciones = function(){
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.oracionesFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 4)">Eliminar</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -342,6 +345,8 @@ Consultas.prototype.getFamilia = function(){
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-primary" id="btn-upd" data-toggle="modal" itemid="'+v.lang+'" data-target="#modal-hijos" onclick="csl.getFamiliaHijos('+lang+','+v.id_articulo+')">Ver Hijos</button>'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="setFamilia('+v.id_articulo+')">Crear Hijo</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 6)">Eliminar</button>'+
+
                         '</div>'+
                     '</div>');
                 });
@@ -358,7 +363,7 @@ Consultas.prototype.getFamilia = function(){
     });  
     
 };
-
+//  
 
 /*
  * Consulta para las Oraciones
@@ -453,7 +458,7 @@ Consultas.prototype.getNovedades = function(){
                     '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.oracionesFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 7)">Eliminar</button>'+
                         '</div>'+
                     '</div>');
                 });
@@ -471,6 +476,62 @@ Consultas.prototype.getNovedades = function(){
     
 };
 
+
+/*
+ * Consulta para las Npvedades
+ */
+Consultas.prototype.getTestimonios = function(){  
+    console.log(this.ps, this.fn, this.le);
+    var lg = this.le;
+    arrLng[this.ps] = 1;
+    $.ajax({
+        url : '../../business/controller/class.controlador.php',
+        data : { 
+            funcion: 16,
+            lang: this.le
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function(json) {
+            //console.log(json.cod_respuesta);
+            if(json.cod_respuesta === 1){
+                
+                arrStr = json.data;
+                $('#lg-'+lg).html('');
+                $.each(json.data, function(k,v){                 
+                    $('#lg-'+lg).append('<div class="box box-solid">'+
+                        '<div class="box-header with-border">'+
+                            '<h3 class="box-title">'+v.test_titulo+'</h3>'+
+                            '<div class="bg-aqua-active color-palette" id="txt-publicacion"><span>Id publicación: '+v.id_articulo+'</span></div>'+
+                        '</div>'+
+                        '<div class="box-body">'+
+                            '<dl>'+
+                                '<img src="'+v.imgPerfil+'" width="150px" style="float: left; margin-right: 10px;">'+
+                                '<dd>'+v.test_desc+'</dd>'+
+                                '<dd>'+v.nombre+'</dd>'+
+                            '</dl>'+
+                        '</div>'+
+                    '</div>'+
+                    // Botones de configuración
+                    '<div class="box-footer ui-sortable-handle" style="cursor: move;">'+
+                        '<div class="pull-right box-tools">'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 8)">Eliminar</button>'+
+                        '</div>'+
+                    '</div>');
+                });
+                
+            }
+            
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });  
+    
+};
 
 
 
@@ -686,7 +747,7 @@ Consultas.prototype.getCantosEudistas = function(fn){
                     '<div class="box-footer ui-sortable-handle" id="footer-cantos" style="cursor: move; display="block !important;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 1)">Eliminar</button>'+
                         '</div>'+
                     '</div>');              
                     

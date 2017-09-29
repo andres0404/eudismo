@@ -1,8 +1,6 @@
 <?php
-    /*
-	include_once("../business/class.sessions.php");// clase para inicio de sesion
+    include_once("../../business/class.sessions.php");// clase para inicio de sesion
     SessionPostulantes::verificarSesion();
-	*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,6 +38,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <script src="../js/stores.js"></script>
     <script src="../js/translate.js"></script>
+    <script src="../js/functions.js"></script>
     <style>
         .example-modal .modal {
           position: relative;
@@ -157,7 +156,13 @@
                         <a href="../novedades/">
                             <i class="fa fa-area-chart"></i> <span>Novedades / Noticias</span>
                         </a>
-                    </li>                                  
+                    </li>   
+                    <li>
+                        <a href="../testimonios/">
+                            <i class="fa fa-area-chart"></i> <span>Testimonios</span>
+                        </a>
+                    </li>     
+                    
                 </ul>
             <!-- /.sidebar-menu -->
             </section>

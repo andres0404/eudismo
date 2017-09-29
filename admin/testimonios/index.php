@@ -33,8 +33,6 @@
   <![endif]-->
 
     <!-- Google Font -->
-    <!-- jQuery 3 -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <script src="../js/stores.js"></script>
     <script src="../js/translate.js"></script>
@@ -122,12 +120,12 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
-                    <li class="active">
+                    <li>
                         <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
-                    <li>
+                    <li class="active">
                         <a href="../temas/">
                             <i class="fa fa-area-chart"></i> <span>Temas fundamentales</span>
                         </a>
@@ -153,15 +151,16 @@
                         </a>
                     </li>                                                                    
                     <li>
-                        <a href="./">
+                        <a href="../novedades/">
                             <i class="fa fa-area-chart"></i> <span>Novedades / Noticias</span>
                         </a>
-                    </li>    
+                    </li>     
                     <li>
-                        <a href="../testimonios/">
+                        <a href="./">
                             <i class="fa fa-area-chart"></i> <span>Testimonios</span>
                         </a>
-                    </li>            
+                    </li>    
+                    
                     
                 </ul>
             <!-- /.sidebar-menu -->
@@ -183,15 +182,13 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Novedades / Noticias</h3>
-                                <button type="submit" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#modal-default">Nuevo</button>
+                                <h3 class="box-title">Testimonios</h3>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
 
                                 <div class="table-responsive mailbox-messages">
-                                    
                                     <!-- Custom tabs (Language with tabs)-->
                                     <div class="nav-tabs-custom">
                                       <!-- Tabs within a box -->
@@ -203,31 +200,31 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(7, 14, 'en', 2)">
+                                                <a href="#lg-en" data-toggle="tab"  onclick="csl.init(10, 16, 'en', 2)">
                                                     <img src="../../resources/img/langs/us.png" style="width: 18px;margin-top: -2px;"/>
                                                     Inglés
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(7, 14, 'fr', 3)">
+                                                <a href="#lg-fr" data-toggle="tab"  onclick="csl.init(10, 16, 'fr', 3)">
                                                     <img src="../../resources/img/langs/fr.png" style="width: 18px;margin-top: -2px;"/>
                                                     Francés
                                                 </a>
                                             </li>     
                                             <li>
-                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(7, 14, 'de', 4)">
+                                                <a href="#lg-de" data-toggle="tab"  onclick="csl.init(10, 16, 'de', 4)">
                                                     <img src="../../resources/img/langs/de.png" style="width: 18px;margin-top: -2px;"/>
                                                     Alemán
                                                 </a>
                                             </li>                                             
                                             <li>
-                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(7, 14,, 'it', 5)">
+                                                <a href="#lg-it" data-toggle="tab" onclick="csl.init(10, 16, 'it', 5)">
                                                     <img src="../../resources/img/langs/it.png" style="width: 18px;margin-top: -2px;"/>
                                                     Italiano
                                                 </a>
                                             </li>   
                                             <li>
-                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(7, 14, 'pt', 6)">
+                                                <a href="#lg-pt" data-toggle="tab" onclick="csl.init(10, 16, 'pt', 6)">
                                                     <img src="../../resources/img/langs/pt.png" style="width: 18px;margin-top: -2px;"/>
                                                     Portugués
                                                 </a>
@@ -243,9 +240,13 @@
                                         </div>
 
                                     </div>
+                                    
+                                    
+                                    
+                                  <!-- /.table -->
+                                </div>
                                 <!-- /.mail-box-messages -->
                             </div>
-                            <!-- /.box-body -->
 
                         </div>
                     </div>
@@ -277,94 +278,24 @@
     <div class="control-sidebar-bg"></div>
     
     
-     <!-- /.modal -->
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Crear un Noticia!</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="progress" id="pg_bar">
-                        <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                            <span id="current-progress"></span>
-                        </div>
-                    </div> 
-                <div id="al_frm">
-                    <h4></h4>
-                    <p></p>
-                </div>
-                    <div class="form-group">
-                        <!-- Selector de idioma fuente -->
-                        <label for="idOrigen" class="col-sm-4 control-label">Idioma fuente</label>
-                        <div class="col-sm-8">
-                            <select class="form-control select2" style="width: 100%;"  id="idOrigen">
-                                <option value="es" selected = "selected">Español</option>
-                                <option value="en">Inglés</option>
-                                <option value="de">Alemán</option>
-                                <option value="fr">Francés</option>
-                                <option value="it">Italiano</option>
-                                <option value="pt">Portugues</option>
-                            </select>
-                        </div>
-                        <!-- Selector de idioma a traducir -->
-                        <label for="idTraducir" class="col-sm-4 control-label">Idioma a traducir</label>
-                        <div class="col-sm-8">
-                            <select class="form-control select2" style="width: 100%;"  id="idTraducir">
-                                <option value="es" selected = "selected">Español</option>
-                                <option value="en">Inglés</option>
-                                <option value="de">Alemán</option>
-                                <option value="fr">Francés</option>
-                                <option value="it">Italiano</option>
-                                <option value="pt">Portugues</option>
-                            </select>
-                        </div>    
-                        <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
-                        <form role="form" id="frm_standar">
-                            <div class="box-body">
-                                
-                                <div class="form-group">
-                                    <label for="novt_titulo">Título</label>
-                                    <input type="text" class="form-control" id="cjm_titulo" name="novt_titulo" id="novt_titulo">
-                                </div>
-                                <div class="form-group">
-                                    <label>Noticia</label>
-                                    <textarea class="form-control"  name="novt_desc" id="novt_desc" rows="3"></textarea>
-                                </div>
-                            </div>
-
-                        </form>
-
-                    </div>
-                    
-                    
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 13)">Guardar</button>
-                </div>
-            </div>
-        <!-- /.modal-content -->
-        </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
+    
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
 
-
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<!-- Select2 -->
+<script src="../bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
-    csl.init(7, 14, 'es', 1);
-    var arrD = [7, 14]
+    $('.select2').select2()
+    csl.init(10, 16, 'es', 1);
+    var arrD = [10, 16];
 </script>
 </body>
 </html>
