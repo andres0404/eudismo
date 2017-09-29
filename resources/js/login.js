@@ -18,7 +18,7 @@ CallData.prototype.login = function(){
             console.log('->>>>', json);
             console.log(json, json.ok, json.tipo_usuario);
             if(json.ok === 1){
-                window.location = 'admin/';
+                //window.location = 'admin/';
 
             }else{
                 alert('Datos incorrectos');

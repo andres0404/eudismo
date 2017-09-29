@@ -1,6 +1,6 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/class.conexion.php';
+include_once $_SERVER['DOCUMENT_ROOT'].SERVER. '/eudista/business/class.conexion.php';
 
 class DAOGeneral {
     

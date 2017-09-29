@@ -8,20 +8,20 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_TemasFundamentales.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Cjm.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Oraciones.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FormarAJesus.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_FamiliaEudista.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Testimonios.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_CantosEudistas.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Noticias.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/DAO/DAO_Textos.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.subir.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.sessions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.mtablas.php';
+include_once '../globals.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_TemasFundamentales.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_Cjm.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_Oraciones.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_FormarAJesus.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_FamiliaEudista.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_Testimonios.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_CantosEudistas.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_Noticias.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/DAO/DAO_Textos.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/controller/class.cabeceras.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/controller/class.subir.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/class.sessions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/class.mtablas.php';
 
 class ControladorEudista extends SubirMultimedia {
 

@@ -2,7 +2,7 @@
 
 //print_r($_SERVER);
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/controller/class.cabeceras.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/controller/class.cabeceras.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

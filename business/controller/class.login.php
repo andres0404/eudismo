@@ -8,7 +8,7 @@
 //include_once '../globals.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/DAO/DAO_Usuarios.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/eudista/business/class.sessions.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/eudista/business/class.mtablas.php';
+include_once $_SERVER['DOCUMENT_ROOT'] .SERVER. '/eudista/business/class.mtablas.php';
 
 class Login{
     
