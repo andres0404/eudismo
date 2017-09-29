@@ -10,15 +10,15 @@ function CallData(){
 CallData.prototype.login = function(){
     console.log($("#usuario").val());
     $.ajax({
-        url : 'http://uvd.uniminuto.edu/boletin/eudista/business/controller/class.login.php',
+        url : 'http://10.0.36.101/virtual.uniminuto.edu/eudista/business/controller/class.login.php',
         data : {u_correo: $("#usuario").val(), u_clave: $("#password").val(), funcion:1 },
         type : 'POST',
         dataType : 'json',
         success : function(json) {
-            console.log('->>>>', json);
-            console.log(json, json.ok, json.tipo_usuario);
+            //console.log('->>>>', json);
+            //console.log(json, json.ok, json.tipo_usuario);
             if(json.ok === 1){
-                //window.location = 'admin/';
+                window.location = 'admin/';
 
             }else{
                 alert('Datos incorrectos');

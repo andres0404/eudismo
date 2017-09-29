@@ -538,7 +538,7 @@ class ControladorEudista extends SubirMultimedia {
             // obtener descripcion
             //print_r($_SERVER);
             $origen = !empty($_SERVER['HTTP_ORIGIN']) ? ('http://'.$_SERVER['HTTP_HOST']) :  $_SERVER['HTTP_ORIGIN'] ;
-            $ruta = "{$origen}/eudista/business/controller/";
+            $ruta = "{$origen}".SERVER."/eudista/business/controller/";
             $_objTextoDesc = $this->_getTextos($_objTemCjm, "desc", $lenguaje);
             $aux = array(
                 'id_articulo' => $_objTemCjm->get_ceu_id(),
