@@ -39,7 +39,7 @@ class ControladorEudista extends SubirMultimedia {
      */
     public static function run() {
         try {
-            if(!SessionPostulantes::verificarSesion(false))
+            if(!SessionPostulantes::verificarSesion(false,isset($_POST['token']) ? $_POST['token']:NULL))
                 die("Acceso denegado");
             $obj = new self();
             $obj->_solicitud = json_encode($_POST);
