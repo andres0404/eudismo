@@ -103,7 +103,7 @@ class ControladorEudista extends SubirMultimedia {
                     $return = $obj->_listarCategoriaOraciones($_POST['lang']);
                     break;
                 case 19:
-                    $return = $obj->_eliminar($_POST['DAO'], $_POST['id_articulo'], $_POST['lang']);
+                    $return = $obj->_eliminar($_POST['DAO'], $_POST['id_articulo'], (isset($_POST['lang']) ? $_POST['lang'] : "es" )  );
                     break;
             }
             $respuesta = array(
