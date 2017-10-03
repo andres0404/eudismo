@@ -125,7 +125,7 @@
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
                     </li>                   
-                    <li class="active">
+                    <li>
                         <a href="../temas/">
                             <i class="fa fa-area-chart"></i> <span>Temas fundamentales</span>
                         </a>
@@ -155,7 +155,7 @@
                             <i class="fa fa-area-chart"></i> <span>Novedades / Noticias</span>
                         </a>
                     </li>     
-                    <li>
+                    <li  class="active">
                         <a href="./">
                             <i class="fa fa-area-chart"></i> <span>Testimonios</span>
                         </a>

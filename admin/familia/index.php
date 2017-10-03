@@ -122,7 +122,7 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENÚ DE NAVEGACIÓN</li>
-                    <li class="active">
+                    <li>
                         <a href="../cjm/">
                             <i class="fa fa-home"></i> <span>La CJM</span>
                         </a>
@@ -147,7 +147,7 @@
                             <i class="fa fa-area-chart"></i> <span>Cantos Eudistas</span>
                         </a>
                     </li>                                  
-                    <li>
+                    <li class="active">
                         <a href="./">
                             <i class="fa fa-area-chart"></i> <span>La gran familia Eudista</span>
                         </a>
@@ -292,10 +292,15 @@
                             <span id="current-progress"></span>
                         </div>
                     </div> 
-                <div id="al_frm">
-                    <h4></h4>
-                    <p></p>
-                </div>
+                    <div id="al_frm">
+                        <h4></h4>
+                        <p></p>
+                    </div>
+                    <div class="alert alert-danger" id="err-frm">
+                        <strong>ERROR!</strong> Todos los campos deben estar llenos
+                    </div>  
+                    
+                    
                     <div class="form-group">
                         <!-- Selector de idioma fuente -->
                         <label for="idOrigen" class="col-sm-4 control-label">Idioma fuente</label>
@@ -322,14 +327,14 @@
                             </select>
                         </div>    
                         <input type="hidden" class="form-control" id="id_articulo" name="id_articulo">
-                        <input type="text" class="form-control" id="fame_id_padre" name="fame_id_padre">
+                        <input type="hidden" class="form-control" id="fame_id_padre" name="fame_id_padre">
                         <form role="form" id="frm_standar">
                             
                             <div class="box-body">
                                 
                                 <div class="form-group">
                                     <label for="fame_titulo">Título</label>
-                                    <input type="text" class="form-control" id="fami_titulo" name="fame_titulo" id="fame_titulo">
+                                    <input type="text" class="form-control" name="fame_titulo" id="fame_titulo">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
@@ -345,7 +350,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 11)">Guardar</button>
+                  <button type="button" class="btn btn-primary"  id="save_btn" onclick="">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -400,6 +405,44 @@
     function clearInpt(){
         document.getElementById('fame_id_padre').value = '';
     }
+    
+    $(document).ready(function() {
+
+        <!-- Después de la validación del formulario -->
+        $("#save_btn").click(function(event){
+            var form_data=$("#frm_standar").serializeArray();
+            console.log('Hola');
+            var error_free=true;
+            for (var input in form_data){
+                if (!$('#'+form_data[input]['name']).val()){
+                    $('#'+form_data[input]['name']).addClass("invalid");
+                    document.getElementById('err-frm').style.display = 'block';
+                    error_free = false;
+                }else{
+                    $('#'+form_data[input]['name']).addClass("valid");
+                }    
+            }
+            if (!error_free){
+                event.preventDefault(); 
+                setTimeout(function(){
+                    document.getElementById('err-frm').style.display = 'none';
+                },3000);
+            }
+            else{
+                console.log('ok');
+                jQuery.noConflict();
+                setTimeout(function(){
+                    document.getElementById('al_frm').style.display = 'none'; 
+                    $('#modal-default').modal('hide');
+                },3000);
+                
+                document.getElementById('err-frm').style.display = 'none';
+                trad.init('frm_standar', 11);
+            }
+        });       
+    });
+    
 </script>
 </body>
 </html>
+

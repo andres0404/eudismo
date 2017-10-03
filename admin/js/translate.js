@@ -48,6 +48,7 @@ Translate.prototype.setProgressBar = function(){
     document.getElementById('pg_bar').style.display = 'block';
     var current_progress = 0;
     var interval = setInterval(function(frm, ind) {
+        //jQuery.noConflict();
         current_progress += 20;
         $("#dynamic")
         .css("width", current_progress + "%");
@@ -168,10 +169,7 @@ Translate.prototype.setMensaje = function(tm, msg){
     }
     document.getElementById('al_frm').style.display = 'block';  
     document.getElementById('al_frm').getElementsByTagName('p')[0].innerHTML = msg;  
-    setTimeout(function(){
-        document.getElementById('al_frm').style.display = 'none';
-        $('#modal-default').modal('hide');
-    },3000);
+
 };
 
 

@@ -747,7 +747,7 @@ Consultas.prototype.getCantosEudistas = function(fn){
                     '<div class="box-footer ui-sortable-handle" id="footer-cantos" style="cursor: move; display="block !important;">'+
                         '<div class="pull-right box-tools">'+
                             '<button type="button" class="btn btn-success btn-sm" id="btn-upd" data-toggle="modal" data-target="#modal-default" onclick="csl.temasFull('+v.id_articulo+')">Actualizar</button>'+
-                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 1)">Eliminar</button>'+
+                            '<button type="button" class="btn btn-danger btn-sm" id="btn-del" onclick="del.deleteAll('+v.id_articulo+', 5)">Eliminar</button>'+
                         '</div>'+
                     '</div>');              
                     
@@ -770,18 +770,17 @@ Consultas.prototype.getCantosEudistas = function(fn){
 Consultas.prototype.setTitle = function(tit){ 
     //console.log(tit);
     document.getElementById('tit-categorias').innerHTML = tit;
-}
+};
 
 Consultas.prototype.setCatOra = function(id){
     oraCat = id;
-    
     for(i = 0; i < arrLng.length; i++){
         arrLng[i] = 0;
     }
+    if(typeof lenCat === "undefined"){lenCat = 'es';}
+    if(typeof posCat === "undefined"){posCat = 1;}
     document.getElementById('lg-'+lenCat).innerHTML = '';
     csl.init(4, 8, lenCat, posCat);
-    
-    //console.log(4, 8, lenCat, posCat);
 };
 
 

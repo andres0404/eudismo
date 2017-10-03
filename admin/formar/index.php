@@ -295,10 +295,14 @@
                             <span id="current-progress"></span>
                         </div>
                     </div> 
-                <div id="al_frm">
-                    <h4></h4>
-                    <p></p>
-                </div>
+                    <div id="al_frm">
+                        <h4></h4>
+                        <p></p>
+                    </div>
+                    <div class="alert alert-danger" id="err-frm">
+                        <strong>ERROR!</strong> Todos los campos deben estar llenos
+                    </div>                         
+                    
                     <div class="form-group">
                         <!-- Selector de idioma fuente -->
                         <label for="idOrigen" class="col-sm-4 control-label">Idioma fuente</label>
@@ -365,7 +369,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary" onclick="trad.init('frm_standar', 5)">Guardar</button>
+                  <button type="button" class="btn btn-primary" id="save_btn">Guardar</button>
                 </div>
             </div>
         <!-- /.modal-content -->
@@ -405,6 +409,46 @@
 
     csl.init(3, 6, 'es', 1);
     var arrD = [3, 6]
+    
+    $(document).ready(function() {
+
+        <!-- Después de la validación del formulario -->
+        $("#save_btn").click(function(event){
+            var form_data=$("#frm_standar").serializeArray();
+            console.log('Hola');
+            var error_free=true;
+            for (var input in form_data){
+                if (!$('#'+form_data[input]['name']).val()){
+                    $('#'+form_data[input]['name']).addClass("invalid");
+                    document.getElementById('err-frm').style.display = 'block';
+                    error_free = false;
+                }else{
+                    $('#'+form_data[input]['name']).addClass("valid");
+                }    
+            }
+            if (!error_free){
+                event.preventDefault(); 
+                setTimeout(function(){
+                    document.getElementById('err-frm').style.display = 'none';
+                },3000);
+            }
+            else{
+                console.log('ok');
+                //jQuery.noConflict();
+                setTimeout(function(){
+                    document.getElementById('al_frm').style.display = 'none'; 
+                    $('#modal-default').modal('hide');
+                },3000);
+                
+                document.getElementById('err-frm').style.display = 'none';
+                trad.init('frm_standar', 5);
+            }
+        });       
+    });
+
+    
+    
+    
 </script>
 </body>
 </html>

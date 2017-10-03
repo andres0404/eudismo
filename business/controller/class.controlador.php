@@ -754,13 +754,12 @@ class ControladorEudista extends SubirMultimedia {
         foreach ($arrFam as $_objTemFa) {
             // obtener titulo
             if($_objTemFa instanceof DAO_Testimonios){}
-            /*$_objCeuTitulo = $this->_getTextos($_objTemFa, "titulo", $lenguaje);
-            $langId = $_objCeuTitulo->get_test_id();
-            if(empty($langId)){
-                continue;
-            }*/
             // obtener descripcion
             $_objTextoDesc = $this->_getTextos($_objTemFa, "desc", $lenguaje);
+            $idLang = $_objTextoDesc->getValorPrimario();
+            if(empty($idLang)){
+                continue;
+            }
             $aux = array(
                 'id_articulo' => $_objTemFa->get_test_id(),
                 'lang' => $_objTextoDesc->get_langLengua(),
